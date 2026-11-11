@@ -2,15 +2,14 @@ import Icon from '../ui/Icon';
 
 export default function ReportsKpis({ kpis }) {
   const {
-    revenue = 1420700,
-    grossProfit = Math.round(revenue * 0.338),
-    transactions = 202,
-    averageBasket = transactions > 0 ? Math.round(revenue / transactions) : 7033,
-    unitsSold = Math.round(transactions * 3.6),
+    revenue = 0,
+    grossProfit = null,
+    transactions = 0,
+    averageBasket = 0,
+    unitsSold = 0,
   } = kpis || {};
 
-  const marginPercent = revenue > 0 ? ((grossProfit / revenue) * 100).toFixed(1) : '33.8';
-  const unitsPerTxn = transactions > 0 ? (unitsSold / transactions).toFixed(1) : '3.6';
+  const unitsPerTxn = transactions > 0 ? (unitsSold / transactions).toFixed(1) : '0.0';
 
   return (
     <div className="reports-kpi-grid">
@@ -24,9 +23,6 @@ export default function ReportsKpis({ kpis }) {
         <div className="reports-kpi-value">
           ₦{Number(revenue).toLocaleString()}
         </div>
-        <div className="reports-kpi-badge reports-kpi-badge--green">
-          <span>+14.2% vs last period</span>
-        </div>
       </div>
 
       <div className="reports-kpi-card">
@@ -37,10 +33,10 @@ export default function ReportsKpis({ kpis }) {
           </div>
         </div>
         <div className="reports-kpi-value">
-          ₦{Number(grossProfit).toLocaleString()}
+          {grossProfit === null ? '—' : `₦${Number(grossProfit).toLocaleString()}`}
         </div>
         <div className="reports-kpi-badge reports-kpi-badge--amber">
-          <span>{marginPercent}% margin</span>
+          <span>Historical unit costs are not recorded</span>
         </div>
       </div>
 

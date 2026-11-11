@@ -14,7 +14,7 @@ function DashboardHome({ user, onNavigate, onSessionExpired }) {
   const isManager = user?.role === 'manager';
   const canManageInventory = isOwner || isManager;
   const [period, setPeriod] = useState('7d');
-  const d = useDashboardData({ isOwner, period, onSessionExpired });
+  const d = useDashboardData({ period, onSessionExpired });
 
   return (
     <div className="dash-home">
@@ -31,6 +31,7 @@ function DashboardHome({ user, onNavigate, onSessionExpired }) {
         isOwner={isOwner || isManager}
         todayMetrics={d.todayMetrics}
         lowStock={d.lowStock}
+        salesError={d.salesError}
         productsError={d.productsError}
       />
 

@@ -47,11 +47,11 @@ function SalesTrendPanel({
       <div className="chart-summary-row">
         <div className="chart-figure">
           <span>TOTAL REVENUE</span>
-          <strong>{loading ? '—' : formatMoney(totalRevenue)}</strong>
+          <strong>{loading || error ? '—' : formatMoney(totalRevenue)}</strong>
         </div>
         <div className="chart-figure">
           <span>DAILY AVERAGE</span>
-          <strong>{loading ? '—' : formatMoney(dailyAverage)}</strong>
+          <strong>{loading || error ? '—' : formatMoney(dailyAverage)}</strong>
         </div>
       </div>
 

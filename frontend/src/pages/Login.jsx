@@ -171,7 +171,6 @@ function Login({ onLogin }) {
                   type="button"
                   className="link-button forgot-pwd-link"
                   onClick={() => {
-                    setResetEmail(email);
                     setShowResetModal(true);
                   }}
                 >

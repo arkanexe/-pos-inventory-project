@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StoreSettingController;
+use App\Http\Controllers\DashboardController;
 
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -22,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user/change-password', [AuthController::class, 'changePassword']);
 
     Route::get('/products', [ProductController::class, 'index']);
+    Route::get('/dashboard', [DashboardController::class, 'index']);
 
     Route::middleware('role:owner,manager')->group(function () {
         Route::get('/staff', [AuthController::class, 'listStaff']);

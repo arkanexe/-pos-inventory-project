@@ -13,7 +13,7 @@ import '../../styles/settings-staff.css';
 import '../../styles/settings-receipt.css';
 import '../../styles/settings-activity.css';
 
-export default function Settings({ user, onSessionExpired }) {
+export default function Settings({ user }) {
   const [activeTab, setActiveTab] = useState('profile');
 
   const {
@@ -30,7 +30,7 @@ export default function Settings({ user, onSessionExpired }) {
     handleToggleStaffStatus,
     handleDeleteStaffMember,
     handleApplyThresholdToAll,
-  } = useSettingsData(user, onSessionExpired);
+  } = useSettingsData(user);
 
   return (
     <div className="settings-page">

@@ -1,7 +1,6 @@
 import { useState, useMemo } from 'react';
 import Icon from '../ui/Icon';
 import ProductThumbnail from '../ui/ProductThumbnail';
-import { formatMoney } from '../../utils/dashboardStats';
 import '../../styles/restock-invoice-modal.css';
 
 export default function MultiProductRestock({
@@ -51,11 +50,6 @@ export default function MultiProductRestock({
   }
 
   const totalUnits = batchItems.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
-  const totalCostEstimate = batchItems.reduce((sum, item) => {
-    const cost = Number(item.product.cost_price) || Number(item.product.sell_price) * 0.7 || 0;
-    return sum + cost * (Number(item.quantity) || 0);
-  }, 0);
-
   function handleSubmit(e) {
     e.preventDefault();
     if (batchItems.length === 0) return;

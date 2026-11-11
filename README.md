@@ -1,6 +1,6 @@
 # CWG Retail Suite — Point of Sale & Inventory Management
 
-> An enterprise-grade, high-performance retail management system purpose-built for fast-paced provisions and retail stores in Nigeria. Replaces paper records with real-time transactional checkout, automated inventory tracking, low-stock warnings, and visual business intelligence.
+Point of sale and inventory management for retail stores in Nigeria, with transactional checkout, stock tracking, staff roles, and sales reports.
 
 ---
 
@@ -9,7 +9,7 @@
 ```
 cwg-retail-suite/
 ├── backend/          # Laravel 12.69 API • PHP 8.2 • MySQL • Sanctum Auth • Pest/PHPUnit
-├── frontend/         # React 19 SPA • Vite 8 • Modular Dark Theme UI (<300 lines/file)
+├── frontend/         # React SPA • Vite • responsive interface
 ├── docs/             # Technical Specifications & Architecture
 │   ├── api-contract.md  # Exhaustive API endpoint contracts & payloads
 │   ├── erd.md           # Database entity-relationship documentation
@@ -20,7 +20,7 @@ cwg-retail-suite/
 ```
 
 ### Technology Highlights
-- **Backend:** Laravel 12 API, PHP 8.2, MySQL 8, Laravel Sanctum token auth, Pest / PHPUnit test suite.
+- **Backend:** Laravel 12 API, PHP 8.2, MySQL/MariaDB, Laravel Sanctum token auth, Pest / PHPUnit test suite.
 - **Frontend:** React 19, Vite 8, Vanilla CSS modern dark-theme tokens, Custom SVG visual charts.
 - **Transactional Integrity:** Row-level locking (`SELECT ... FOR UPDATE`) guarantees zero over-selling during concurrent checkouts.
 - **Localized for Nigeria:** Native support for Nigerian Naira (`₦`), realistic product pack types (`bag`, `tin`, `carton`, `pack`, `bottle`), and commercial VAT 7.5% thermal receipt breakdown.
@@ -109,7 +109,7 @@ php artisan key:generate
 # DB_USERNAME=root
 # DB_PASSWORD=
 
-php artisan migrate:fresh --seed
+php artisan migrate --seed
 php artisan storage:link
 php artisan serve --port=8000
 ```
@@ -120,18 +120,19 @@ cd frontend
 npm install
 npm run dev
 ```
-The application opens at `http://localhost:5173`.
+Open the Local URL printed by Vite (usually `http://localhost:5173`).
 
 ### Frontend Architecture & Admin Layer
 - **Admin Separation:** Admin-only views (`Reports`, `Settings`, `Restock`) are isolated in `frontend/src/pages/admin/`, providing a clean architectural boundary between general staff flows and administrative controls.
 - **Audit & Activity Tracking:** Comprehensive staff activity logging accessible in both Settings and User Reports with per-staff member filtering.
 - **Modern Dialogs:** SweetAlert2 integration styled to match dark and light themes, completely replacing legacy browser dialogs.
-- **Frontend Standard:** 100% of `.jsx`, `.js`, and `.css` files are strictly **under 300 lines**.
 
-### Default Seeded User Credentials
+### Local Development Seeded Accounts
 - **Owner Account:** `owner@cwgretail.com` / `password`
 - **Manager Account:** `manager@cwgretail.com` / `password`
 - **Cashier Account:** `cashier@cwgretail.com` / `password`
+
+These credentials are for local development only. Replace seeded passwords before any real deployment.
 
 ---
 
@@ -142,7 +143,7 @@ The application opens at `http://localhost:5173`.
   cd backend
   php artisan test
   ```
-  Result: **69 passed tests (211 assertions)** covering authentication, role middleware, concurrency, stock adjustments, cashier data isolation, sales reports, and multi-browser store settings persistence.
+  Last verified in this workspace: **72 passed tests (225 assertions)** after clearing stale Laravel configuration and route caches.
 
 - **Frontend Quality & Build:**
   ```bash
@@ -150,15 +151,20 @@ The application opens at `http://localhost:5173`.
   npm run lint
   npm run build
   ```
-  Result: **0 lint errors**, clean Vite production build in under 1 second.
-  **Modularity Standard:** 100% of `.jsx`, `.js`, and `.css` files are strictly **under 300 lines**.
+  Lint checks unused variables, hooks, and refresh boundaries. The project's effect-based data loading uses an explicit exception for `react-hooks/set-state-in-effect`.
 
 ---
 
 ## 6. Technical Documentation Index
 
+### Build the SIWES report
+
+The editable source is `INDUSTRIAL_TRAINING_TECHNICAL_REPORT.md`. On Windows, install the export tools with `python -m pip install python-docx reportlab pillow`, then run `python build_siwes_report.py` from the project root. This refreshes the `.docx` and `.pdf` files. Add your own approved photographs or screenshots to the labelled image spaces and confirm the exact training end date and supervisor names before submission. The two reference PDFs are examples of format and presentation; their author details and activities are not part of this report.
+
 - [`docs.md`](docs.md) — Comprehensive Architecture & Engineering Guide.
 - [`docs/api-contract.md`](docs/api-contract.md) — Complete REST API contract specification for all 16 endpoints.
 - [`docs/erd.md`](docs/erd.md) — Entity-Relationship Diagram and database schema specifications.
 - [`HANDOVER_PLAN.md`](HANDOVER_PLAN.md) — Detailed milestone tracking and developer handover plan.
-- [`INDUSTRIAL_TRAINING_TECHNICAL_REPORT.md`](INDUSTRIAL_TRAINING_TECHNICAL_REPORT.md) — Complete academic Industrial Training / SIWES technical report.
+- [`INDUSTRIAL_TRAINING_TECHNICAL_REPORT.md`](INDUSTRIAL_TRAINING_TECHNICAL_REPORT.md) — Editable source for the SIWES technical report.
+- [`INDUSTRIAL_TRAINING_TECHNICAL_REPORT.docx`](INDUSTRIAL_TRAINING_TECHNICAL_REPORT.docx) and [`INDUSTRIAL_TRAINING_TECHNICAL_REPORT.pdf`](INDUSTRIAL_TRAINING_TECHNICAL_REPORT.pdf) — Generated report versions with labelled image spaces.
+- [`docs/database-recovery.md`](docs/database-recovery.md) — MySQL backup, restore rehearsal, and faster dashboard reads.

@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Icon from '../../components/ui/Icon';
-import ReportsHeader, { RANGE_OPTIONS, REPORT_TABS } from '../../components/reports/ReportsHeader';
+import ReportsHeader from '../../components/reports/ReportsHeader';
+import { RANGE_OPTIONS, REPORT_TABS } from '../../components/reports/reportOptions';
 import SalesReportTab from '../../components/reports/SalesReportTab';
 import InventoryReportTab from '../../components/reports/InventoryReportTab';
 import StockLevelReportTab from '../../components/reports/StockLevelReportTab';
@@ -26,6 +27,7 @@ export default function Reports({ user, onSessionExpired }) {
   const [staff, setStaff] = useState([]);
   const [adjustments, setAdjustments] = useState([]);
   const [reportSummary, setReportSummary] = useState(null);
+  const [salesTruncated, setSalesTruncated] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const isManagement = ['owner', 'manager'].includes(user?.role);
@@ -54,10 +56,14 @@ export default function Reports({ user, onSessionExpired }) {
       ]);
 
       if (summaryRes.status === 'fulfilled' && summaryRes.value?.summary) {
-        setReportSummary(summaryRes.value.summary);
+        setReportSummary({
+          ...summaryRes.value.summary,
+          payment_breakdown: summaryRes.value.payment_breakdown,
+        });
       }
       if (salesRes.status === 'fulfilled' && Array.isArray(salesRes.value?.sales)) {
         setRawSales(salesRes.value.sales);
+        setSalesTruncated(salesRes.value.truncated);
       }
       if (prodsRes.status === 'fulfilled' && Array.isArray(prodsRes.value)) {
         setProducts(prodsRes.value);
@@ -100,7 +106,7 @@ export default function Reports({ user, onSessionExpired }) {
 
     return {
       revenue: reportSummary?.total_revenue && reportSummary.total_revenue > 0 ? reportSummary.total_revenue : totalRev,
-      grossProfit: Math.round((reportSummary?.total_revenue || totalRev) * 0.32),
+      grossProfit: null,
       transactions: reportSummary?.total_sales && reportSummary.total_sales > 0 ? reportSummary.total_sales : transCount,
       averageBasket: reportSummary?.average_sale_value && reportSummary.average_sale_value > 0 ? reportSummary.average_sale_value : avgBasket,
       unitsSold,
@@ -201,6 +207,13 @@ export default function Reports({ user, onSessionExpired }) {
         onExportCsv={handleExportCsv}
         onExportPdf={handleExportPdf}
       />
+
+      {salesTruncated && (
+        <div className="reports-alert" role="status">
+          Charts, product rankings, and units sold use only the latest 500 sales in this period.
+          Revenue, transaction count, and payment totals come from the complete server summary.
+        </div>
+      )}
 
       {loading ? (
         <div className="reports-loading-state">

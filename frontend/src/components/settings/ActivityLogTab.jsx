@@ -65,7 +65,7 @@ export default function ActivityLogTab({ activityLog = [], staff = [] }) {
 
       return true;
     });
-  }, [activityLog, categoryFilter, timeFilter, search, currentTime]);
+  }, [activityLog, categoryFilter, staffFilter, timeFilter, search, currentTime]);
 
   function getCategoryIcon(cat) {
     switch (cat) {

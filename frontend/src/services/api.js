@@ -95,6 +95,10 @@ export async function getCurrentUser() {
   return apiRequest('/user');
 }
 
+export async function getDashboard(period = '7d') {
+  return apiRequest(`/dashboard?period=${encodeURIComponent(period)}`);
+}
+
 export async function getProducts() {
   const data = await apiRequest('/products');
   return Array.isArray(data) ? data : data.products || [];
@@ -183,7 +187,7 @@ export async function getSalesInRange({ from, to } = {}) {
   return {
     sales,
     total: Number(res.total) || sales.length,
-    truncated: false,
+    truncated: Number(res.total) > sales.length,
   };
 }
 

@@ -153,10 +153,11 @@ class SaleController extends Controller
         }
 
         if ($request->boolean('all')) {
+            $total = (clone $query)->count();
             $sales = $query->latest()->limit(500)->get();
             return response()->json([
                 'data' => $sales,
-                'total' => $sales->count(),
+                'total' => $total,
                 'current_page' => 1,
                 'last_page' => 1,
             ]);

@@ -1,13 +1,9 @@
 import { useEffect, useState } from 'react';
-import { ApiError, getProducts, getSalesInRange, getSalesReport } from '../services/api';
+import { ApiError, getDashboard } from '../services/api';
 import {
   buildActivity,
-  buildChartPoints,
-  buildLowStock,
-  buildTopProducts,
-  formatDateYmd,
-  shiftDateYmd,
-  summarizeSales,
+  buildDashboardChartPoints,
+  formatMoney,
 } from '../utils/dashboardStats';
 
 const EMPTY_STATE = {
@@ -21,121 +17,88 @@ const EMPTY_STATE = {
   productsError: '',
 };
 
-const valueOf = (result, fallback) =>
-  result?.status === 'fulfilled' ? result.value : fallback;
-
-function reportSummary(result) {
-  if (result?.status !== 'fulfilled') return null;
-  const s = result.value.summary;
-  return { count: s.total_sales, revenue: s.total_revenue, average: s.average_sale_value };
-}
-
-/**
- * useDashboardData — loads products + sales for the dashboard and
- * shapes them into widget-ready data. Owners also get server report totals.
- */
-export default function useDashboardData({ isOwner, period, onSessionExpired }) {
+export default function useDashboardData({ period, onSessionExpired }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(EMPTY_STATE);
 
   useEffect(() => {
     let cancelled = false;
 
-    async function load(isSilent = false) {
-      if (!isSilent) setLoading(true);
+    async function load(silent = false) {
+      if (!silent) setLoading(true);
 
-      const today = formatDateYmd(new Date());
-      const dayCount = period === '7d' ? 7 : 30;
-      const from = shiftDateYmd(today, -(dayCount - 1));
+      try {
+        const response = await getDashboard(period);
+        if (cancelled) return;
 
-      const tasks = [
-        getProducts(),
-        getSalesInRange({ from: today, to: today }),
-        getSalesInRange({ from, to: today }),
-      ];
-      if (isOwner) {
-        tasks.push(getSalesReport({ from: today, to: today }));
-        tasks.push(getSalesReport({ from, to: today }));
+        const lowStock = response.low_stock.map(product => ({
+          id: product.id,
+          name: product.name,
+          qty: Number(product.quantity),
+          reorder: Number(product.reorder_threshold),
+          status: Number(product.quantity) <= 0 ? 'out' : 'low',
+        }));
+        const points = buildDashboardChartPoints(
+          response.daily_sales,
+          response.period.from,
+          response.period.to
+        );
+        const totalRevenue = points.reduce((sum, point) => sum + point.value, 0);
+
+        setData({
+          todayMetrics: response.today,
+          trend: {
+            totalRevenue,
+            dailyAverage: totalRevenue / response.period.days,
+            points,
+            truncated: false,
+          },
+          activity: buildActivity({ sales: response.recent_sales, lowStock }),
+          topProducts: response.top_products.map((product, index) => ({
+            id: product.product_id,
+            name: product.name || `Product #${product.product_id}`,
+            sku: product.sku || '—',
+            units: Number(product.units),
+            rank: index + 1,
+            amount: formatMoney(product.revenue),
+          })),
+          lowStock,
+          error: '',
+          salesError: '',
+          productsError: '',
+        });
+      } catch (error) {
+        if (cancelled) return;
+        if (error instanceof ApiError && error.status === 401) {
+          onSessionExpired?.();
+          return;
+        }
+        const message = error.message || 'Could not load dashboard data.';
+        setData(previous => ({
+          ...previous,
+          error: message,
+          salesError: message,
+          productsError: message,
+        }));
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-
-      const results = await Promise.allSettled(tasks);
-      if (cancelled) return;
-
-      const expired = results.some(
-        r => r.status === 'rejected' && r.reason instanceof ApiError && r.reason.status === 401
-      );
-      if (expired) {
-        onSessionExpired?.();
-        return;
-      }
-
-      const [productsRes, todayRes, rangeRes, todayReport, rangeReport] = results;
-      const products = valueOf(productsRes, []);
-      const todaySales = valueOf(todayRes, { sales: [] }).sales;
-      const range = valueOf(rangeRes, { sales: [], truncated: false });
-
-      const serverToday = isOwner ? reportSummary(todayReport) : null;
-      const todayMetrics = (serverToday && serverToday.count > 0)
-        ? serverToday
-        : summarizeSales(todaySales);
-
-      const serverRange = isOwner ? reportSummary(rangeReport) : null;
-      const rangeSummary = (serverRange && serverRange.count > 0)
-        ? serverRange
-        : summarizeSales(range.sales);
-
-      const lowStock = buildLowStock(products);
-      const allFailed = [productsRes, todayRes, rangeRes].every(r => r.status === 'rejected');
-
-      setData({
-        todayMetrics,
-        trend: {
-          totalRevenue: rangeSummary.revenue,
-          dailyAverage: Math.round((Number(rangeSummary.revenue) / dayCount) * 100) / 100,
-          points: buildChartPoints(range.sales, from, today),
-          truncated: range.truncated,
-        },
-        activity: buildActivity({ sales: range.sales, lowStock }),
-        topProducts: buildTopProducts(range.sales),
-        lowStock,
-        error: allFailed ? 'Could not load dashboard data. Check that Laravel is running.' : '',
-        salesError:
-          todayRes.status === 'rejected' && rangeRes.status === 'rejected'
-            ? todayRes.reason?.message || 'Could not load sales.'
-            : '',
-        productsError:
-          productsRes.status === 'rejected'
-            ? productsRes.reason?.message || 'Could not load products.'
-            : '',
-      });
-      setLoading(false);
     }
 
-    load().catch(err => {
-      if (cancelled) return;
-      if (err instanceof ApiError && err.status === 401) {
-        onSessionExpired?.();
-        return;
-      }
-      setData(prev => ({ ...prev, error: err.message || 'Could not load dashboard data.' }));
-      setLoading(false);
-    });
-
-    const intervalId = setInterval(() => {
-      load(true).catch(() => {});
-    }, 12000);
-
-    function handleWindowFocus() {
-      load(true).catch(() => {});
+    function handleFocus() {
+      load(true);
     }
-    window.addEventListener('focus', handleWindowFocus);
+
+    load();
+    const intervalId = setInterval(() => load(true), 60000);
+    window.addEventListener('focus', handleFocus);
 
     return () => {
       cancelled = true;
       clearInterval(intervalId);
-      window.removeEventListener('focus', handleWindowFocus);
+      window.removeEventListener('focus', handleFocus);
     };
-  }, [isOwner, onSessionExpired, period]);
+  }, [onSessionExpired, period]);
 
   return { loading, ...data };
 }

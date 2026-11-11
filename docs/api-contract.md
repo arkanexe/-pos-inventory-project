@@ -3,7 +3,7 @@
 > **API Base URL:** `http://localhost:8000/api` (Local) / `/api`  
 > **Authentication:** Bearer Token via Laravel Sanctum  
 > **Data Format:** `application/json` (Multipart for photo uploads)  
-> **Current Version:** v1.2 (October 2026)
+> **Current Version:** v1.3 (November 2026)
 
 ---
 
@@ -394,7 +394,7 @@ Lists historical sales transactions with pagination and filters. Cashiers only r
 
 - **Query Params:**
   - `page`: Page number (default: `1`)
-  - `payment_method`: Filter by `cash`, `card`, `transfer`
+  - `payment_method`: Filter by `cash`, `card`, `bank_transfer`
   - `from`: Start date `YYYY-MM-DD`
   - `to`: End date `YYYY-MM-DD`
 - **Response (200 OK):** Standard Laravel paginated collection with `data`, `current_page`, `last_page`, `total`.
@@ -420,25 +420,30 @@ Returns high-level business intelligence metrics and payment method distribution
 {
   "summary": {
     "total_sales": 18,
-    "total_revenue": "222550.00",
-    "average_sale_value": "12363.88"
+    "total_revenue": 222550,
+    "average_sale_value": 12363.88
   },
   "payment_breakdown": [
     {
       "payment_method": "cash",
-      "count": 10,
-      "total": "125000.00"
+      "transactions": 10,
+      "revenue": 125000
     },
     {
       "payment_method": "card",
-      "count": 5,
-      "total": "62550.00"
+      "transactions": 5,
+      "revenue": 62550
     },
     {
-      "payment_method": "transfer",
-      "count": 3,
-      "total": "35000.00"
+      "payment_method": "bank_transfer",
+      "transactions": 3,
+      "revenue": 35000
     }
   ]
 }
 ```
+---
+
+## 6. Dashboard summary
+
+`GET /api/dashboard?period=7d` (or `30d`) requires a Sanctum bearer token. It returns `today` (`count`, `revenue`, `average`), `period` (`days`, `from`, `to`), `daily_sales`, `top_products` (maximum five), `recent_sales` (maximum six), and `low_stock`. Cashiers receive only their own sales figures; owners and managers receive store-wide figures. The response is designed for the dashboard and does not replace paginated sales history or the owner report endpoint.

@@ -8,13 +8,12 @@ import {
 } from '../../services/api';
 import {
   DEFAULT_PROFILE,
-  DEFAULT_STAFF,
   DEFAULT_PREFERENCES,
   DEFAULT_RECEIPT_CONFIG,
   INITIAL_ACTIVITY_LOG,
 } from './settingsData';
 
-export function useSettingsData(user, onSessionExpired) {
+export function useSettingsData(user) {
   const [toastMsg, setToastMsg] = useState('');
 
   const [profile, setProfile] = useState(() => {

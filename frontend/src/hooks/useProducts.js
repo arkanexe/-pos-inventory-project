@@ -35,7 +35,6 @@ export default function useProducts({ onSessionExpired } = {}) {
   }, [onSessionExpired]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     reload();
   }, [reload]);
 

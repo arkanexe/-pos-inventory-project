@@ -85,6 +85,22 @@ export function buildChartPoints(sales, from, to) {
   });
 }
 
+export function buildDashboardChartPoints(dailySales, from, to) {
+  const totals = new Map(dailySales.map(day => [day.day, day]));
+
+  return eachDateYmd(from, to).map(day => {
+    const [year, month, date] = day.split('-').map(Number);
+    return {
+      day: chartLabel(day),
+      fullDate: new Date(year, month - 1, date).toLocaleDateString('en-GB', {
+        weekday: 'short', day: 'numeric', month: 'short',
+      }),
+      value: Number(totals.get(day)?.revenue) || 0,
+      count: Number(totals.get(day)?.count) || 0,
+    };
+  });
+}
+
 export function buildTopProducts(sales, limit = 5) {
   const ranked = new Map();
 

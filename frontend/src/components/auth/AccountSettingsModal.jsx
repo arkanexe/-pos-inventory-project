@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { updateUserProfile, changePassword } from '../../services/api';
-import Icon from '../ui/Icon';
 
 export default function AccountSettingsModal({ user, isOpen, onClose, onUserUpdated }) {
   const [name, setName] = useState(user?.name || '');
