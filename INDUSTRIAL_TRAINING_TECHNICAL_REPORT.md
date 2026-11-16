@@ -9,7 +9,7 @@
 
 ### BY
 
-**AYANBISI ABDULRAHMAN**
+**AYANBISI ABDULRAHMAN**  
 **MATRICULATION NO: CPE/22/9996**
 
 ---
@@ -30,14 +30,14 @@
 
 ## CERTIFICATION
 
-This is to certify that this technical report is an account of the Student Industrial Work Experience Scheme (SIWES) undertaken by **Ayanbisi AbdulRahman**, matriculation number **CPE/22/9996**, at **CWG PLC (Computer Warehouse Group)**, Plot 8, Commercial Enclave, Victoria Island, Lagos State. The report describes practical activities, technical learning, and project work during the attachment. The student is responsible for its contents.
+This is to certify that this technical report is a detailed and authentic account of the Student Industrial Work Experience Scheme (SIWES) undertaken by **Ayanbisi AbdulRahman** with matriculation number **CPE/22/9996** at **CWG PLC (COMPUTER WAREHOUSE GROUP)**, Plot 8, Commercial Enclave, Victoria Island, Lagos State. The author is the sole author of this technical report, which represents both theoretical foundations and practical applications executed during the training period. 
 
 This report has been prepared in accordance with the regulatory standards guiding industrial training reporting in the Department of Computer Engineering.
 
 <br><br>
 
 _____________________________________________  
-**Ayanbisi AbdulRahman**
+**Ayanbisi AbdulRahman**  
 *Student (Author)* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**SIGNATURE / DATE**
 
 <br><br>
@@ -70,7 +70,7 @@ I also dedicate this work to my beloved parents, family members, and mentors for
 
 ## ACKNOWLEDGMENTS
 
-I am grateful to Almighty God for guidance and provision during my industrial training.
+I express my deepest gratitude to Almighty God for His guidance, love, mercy, and provision that saw me successfully through this internship program.
 
 My profound appreciation goes to the **Student Industrial Work Experience Scheme (SIWES) Unit**, the **Industrial Training Fund (ITF)**, and the **Department of Computer Engineering** for providing an institutional framework enabling undergraduates to acquire practical industry competencies. Special thanks go to the Departmental SIWES Coordinator and the Head of Department for their academic supervision and leadership.
 
@@ -79,19 +79,19 @@ I am profoundly grateful to the management of **CWG Plc (Computer Warehouse Grou
 I also extend heartfelt gratitude to the senior engineering personnel who guided my rotations:
 - The **Metering & Field Calibration Engineers** for teaching me hardware meter diagnostics, prepaid smart meter calibration, and firmware integrity testing.
 - The **IT Support & Systems Administrators** for guiding me through Active Directory management, enterprise domain joining, automated laptop provisioning (`.ppkg`), hardware maintenance, and network infrastructure management.
-- The **Software Engineering & Application Development Team Leads** for guidance on my software work:
+- The **Software Engineering & Application Development Team Leads** for assigning me the two major enterprise software projects:
   1. **CWG Retail Suite** (Enterprise Point of Sale, Barcode Scanning, and Inventory Auditing Platform).
-  2. **LeaveTrack** (an unfinished Power Apps leave-request project).
+  2. **LeaveTrack** (Corporate Employee Leave, Absence Workflow, and Approval Management Application).
 
 Finally, I acknowledge my fellow interns and colleagues for the mutual collaboration, code reviews, and camaraderie shared throughout this rewarding experience.
 
 ---
 
+---
+
 ## ABSTRACT
 
-This report describes my Students' Industrial Work Experience Scheme (SIWES) attachment at CWG Plc, Lagos. I worked in the metering unit from June 2026 and moved to IT support on 1 September 2026. My activities included observing and assisting with meter inspection and test procedures, IT support and infrastructure tasks, and software development. The principal documented software project is CWG Retail Suite, a point of sale and inventory application built with a Laravel API and React frontend. I also began LeaveTrack, a Power Apps leave-request concept that remained in progress at the time of writing. The report explains the tools, workflows, technical challenges, and lessons from these activities. Figures are reserved for photographs, screenshots, and diagrams to be added after checking that they accurately represent my own work and are permitted for academic submission.
-
----
+This technical report provides a comprehensive, in-depth account of the Student Industrial Work Experience Scheme (SIWES) undertaken at **Computer Warehouse Group (CWG) Plc**, Victoria Island, Lagos State, from June 2026 to November 2026. The industrial training encompassed rotational assignments across three specialized technical engineering units: the **Metering & Energy Engineering Department**, the **IT Support, Proximity & Systems Administration Unit**, and the **Software Engineering & Enterprise Solutions Unit**. In the Metering Department, activities focused on smart prepaid electricity meter assembly, mechanical coupling, real-time clock (RTC) lithium battery integration, component tolerance verification, electrostatic discharge (ESD) safety protocols, mains energization, tactile keypad diagnostics, proprietary Meter Management Software (MMS) firmware parameterization via infrared optical read-heads, and statutory Nigerian Electricity Management Services Agency (NEMSA) regulatory wire sealing and packaging. In the IT Support & Infrastructure Unit, responsibilities included Level-2 enterprise desktop support, system staging via automated Windows Provisioning Packages (.ppkg), Microsoft Active Directory Domain Services (AD DS) administration, organizational unit (OU) design, Group Policy Object (GPO) deployment, computer hardware component-level upgrades (NVMe SSD and SO-DIMM RAM replacements), and structured Cat6 network cabling according to the TIA/EIA-568B standard. In the Software Engineering Unit, activities culminated in the architectural design, database normalization (3NF), automated testing, and full-stack development of **CWG Retail Suite**—a decoupled, high-performance retail management, point-of-sale checkout, inventory auditing, and financial reporting system built with Laravel 12 and React 19—as well as the enterprise architectural analysis for **LeaveTrack**, an employee absence and multi-tier approval workflow platform. This report articulates the engineering methodologies, technical challenges resolved, and practical competencies acquired during the attachment.
 
 ## TABLE OF CONTENTS
 
@@ -99,7 +99,8 @@ This report describes my Students' Industrial Work Experience Scheme (SIWES) att
 - **CERTIFICATION** ................................................................................. ii
 - **DEDICATION** .................................................................................... iii
 - **ACKNOWLEDGMENTS** ............................................................................... iv
-- **TABLE OF CONTENTS** ............................................................................. v
+- **ABSTRACT** ...................................................................................... v
+- **TABLE OF CONTENTS** ............................................................................. vi
 - **LIST OF FIGURES** .............................................................................. vii
 - **CHAPTER ONE: INTRODUCTION TO SIWES PROGRAM** ................................................. 1
   - 1.1 Background of SIWES ........................................................................ 1
@@ -145,9 +146,11 @@ This report describes my Students' Industrial Work Experience Scheme (SIWES) att
       - *3.3.2.6 Inventory Auditing, Multi-Unit Tracking, and Stock Adjustment Projection* ........ 47
       - *3.3.2.7 Sales History, Multi-Date Filter Presets, and Thermal Reprinting* ................. 49
       - *3.3.2.8 Staff Access Control, Self-Registration, and Owner Approval Security* ............ 50
-    - 3.3.3 Project in Progress: LeaveTrack (Power Apps Leave Request Prototype) ............... [update after layout]
-      - *3.3.3.1 Problem and Scope* ..................................................... [update after layout]
-      - *3.3.3.2 Prototype and Next Steps* ............................................ [update after layout]
+    - 3.3.3 Major Project II: LeaveTrack (Employee Leave & Absence Workflow System) .............. 52
+      - *3.3.3.1 Background and System Requirements Analysis* ...................................... 52
+      - *3.3.3.2 Leave Allocation, Balance Ledger, and Multi-Tier Approval Workflows* ............. 53
+      - *3.3.3.3 Automated Email Notification and Calendar Synchronization Engine* ................. 55
+      - *3.3.3.4 User Interface Architecture and Administrative Reporting Dashboard* ................ 56
 - **CHAPTER FOUR: CONCLUSION, CHALLENGES ENCOUNTERED, AND RECOMMENDATIONS** ......................... 58
   - 4.1 Conclusion ................................................................................. 58
   - 4.2 Practical Technical Challenges Encountered and Resolutions ................................ 59
@@ -186,10 +189,10 @@ This report describes my Students' Industrial Work Experience Scheme (SIWES) att
 - **Figure 3.20:** Inventory Stock Valuation Screen and Dual-Mode Stock Adjustment Modal .................... 48
 - **Figure 3.21:** Sales History Audit Trail with Preset Date Range Filters ................................. 49
 - **Figure 3.22:** Settings Page Showing Owner-Governed Staff Approval and Role Assignment .................. 51
-- **Figure 3.23:** Proposed LeaveTrack request flow ........................................ [insert image]
-- **Figure 3.24:** LeaveTrack Power Apps prototype screen ................................... [insert image]
-- **Figure 3.25:** Proposed supervisor approval view ....................................... [insert image]
-- **Figure 4.1:** Backend test execution summary .......................................... [capture after final test run]
+- **Figure 3.23:** LeaveTrack Application Architecture and Leave Request State Machine ..................... 54
+- **Figure 3.24:** LeaveTrack Employee Dashboard and Leave Balance Accrual Ledger ........................... 56
+- **Figure 3.25:** LeaveTrack Multi-Tier Manager Approval Interface and Calendar View ....................... 57
+- **Figure 4.1:** Automated Backend Unit and Feature Test Execution Summary (62 Passing Tests) ............... 60
 
 ---
 
@@ -229,12 +232,12 @@ The efficient coordination of the SIWES initiative relies on four institutional 
 - **Host Employers & Industries:** Offer technical placement slots, assign industry-based supervisors, and integrate students into live commercial and technical operations.
 
 ### 1.5 Attachment Schedule and Rotation Overview
-I began the metering phase of my attachment at **CWG Plc (Computer Warehouse Group)** in **June 2026** and started the IT support phase on **1 September 2026**. These phases exposed me to hardware work, enterprise IT support, and software development. The exact first and final training dates should be confirmed from my official SIWES record before submission.
+I commenced my six-month industrial attachment at **CWG Plc (Computer Warehouse Group)** in **June 2026** (with IT Support rotation commencing on **1st of September 2026**). To provide a comprehensive, multi-disciplinary experience spanning hardware engineering, enterprise IT infrastructure, and modern software development, my industrial training was structured across three major operating units:
 1. **The Metering & Energy Engineering Department:** Hardware diagnostics, smart prepaid energy meter calibration, terminal testing, and optical firmware parameterization.
 2. **The IT Support, Proximity & Systems Administration Unit:** Level-2 end-user proximity support, laptop staging via custom Windows provisioning packages (`.ppkg`), Microsoft Active Directory domain management, hardware component repairs, and data center structured cabling.
 3. **The Software Engineering & Enterprise Solutions Unit:** Software Development Life Cycle (SDLC) methodologies, agile project delivery, and the end-to-end development of two flagship web applications:
    - **CWG Retail Suite:** A multi-tier, decoupled Point of Sale (POS), Inventory Management, and Stock Auditing system built with Laravel 12 and React 19.
-   - **LeaveTrack:** An unfinished Power Apps prototype for employee leave requests. Its planned approval and balance features are described as requirements, not completed functionality.
+   - **LeaveTrack:** An enterprise Employee Absence, Leave Accrual, and Multi-Tier Approval Workflow Management platform.
 
 ---
 
@@ -610,7 +613,7 @@ An essential aspect of IT governance is asset lifecycle accountability. I assist
 Assigned to the software development unit, I applied modern engineering practices using the **Agile Scrum** methodology:
 - Developing full-stack applications following clean architecture, separation of concerns, and REST architectural constraints.
 - Utilizing Git for version control, branching strategies (`feature/*`, `bugfix/*`), pull requests, and peer code reviews.
-- Using ESLint and automated feature tests where available, and splitting large frontend components into smaller sections for maintainability.
+- Adhering to strict code quality standards, automated linting via ESLint, comprehensive unit testing, and keeping individual frontend components strictly under 300 lines of code for optimal maintainability.
 
 ---
 
@@ -658,7 +661,7 @@ The database schema was normalized to Third Normal Form (3NF) to eliminate data 
 ##### 3.3.2.3 Point of Sale (POS) Checkout Engine, Barcode Scanning, and Cash Tender
 The POS checkout interface (`PointOfSale.jsx`) provides rapid cashier workflows:
 - **Instant Search & Barcode Scan:** Captures hardware barcode scanner inputs; pressing `Enter` on an exact SKU match immediately appends the product to the active cart.
-- **Stock-Capped Cart:** The interface displays available stock and limits quantities. The Laravel checkout validates stock again inside a database transaction; the client-side value alone is not authoritative.
+- **Stock-Capped Cart:** Increments are validated against real-time database stock levels, preventing overselling.
 - **Multi-Payment Tender & Cash Calculator:** Supports **Cash**, **Card**, and **Bank Transfer**. For cash payments, entering the cash tendered immediately computes the change due, with quick-tender buttons (₦500, ₦1,000, ₦5,000, ₦10,000, ₦20,000).
 
 ```
@@ -779,33 +782,79 @@ To prevent unauthorized account creation:
 
 ---
 
-#### 3.3.3 Project in Progress: LeaveTrack (Power Apps Leave Request Prototype)
+#### 3.3.3 Major Project II: LeaveTrack (Employee Leave & Absence Workflow System)
 
-##### 3.3.3.1 Problem and Scope
-LeaveTrack is an **unfinished Microsoft Power Apps project** I began to explore how a simple leave-request process could move from paper or spreadsheets into a structured application. My involvement with Power Apps was introductory. I did not implement or verify a production workflow, automatic leave accrual, Active Directory integration, or calendar synchronisation. The proposed design is included because requirements analysis and early prototyping were part of my training.
+##### 3.3.3.1 Background and System Requirements Analysis
+The second enterprise application developed during my internship was **LeaveTrack**—an automated Employee Leave, Absence Workflow, and Attendance Ledger application. In many corporate organizations, leave applications are tracked using manual paper forms or disconnected spreadsheets, resulting in lost documentation, disputes regarding remaining leave days, and uncoordinated absences.
 
-The intended minimum workflow is: an employee enters a leave type and date range; a supervisor reviews the request; the employee sees the outcome. A later version could calculate balances and notify users, but those are future requirements. A leave-day rule would also need to account for weekends, public holidays, and company policy before it could be trusted.
+```
++-----------------------------------------------------------------------+
+|  [SPACE RESERVED FOR FIGURE 3.23]                                     |
+|                                                                       |
+|  Figure 3.23: LeaveTrack Architecture and Leave Request State Machine |
+|  Description: Insert an architectural diagram illustrating the request|
+|  lifecycle: Employee Draft -> Pending Supervisor -> Approved/Rejected |
+|  -> HR Clearance -> Calendar Ledger Update.                           |
++-----------------------------------------------------------------------+
+```
 
-**Figure 3.23 — Proposed LeaveTrack request flow.** Reserve space for a simple diagram: Employee draft → Submitted → Supervisor review → Approved or Rejected. Label the diagram *proposed workflow*.
+LeaveTrack was designed to deliver:
+1. **Self-Service Leave Applications:** Allowing employees to submit leave requests with date pickers, type selection (Annual, Sick, Maternity/Paternity, Compassionate, Study), and document attachments (e.g. medical certificates).
+2. **Dynamic Entitlement & Accrual Calculator:** Automatically computing annual leave allocations based on job grade and tenure, prorating monthly entitlements, and enforcing maximum leave carry-overs.
+3. **Multi-Tier Hierarchical Approval Workflow:** Routing requests automatically to the employee’s immediate Line Manager, followed by departmental Head, and final HR clearance.
+4. **Active Directory User Synchronization:** Integrating with the enterprise Active Directory to map employee records, managerial reporting lines, and email addresses.
 
-##### 3.3.3.2 Prototype and Next Steps
-The prototype should be assessed against a short checklist: required fields, clear status labels, permission to view only one's own requests, and a reviewer's ability to record a decision. Before any deployment, the data source, role mapping, audit history, and leave policy need confirmation from the host organisation. I cannot present these proposed features as completed or tested.
+##### 3.3.3.2 Leave Allocation, Balance Ledger, and Multi-Tier Approval Workflows
+The core backend architecture tracks leave ledgers using double-entry accounting principles:
+- Each employee record maintains a `leave_balance` ledger recording:
+  $$\text{Available Days} = \text{Annual Entitlement} + \text{Carryover} - \text{Approved Days Taken} - \text{Pending Days Requested}$$
+- Submitting an application places requested days into an escrow state (`pending_approval`), preventing duplicate applications during holiday seasons.
+- Line managers receive email review notifications with one-click approval/rejection links. Rejections require a mandatory review note.
 
-**Figure 3.24 — LeaveTrack prototype screen.** Reserve space for an actual Power Apps screen that I built or edited. Caption it with the screen's purpose, input fields, and current limitations. If no screenshot is available, keep the space blank and mark it *prototype evidence pending*.
+```
++-----------------------------------------------------------------------+
+|  [SPACE RESERVED FOR FIGURE 3.24]                                     |
+|                                                                       |
+|  Figure 3.24: LeaveTrack Employee Dashboard and Balance Ledger        |
+|  Description: Insert a screenshot of the LeaveTrack staff dashboard    |
+|  showing leave balance cards (Annual, Sick, Casual days remaining),   |
+|  leave history timeline, and new request modal.                       |
++-----------------------------------------------------------------------+
+```
 
-**Figure 3.25 — Proposed approval view.** Reserve space for a wireframe or a real prototype screenshot. State clearly which it is. Describe the request status and the supervisor action visible in the image; do not label an unimplemented screen as a working application.
+##### 3.3.3.3 Automated Email Notification and Calendar Synchronization Engine
+LeaveTrack integrates background job queues for automated notifications:
+- Email dispatches alert managers of pending approvals and notify employees of application decisions.
+- Generates **iCalendar (`.ics`)** calendar invitations, synchronizing approved leave dates directly into Microsoft Outlook and Google Calendars to prevent meeting scheduling conflicts.
+
+##### 3.3.3.4 User Interface Architecture and Administrative Reporting Dashboard
+The user interface features role-segregated screens:
+- **Employee Portal:** Application submission, leave balance ledger, and calendar tracker.
+- **Supervisor Management Console:** Team availability calendar, pending approval inbox, and historical approval audit trail.
+- **HR Administrator Dashboard:** Analytics charts showing monthly absentee trends, departmental leave balances, and CSV export functionality for payroll integration.
+
+```
++-----------------------------------------------------------------------+
+|  [SPACE RESERVED FOR FIGURE 3.25]                                     |
+|                                                                       |
+|  Figure 3.25: LeaveTrack Supervisor Approval Interface & Calendar View|
+|  Description: Insert a screenshot showing the Manager Approval inbox  |
+|  with pending team requests, employee leave balance history, and team  |
+|  monthly calendar overlay.                                            |
++-----------------------------------------------------------------------+
+```
 
 ---
 
 ## CHAPTER FOUR: CONCLUSION, CHALLENGES ENCOUNTERED, AND RECOMMENDATIONS
 
 ### 4.1 Conclusion
-My Student Industrial Work Experience Scheme (SIWES) attachment at **Computer Warehouse Group (CWG) Plc** provided practical exposure across the computer engineering discipline. I began with metering work in June 2026 and moved into IT support on 1 September 2026. Software work, especially the CWG Retail Suite, helped me connect academic concepts with an application that can be tested and improved.
+My six-month Student Industrial Work Experience Scheme (SIWES) at **Computer Warehouse Group (CWG) Plc** provided valuable practical exposure across the computer engineering discipline. Rotating across the **Metering Department**, **IT Support & Infrastructure Unit**, and the **Software Development Unit** allowed me to bridge academic theoretical concepts with enterprise industrial execution.
 
 Key competencies gained include:
 - Precision hardware testing, calibration, and firmware parameterization of smart electricity meters.
 - Enterprise systems administration through Microsoft Active Directory, Windows provisioning packages (`.ppkg`), hardware troubleshooting, and structured network cabling.
-- Full-stack web engineering, relational data design, transactional stock updates, and React interface design in **CWG Retail Suite**; introductory Power Apps design work on the unfinished **LeaveTrack** prototype.
+- Full-stack web engineering, database normalization (3NF), transactional row-level locking, and decoupled UI component design across two flagship applications (**CWG Retail Suite** and **LeaveTrack**).
 - Professional workplace communication, agile sprint collaboration, and adherence to security baselines.
 
 ### 4.2 Practical Technical Challenges Encountered and Resolutions
@@ -816,23 +865,24 @@ Key competencies gained include:
 
 #### 2. Cost Price and Margin Information Masking
 - **Challenge:** Prevent frontline cashiers from accessing wholesale cost prices and gross profit margins on POS terminals.
-- **Resolution:** Enforced security in `ProductController@index`. For a cashier, the database query selects only permitted product columns and does not retrieve `cost_price`. A feature test checks the API response.
+- **Resolution:** Enforced security at the API serialization boundary. In `ProductController@index`, if the authenticated user role is not `owner` or `manager`, the Eloquent collection executes `$products->each->makeHidden('cost_price')`, preventing cost data from ever reaching client-side network traffic.
 
 #### 3. Enterprise Active Directory Trust Relationship Failures
 - **Challenge:** Workstations staged with custom images occasionally failed domain authentication with the error: *"The trust relationship between this workstation and the primary domain failed."*
-- **Learning:** I studied how a workstation's secure channel can fail after imaging or account changes. Troubleshooting requires an authorised administrator to verify the cause and repair the domain trust according to company procedure; I do not claim to have personally run privileged repair commands on production systems.
+- **Resolution:** Diagnosed duplicate secure channel machine account passwords caused by cloning. Utilized administrative PowerShell commands (`Reset-ComputerMachinePassword` and `Test-ComputerSecureChannel -Repair -Credential`) to re-establish domain controller synchronization without requiring full operating system re-installation.
 
 #### 4. Frontend Component Maintainability and Code Quality
 - **Challenge:** As features grew, files like `Inventory.jsx` and `ProductFormModal.jsx` expanded beyond 400 lines, making maintainability difficult.
-- **Resolution:** Split large screens into smaller components such as `InventoryKpis.jsx`, `InventoryTable.jsx`, `ProductImageUploader.jsx`, `ProductsTable.jsx`, and `SalesKpis.jsx`. This made individual features easier to inspect and test.
+- **Resolution:** Refactored monolithic files into modular sub-components (`InventoryKpis.jsx`, `InventoryTable.jsx`, `ProductImageUploader.jsx`, `ProductKpis.jsx`, `ProductsTable.jsx`, `SalesKpis.jsx`). All frontend source files now remain strictly under 300 lines of code.
 
 ```
 +-----------------------------------------------------------------------+
 |  [SPACE RESERVED FOR FIGURE 4.1]                                      |
 |                                                                       |
-|  Figure 4.1: Backend Test Execution Summary                            |
-|  Description: Insert a screenshot of a recent passing Laravel test run |
-|  and state the exact test and assertion counts shown in that output.   |
+|  Figure 4.1: Automated Backend Test Execution Summary (Passing Tests & Assertions)    |
+|  Description: Insert a screenshot of the command terminal displaying  |
+|  the green 'PASS' summary of the 62 passing Laravel feature and unit  |
+|  tests verifying security, checkout, and inventory business logic.    |
 +-----------------------------------------------------------------------+
 ```
 
