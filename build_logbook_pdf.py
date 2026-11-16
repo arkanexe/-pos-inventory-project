@@ -1,4 +1,5 @@
 # Comprehensive SIWES Logbook Generator with explicit "WORK DONE DURING THE WEEK" section
+# Incorporates all 12 operational weeks (Metering remainder + IT Support with SAP, M365, Network Printers & APs)
 import os, subprocess
 
 weeks_data = [
@@ -82,19 +83,44 @@ weeks_data = [
         "student_comment": "Learned the legal and technical necessity of statutory NEMSA verification for grid-connected metering equipment in Nigeria, and how multi-tier physical security seals deter meter tampering."
     },
 
-    # IT SUPPORT WEEKS (FROM SEP 14 TO PRESENT)
+    # IT SUPPORT WEEKS (FROM SEP 7 ONWARDS — ROTATION TO IT & BI)
     {
         "week_number": "Week 14 (IT Week 1)",
+        "period": "7th September 2026 – 11th September 2026",
+        "unit": "IT Support & Enterprise Systems",
+        "section": "IT & Business Innovation (IT & BI)",
+        "badge_class": "badge-itsupport",
+        "badge_text": "IT Support & Client Systems",
+        "job_done": "IT Department Orientation, Network Printer Setup with User PIN Security, Wireless APs & Environs, SAP GUI & M365 Setup",
+        "work_done_summary": "During my first full week in the IT & Business Innovation Department, I received orientation under Mrs. Abimbola and Mr. Moses Mornu and tackled core enterprise client systems. Work done included deploying and configuring departmental Multi-Function Network Printers (MFPs) over TCP/IP, configuring 'User Code Authentication' / Secure PIN passwords for staff on the printer web management console to prevent uncollected print wastage and safeguard sensitive payroll/financial prints, performing physical installation and coverage survey of enterprise Wireless Access Points (APs) taking into account environmental wall/pillar attenuation, installing the SAP GUI desktop client and configuring the SAP Logon Pad (Application Server, SID, System Number 00), and provisioning Microsoft 365 apps including Microsoft Teams, Outlook profile configuration with Exchange Online Autodiscover, and SharePoint Online document library sync.",
+        "days": [
+            ("Monday", "07/09/2026", "IT Departmental Orientation & Tool Handover", "Reported to IT & BI Department. Received briefing from Mrs. Abimbola and Team Lead Mr. Moses Mornu on corporate IT policy, ticketing SLAs, and proximity desk assignments."),
+            ("Tuesday", "08/09/2026", "Network Printer Setup & User PIN Authentication", "Configured enterprise Ricoh/HP Multi-Function Printers (MFPs) on the network (Port 9100 Raw); configured departmental User Code / PIN password authentication tables in the printer web interface and client driver preferences to enforce secure print release."),
+            ("Wednesday", "09/09/2026", "Wireless Access Points (APs) & Environs Survey", "Assisted in deploying ceiling-mount enterprise Access Points (APs); surveyed environmental physical obstructions (reinforced concrete walls, glass partitions), verified 802.3at PoE+ power from switchports, and tested 2.4 GHz vs 5 GHz coverage."),
+            ("Thursday", "10/09/2026", "SAP GUI Installation & Logon Pad Configuration", "Installed SAP GUI client on 6 finance workstations; configured SAP Logon Pad with server parameters (Application Server IP, System ID 'PRD', Instance '00'); performed connection tests and unlocked locked user accounts using transaction SU01."),
+            ("Friday", "11/09/2026", "Microsoft 365 (Teams, Outlook & SharePoint) Staging", "Configured Microsoft 365 collaboration apps for new staff: automated Outlook profile creation via Autodiscover, resolved cached Exchange mode settings, configured Microsoft Teams desktop client, and mapped departmental SharePoint Online document libraries.")
+        ],
+        "sketch_title": "Enterprise Secure Print Architecture & SAP / M365 Client Topology",
+        "sketch": """[User Laptop] ---> Prints Document with User PIN ---> [Network Print Server / MFP Port 9100]
+                                                            | (Job Held in Secure Memory)
+[Staff Physical Presence] ---> Enters User PIN at Printer Console ---> [Job Releases & Prints]
+
+[Corporate Desktop] ===> [SAP GUI / Logon Pad] ===> [SAP Application Server (PRD / Port 3200)]
+                    ===> [M365 Suite] ========> [Exchange Online / Teams / SharePoint Online]""",
+        "student_comment": "Gained tremendous practical insight into enterprise user security. Learned how User Code PIN accounting on network MFPs eliminates print waste and confidentiality breaches, and mastered SAP Logon Pad configuration."
+    },
+    {
+        "week_number": "Week 15 (IT Week 2)",
         "period": "14th September 2026 – 18th September 2026",
         "unit": "IT Support & Proximity Operations",
         "section": "Enterprise IT Infrastructure",
         "badge_class": "badge-itsupport",
         "badge_text": "IT Support & Proximity",
-        "job_done": "IT Proximity Helpdesk Orientation, Ticketing SLA Review & POS Retail Suite Architecture Kickoff",
-        "work_done_summary": "During this week in the IT Support & Proximity Unit, I commenced enterprise helpdesk operations and software project planning. Work done included participating in orientation on the IT Service Management (ITSM) ticketing tool and SLA escalation matrices, resolving 8 corporate desktop support tickets (printer spooler crashes, Microsoft 365 Outlook profile synching, and local IP mapping), participating in the software architecture kickoff meeting for the CWG Retail Suite (Point of Sale & Inventory), drafting the relational Entity-Relationship Diagram (ERD), scaffolding the Laravel 12 backend with Sanctum authentication, and setting up the Vite-powered React frontend repository on GitHub.",
+        "job_done": "IT Proximity Helpdesk Incident Resolution, Outlook OST Repair, Printer Spooler Troubleshooting & Retail Suite Architecture Kickoff",
+        "work_done_summary": "During this week in the IT Support & Proximity Unit, I resolved daily enterprise helpdesk incident tickets and initiated software project planning. Work done included participating in the review of the IT Service Management (ITSM) ticketing queue, resolving 12 corporate desktop support tickets (clearing corrupted local print spooler queues, resolving Outlook OST data file corruption by regenerating OST files in %localappdata%, re-authenticating Microsoft Authenticator MFA prompts, and fixing network drive mappings), participating in the software architecture kickoff meeting for the CWG Retail Suite (Point of Sale & Inventory), drafting the relational Entity-Relationship Diagram (ERD), scaffolding the Laravel 12 backend with Sanctum authentication, and setting up the Vite-powered React frontend repository on GitHub.",
         "days": [
-            ("Monday", "14/09/2026", "Proximity Unit Orientation & ITSM Workflow", "Reported to IT Support & Proximity Unit. Received orientation on enterprise IT service desk operations, SLA priority matrices (Severity 1 to 4), and incident ticketing platforms."),
-            ("Tuesday", "15/09/2026", "Corporate User Incident Handling", "Resolved 8 Level-1 user tickets: diagnosed corporate printer spooler crashes, configured local network shared printers, and assisted staff with Microsoft 365 Outlook profile sync."),
+            ("Monday", "14/09/2026", "Proximity Unit Orientation & ITSM Workflow", "Managed enterprise IT service desk incident queue. Handled Severity 3 user tickets covering application crashes, forgotten user PIN codes on printers, and Teams audio device routing."),
+            ("Tuesday", "15/09/2026", "Corporate User Incident Handling & Outlook OST Fix", "Resolved 8 Level-1 user tickets: diagnosed Windows print spooler crashes (`spoolsv.exe`), cleared queue in `System32\\spool\\printers`, and repaired corrupted Outlook `.ost` data files."),
             ("Wednesday", "16/09/2026", "CWG Retail Suite Architecture & ERD Review", "Participated in software development kickoff meeting for CWG Retail Suite (POS & Inventory). Reviewed system requirements and drafted relational Entity-Relationship Diagram (ERD)."),
             ("Thursday", "17/09/2026", "Laravel 12 API Scaffold & Sanctum Setup", "Installed Laravel 12 backend framework; configured Laravel Sanctum tokenized authentication and structured database connection parameters for MySQL in .env."),
             ("Friday", "18/09/2026", "Initial React Frontend Scaffolding & Git Tracking", "Scaffolded modern React frontend client using Vite; initialized Git version control repository on GitHub with branch protection rules.")
@@ -110,13 +136,13 @@ weeks_data = [
         "student_comment": "Gained clear perspective on enterprise helpdesk operations and corporate incident escalation. Successfully initialized the foundational full-stack decoupled architecture for CWG Retail Suite."
     },
     {
-        "week_number": "Week 15 (IT Week 2)",
+        "week_number": "Week 16 (IT Week 3)",
         "period": "21st September 2026 – 25th September 2026",
         "unit": "IT Support & Software Engineering",
         "section": "Infrastructure & Systems Development",
         "badge_class": "badge-software",
         "badge_text": "Software & IT Systems",
-        "job_done": "Enterprise VPN/MFA Support, Database Schema Normalization & Secure RESTful Authentication APIs",
+        "job_done": "Enterprise VPN/MFA Support, Database Schema Normalization & Hardware RAM/NVMe Upgrades",
         "work_done_summary": "During this week across IT Proximity and Software Development, I resolved enterprise user identity issues and developed core backend APIs. Work done included configuring secure remote VPN tunnels (Zscaler Private Access and Cisco AnyConnect) for remote executives, enrolling multi-factor authentication (MFA) devices via Microsoft Authenticator, designing and running normalized database migrations in Third Normal Form (3NF) for users, products, sales, and line items, writing tokenized authentication controllers using Bcrypt password hashing, and disassembling two corporate laptops to upgrade failing mechanical HDDs to high-speed 512GB M.2 NVMe SSDs.",
         "days": [
             ("Monday", "21/09/2026", "Remote VPN & MFA Configuration", "Assisted corporate staff with Zscaler / Cisco AnyConnect secure remote VPN configurations and registered Microsoft Authenticator Multi-Factor Authentication (MFA) tokens."),
@@ -141,31 +167,31 @@ weeks_data = [
         "student_comment": "Understood the practical intersection between hardware maintenance (SSD/RAM staging) and software data integrity (database normalization and token security)."
     },
     {
-        "week_number": "Week 16 (IT Week 3)",
+        "week_number": "Week 17 (IT Week 4)",
         "period": "28th September 2026 – 2nd October 2026",
         "unit": "IT Support & Network Infrastructure",
         "section": "Enterprise Networking & Workstation Maintenance",
         "badge_class": "badge-itsupport",
         "badge_text": "IT Support & Networking",
-        "job_done": "Structured Cabling, Patch Panel Termination & Network Continuity Diagnostics",
-        "work_done_summary": "During this week in the Network Infrastructure & Data Center Unit, I carried out structured cabling and local area network diagnostics. Work done included performing an audit of server rack patch panels on the 2nd floor, tracing unmanaged drop cables, terminating 12 new solid-copper Cat6 cables into 24-port patch panels following the TIA/EIA-568B pinout standard, conducting cable continuity and near-end crosstalk tests with an electronic wire tester, assisting Senior Engineers with switch port patching across departmental VLANs (VLAN 10 Admin, VLAN 20 Engineering), and deploying Aruba enterprise Wi-Fi access points to improve coverage in executive meeting spaces.",
+        "job_done": "Structured Cabling, Patch Panel Termination, Wireless AP RF Optimization & Printer User Code Audits",
+        "work_done_summary": "During this week in the Network Infrastructure & Facilities Unit, I carried out structured cabling, wireless access point optimization, and printer security audits. Work done included performing an audit of server rack patch panels on the 2nd floor, tracing unmanaged drop cables, terminating 12 new solid-copper Cat6 cables into 24-port patch panels following the TIA/EIA-568B pinout standard, conducting cable continuity and near-end crosstalk tests with an electronic wire tester, auditing network printer user code tables to remove decommissioned staff accounts, and surveying corporate Wi-Fi Access Points (APs) to adjust transmit power and reduce co-channel interference across office wings.",
         "days": [
-            ("Monday", "28/09/2026", "Data Center Patch Panel Audit", "Audited server rack patch panels on the 2nd floor data room; re-labeled Cat6a drop cables and documented port assignments to Cisco Catalyst 2960 switches."),
+            ("Monday", "28/09/2026", "Data Center Patch Panel Audit", "Audited server rack patch panels on the 2nd floor data room; re-labeled Cat6a drop cables and documented port assignments to distribution switches."),
             ("Tuesday", "29/09/2026", "Cat6 Structured Cabling & RJ-45 Crimping", "Terminated 12 new Cat6 solid copper patch cables according to the TIA/EIA-568B standard; verified pinout continuity, wire-map, and near-end crosstalk with digital cable tester."),
-            ("Wednesday", "30/09/2026", "Cisco Switch VLAN Patching & Trunking", "Assisted Senior Network Engineer in patching workstation ports to designated Departmental VLANs (VLAN 10: Admin, VLAN 20: Engineering, VLAN 30: Guest Wi-Fi)."),
+            ("Wednesday", "30/09/2026", "Departmental Switch Patching & Port Security", "Assisted Senior Network Engineer in patching workstation drops to departmental switch ports; verified link speed negotiation (1 Gbps) and audited printer static IP reservations."),
             ("Thursday", "01/10/2026", "Public Holiday: National Independence Day", "Statutory National Holiday (Nigeria Independence Day). Conducted scheduled remote server health checks and UPS power status monitoring."),
-            ("Friday", "02/10/2026", "Wireless Access Point (AP) Deployment", "Mounted and configured Aruba Enterprise Wi-Fi Access Points; measured RF signal coverage and resolved channel interference in the executive conference boardroom.")
+            ("Friday", "02/10/2026", "Wireless Access Point (AP) RF Optimization", "Surveyed corporate Wireless Access Points (APs); adjusted channel allocation (channels 1, 6, 11 on 2.4 GHz) and verified smooth roaming between ground floor and executive suites.")
         ],
         "sketch_title": "TIA/EIA-568B Color Code & Enterprise Switch Patching",
         "sketch": """TIA/EIA-568B Pinout Standard:
 Pin 1: White/Orange | Pin 2: Orange      | Pin 3: White/Green | Pin 4: Blue
 Pin 5: White/Blue   | Pin 6: Green       | Pin 7: White/Brown | Pin 8: Brown
                        |
-[Wall Data Outlet RJ-45] ===Cat6 Drop===> [24-Port Patch Panel] ===Patch Cord===> [Cisco Switch (VLAN Tagged)]""",
+[Wall Data Outlet RJ-45] ===Cat6 Drop===> [24-Port Patch Panel] ===Patch Cord===> [Switch Port (PoE Enabled for AP)]""",
         "student_comment": "Mastered precision RJ-45 crimping under TIA/EIA-568B. Gained real-world appreciation for structured cable dressing and cable management in high-density rack enclosures."
     },
     {
-        "week_number": "Week 17 (IT Week 4)",
+        "week_number": "Week 18 (IT Week 5)",
         "period": "5th October 2026 – 9th October 2026",
         "unit": "Enterprise IT Systems Administration",
         "section": "Identity & Access Management",
@@ -190,7 +216,7 @@ Pin 5: White/Blue   | Pin 6: Green       | Pin 7: White/Brown | Pin 8: Brown
         "student_comment": "Gained in-depth hands-on experience managing Windows Server Active Directory. Understood how GPOs standardize security policies across hundreds of networked endpoints simultaneously."
     },
     {
-        "week_number": "Week 18 (IT Week 5)",
+        "week_number": "Week 19 (IT Week 6)",
         "period": "12th October 2026 – 16th October 2026",
         "unit": "Software Engineering & Enterprise Solutions",
         "section": "Core POS Engine & Inventory Architecture",
@@ -214,7 +240,7 @@ Pin 5: White/Blue   | Pin 6: Green       | Pin 7: White/Brown | Pin 8: Brown
         "student_comment": "Learned professional test-driven development (TDD) using automated PHPUnit assertions. Successfully protected sensitive business financial metrics using server-side role middleware."
     },
     {
-        "week_number": "Week 19 (IT Week 6)",
+        "week_number": "Week 20 (IT Week 7)",
         "period": "19th October 2026 – 23rd October 2026",
         "unit": "Software Engineering & Enterprise Solutions",
         "section": "POS Checkout, Thermal Printing & Sales Engine",
@@ -251,7 +277,7 @@ Pin 5: White/Blue   | Pin 6: Green       | Pin 7: White/Brown | Pin 8: Brown
         "student_comment": "Built an authentic, high-speed retail checkout flow with strict inventory synchronization. Designed pixel-perfect 80mm thermal receipt layouts that print without browser margins."
     },
     {
-        "week_number": "Week 20 (IT Week 7)",
+        "week_number": "Week 21 (IT Week 8)",
         "period": "26th October 2026 – 30th October 2026",
         "unit": "Software Engineering & Enterprise Solutions",
         "section": "Financial Reports & High-Performance Optimization",
@@ -277,7 +303,7 @@ AFTER B-TREE INDEXING:
         "student_comment": "Learned the deep technical mechanics of database query optimization, compound B-tree index execution plans, and architectural modularity in enterprise web development."
     },
     {
-        "week_number": "Week 21 (IT Week 8)",
+        "week_number": "Week 22 (IT Week 9)",
         "period": "2nd November 2026 – 6th November 2026",
         "unit": "IT Support, Proximity & Systems Deployment",
         "section": "Enterprise IT Operations",
@@ -349,31 +375,27 @@ def generate_html(weeks):
               <strong><span class="section-badge {w["badge_class"]}">{w["badge_text"]}</span></strong>
             </div>
             <div class="info-item">
-              <span>Period of Training</span>
+              <span>Training Period</span>
               <strong>{w["period"]}</strong>
             </div>
-            <div class="info-item">
+            <div class="info-item" style="text-align: right;">
               <span>Logbook Week</span>
-              <strong style="color: #059669; font-size: 13px;">{w["week_number"]}</strong>
+              <strong style="color: #1e3a8a; font-size: 13px;">{w["week_number"]}</strong>
             </div>
           </div>
 
           <div class="weekly-project-box">
-            <div class="box-tag">PROJECT / MAIN JOB ASSIGNED DURING THE WEEK:</div>
-            <div class="box-heading">{w["job_done"]}</div>
-          </div>
-
-          <div class="work-done-box">
             <div class="box-tag">WORK DONE DURING THE WEEK:</div>
-            <div class="work-done-text">{w["work_done_summary"]}</div>
+            <div class="box-title">{w["job_done"]}</div>
+            <div class="box-desc">{w["work_done_summary"]}</div>
           </div>
 
-          <table class="logbook-table">
+          <table class="daily-table">
             <thead>
               <tr>
-                <th style="width: 14%;">Day & Date</th>
+                <th style="width: 13%;">Day / Date</th>
                 <th style="width: 25%;">Nature of Work Done</th>
-                <th style="width: 61%;">Daily Detailed Technical Activities & Operations Performed</th>
+                <th style="width: 62%;">Detailed Technical Activities & Engineering Description</th>
               </tr>
             </thead>
             <tbody>
@@ -381,206 +403,210 @@ def generate_html(weeks):
             </tbody>
           </table>
 
-          <div class="sketch-box">
-            <div class="sketch-header">
-              <span class="sketch-title">Technical Diagram / Schematic / Architectural Workflow ({w["sketch_title"]})</span>
+          <div class="bottom-section">
+            <div class="sketch-panel">
+              <div class="panel-header">WEEKLY TECHNICAL ILLUSTRATION / CIRCUIT / LOGIC DIAGRAM: {w["sketch_title"]}</div>
+              <pre class="ascii-sketch">{w["sketch"]}</pre>
             </div>
-            <div class="sketch-content">{w["sketch"]}</div>
-          </div>
-
-          <div class="footer-signoff">
-            <div>
-              <div class="signoff-box-title">Student Comments & Key Learnings for the Week</div>
-              <div class="student-comment-text">"{w["student_comment"]}"</div>
-            </div>
-            <div>
-              <div class="signoff-box-title">Industry Supervisor</div>
-              <div class="signature-line"></div>
-              <div class="signature-caption">Signature & Date Stamp</div>
-            </div>
-            <div>
-              <div class="signoff-box-title">Institutional Supervisor</div>
-              <div class="signature-line"></div>
-              <div class="signature-caption">SIWES Coordinator Signature</div>
+            
+            <div class="feedback-panel">
+              <div class="feedback-box">
+                <div class="panel-header">STUDENT'S WEEKLY REFLECTION & TECHNICAL COMPETENCY:</div>
+                <div class="student-comment-text">"{w["student_comment"]}"</div>
+              </div>
+              <div class="feedback-box">
+                <div class="panel-header">INDUSTRY-BASED SUPERVISOR'S APPRAISAL & SIGNATURE:</div>
+                <div class="signature-line"></div>
+                <div class="signature-caption">Supervisor Signature, Stamp & Date</div>
+              </div>
             </div>
           </div>
         </div>
         """
         pages_html.append(page)
     
-    all_pages = "".join(pages_html)
+    all_pages = "\n".join(pages_html)
     
     full_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>CWG Plc - SIWES Technical Logbook (Weeks 11 to 21)</title>
+<title>CWG Plc - SIWES Technical Logbook (Weeks 11 to 22)</title>
 <style>
   @page {{
     size: A4 portrait;
-    margin: 8mm 11mm 10mm 11mm;
+    margin: 8mm 10mm 8mm 10mm;
   }}
-  * {{ box-sizing: border-box; }}
+  * {{
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }}
   body {{
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
     color: #1e293b;
-    background: #ffffff;
-    font-size: 9.5px;
-    line-height: 1.35;
     margin: 0;
     padding: 0;
+    background: #f1f5f9;
+    font-size: 9.5px;
   }}
   .logbook-page {{
+    background: #ffffff;
+    width: 100%;
+    max-width: 210mm;
+    min-height: 280mm;
+    margin: 0 auto 12mm auto;
+    padding: 10mm 12mm;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     page-break-after: always;
-    padding-bottom: 2px;
-    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }}
-  .logbook-page:last-child {{
-    page-break-after: avoid;
+  @media print {{
+    body {{
+      background: #ffffff;
+    }}
+    .logbook-page {{
+      box-shadow: none;
+      margin: 0;
+      padding: 4mm 6mm;
+      width: 100%;
+      height: 100%;
+      page-break-after: always;
+    }}
   }}
+
+  /* Header */
   .doc-header {{
-    border-bottom: 2px solid #059669;
-    padding-bottom: 4px;
-    margin-bottom: 6px;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    border-bottom: 2.5px solid #1e3a8a;
+    padding-bottom: 5px;
+    margin-bottom: 6px;
   }}
   .doc-title-main {{
-    font-size: 12.5px;
+    font-size: 15px;
     font-weight: 800;
-    color: #065f46;
-    letter-spacing: -0.01em;
-    text-transform: uppercase;
+    color: #0f172a;
+    letter-spacing: 0.5px;
   }}
   .doc-title-sub {{
-    font-size: 9.5px;
-    color: #475569;
-    font-weight: 600;
+    font-size: 9px;
+    font-weight: 700;
+    color: #2563eb;
+    margin-top: 1px;
+    letter-spacing: 0.3px;
   }}
   .doc-header-meta {{
     text-align: right;
-    font-size: 8.5px;
+    font-size: 8px;
     color: #64748b;
+    line-height: 1.25;
   }}
-  .doc-header-meta strong {{
-    color: #0f172a;
-  }}
+
+  /* Info Bar */
   .info-bar {{
     display: grid;
-    grid-template-columns: 1.8fr 1.4fr 1.4fr 0.9fr;
-    gap: 6px;
+    grid-template-columns: 1.2fr 1.3fr 1.3fr 1fr;
     background: #f8fafc;
     border: 1px solid #cbd5e1;
-    border-radius: 5px;
+    border-radius: 4px;
     padding: 5px 8px;
-    margin-bottom: 6px;
-    font-size: 9px;
+    margin-bottom: 7px;
+    gap: 6px;
   }}
   .info-item span {{
     display: block;
     font-size: 7.5px;
-    font-weight: 700;
     text-transform: uppercase;
     color: #64748b;
-    letter-spacing: 0.04em;
+    font-weight: 700;
   }}
   .info-item strong {{
-    color: #0f172a;
     font-size: 9.5px;
+    color: #0f172a;
   }}
   .section-badge {{
     display: inline-block;
-    padding: 2px 5px;
+    padding: 1.5px 5px;
     border-radius: 3px;
-    font-size: 8px;
+    font-size: 8.5px;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
   }}
   .badge-metering {{
-    background: #fef3c7;
-    color: #92400e;
-    border: 1px solid #fde68a;
-  }}
-  .badge-itsupport {{
     background: #dbeafe;
     color: #1e40af;
     border: 1px solid #bfdbfe;
   }}
+  .badge-itsupport {{
+    background: #e0e7ff;
+    color: #3730a3;
+    border: 1px solid #c7d2fe;
+  }}
   .badge-software {{
-    background: #d1fae5;
+    background: #ecfdf5;
     color: #065f46;
     border: 1px solid #a7f3d0;
   }}
 
   /* Weekly Project Box */
   .weekly-project-box {{
-    background: #ffffff;
-    border: 1px solid #cbd5e1;
-    border-left: 3.5px solid #059669;
-    border-radius: 4px;
+    background: #f0fdf4;
+    border-left: 3.5px solid #16a34a;
+    border-top: 1px solid #bbf7d0;
+    border-right: 1px solid #bbf7d0;
+    border-bottom: 1px solid #bbf7d0;
+    border-radius: 0 4px 4px 0;
     padding: 5px 8px;
-    margin-bottom: 5px;
+    margin-bottom: 7px;
   }}
   .box-tag {{
-    font-size: 8px;
+    font-size: 7.5px;
     font-weight: 800;
-    color: #065f46;
+    color: #15803d;
     text-transform: uppercase;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.5px;
     margin-bottom: 1px;
   }}
-  .box-heading {{
-    font-size: 9.5px;
+  .box-title {{
+    font-size: 10px;
     font-weight: 700;
-    color: #0f172a;
+    color: #14532d;
+    margin-bottom: 2px;
   }}
-
-  /* Explicit WORK DONE DURING THE WEEK Box */
-  .work-done-box {{
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
-    border-left: 3.5px solid #16a34a;
-    border-radius: 4px;
-    padding: 5px 8px;
-    margin-bottom: 6px;
-  }}
-  .work-done-box .box-tag {{
-    color: #15803d;
-  }}
-  .work-done-text {{
-    font-size: 9px;
+  .box-desc {{
+    font-size: 8.5px;
     color: #166534;
-    line-height: 1.35;
-    text-align: justify;
+    line-height: 1.3;
   }}
 
   /* Daily Table */
-  table.logbook-table {{
+  .daily-table {{
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 6px;
-    font-size: 9px;
+    margin-bottom: 7px;
+    font-size: 8.5px;
   }}
-  table.logbook-table th {{
-    background: #f1f5f9;
-    color: #334155;
+  .daily-table th {{
+    background: #1e3a8a;
+    color: #ffffff;
+    font-weight: 700;
     text-align: left;
     padding: 4px 6px;
-    font-weight: 700;
+    border: 1px solid #1e3a8a;
     font-size: 8px;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
-    border: 1px solid #cbd5e1;
+    letter-spacing: 0.3px;
   }}
-  table.logbook-table td {{
-    padding: 4px 6px;
-    vertical-align: top;
+  .daily-table td {{
+    padding: 4.5px 6px;
     border: 1px solid #cbd5e1;
+    vertical-align: top;
     line-height: 1.3;
   }}
-  table.logbook-table tr:nth-child(even) td {{
+  .daily-table tr:nth-child(even) {{
     background: #f8fafc;
   }}
   .col-day {{
@@ -590,62 +616,66 @@ def generate_html(weeks):
   }}
   .col-day small {{
     display: block;
-    font-weight: 500;
+    font-weight: normal;
     color: #64748b;
-    font-size: 8px;
+    font-size: 7.5px;
   }}
   .col-nature {{
     font-weight: 600;
-    color: #065f46;
+    color: #1e40af;
   }}
   .col-details {{
-    color: #1e293b;
+    color: #334155;
   }}
 
-  /* Sketch / Diagram Box */
-  .sketch-box {{
-    border: 1px dashed #94a3b8;
-    background: #f8fafc;
-    border-radius: 4px;
-    padding: 4px 8px;
-    margin-bottom: 6px;
-  }}
-  .sketch-header {{
-    margin-bottom: 2px;
-  }}
-  .sketch-title {{
-    font-size: 8px;
-    font-weight: 700;
-    color: #475569;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-  }}
-  .sketch-content {{
-    font-family: 'Consolas', 'Courier New', monospace;
-    font-size: 8px;
-    line-height: 1.25;
-    color: #0f172a;
-    white-space: pre-wrap;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 3px;
-    padding: 4px 6px;
-    margin: 0;
-  }}
-
-  /* Bottom Comment & Signoff Box */
-  .footer-signoff {{
+  /* Bottom Section: Sketch & Feedback */
+  .bottom-section {{
     display: grid;
-    grid-template-columns: 2.2fr 1fr 1fr;
-    gap: 6px;
-    background: #f8fafc;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 8px;
+    margin-top: 2px;
+  }}
+  .sketch-panel, .feedback-box {{
+    background: #ffffff;
     border: 1px solid #cbd5e1;
     border-radius: 4px;
-    padding: 5px 8px;
-    font-size: 8.5px;
+    padding: 5px 7px;
   }}
-  .signoff-box-title {{
+  .panel-header {{
     font-size: 7.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #1e3a8a;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 2px;
+    margin-bottom: 3px;
+    letter-spacing: 0.3px;
+  }}
+  .ascii-sketch {{
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 7.5px;
+    line-height: 1.25;
+    color: #0f172a;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 3px;
+    padding: 4px;
+    margin: 0;
+    white-space: pre;
+    overflow-x: auto;
+  }}
+  .feedback-panel {{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 6px;
+  }}
+  .feedback-box {{
+    flex: 1;
+  }}
+  .feedback-box span {{
+    display: block;
+    font-size: 7px;
     font-weight: 700;
     text-transform: uppercase;
     color: #64748b;

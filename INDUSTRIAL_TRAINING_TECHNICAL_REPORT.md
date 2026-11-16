@@ -128,16 +128,20 @@ The report concludes with a technical analysis of challenges encountered alongsi
   - **3.2 SECTION B: IT PROXIMITY SUPPORT, NETWORK INFRASTRUCTURE & SYSTEMS ADMINISTRATION** ............. 35
     - 3.2.1 ITIL Help Desk Operations, Ticket Resolution Workflow, and Proximity SLA Compliance ............................... 35
     - 3.2.2 Enterprise Structured Cabling, TIA/EIA-568B Standard, and Patch Panel Termination ................................... 37
-    - 3.2.3 Layer-2/Layer-3 Switching, 802.1Q VLAN Trunking, and Multi-SSID Enterprise Wi-Fi Provisioning .................. 40
-    - 3.2.4 Cisco Packet Tracer Enterprise Network Simulation and Routing Topologies .............................................. 42
-    - 3.2.5 Enterprise Data Center Facilities, 42U Server Racks, Dual PDU Feeds, and Environmental CRAC Cooling .......... 44
-    - 3.2.6 Enterprise Server Architecture, Hardware RAID Redundancy, and IPMI/iDRAC Out-of-Band Management ....... 46
-    - 3.2.7 Automated Corporate Fleet Provisioning using Windows Configuration Designer `.ppkg` Packages ................ 48
-    - 3.2.8 Computer Hardware Maintenance, Component Replacement, and Hardware Upgrades ................................. 50
-    - 3.2.9 Microsoft Active Directory Domain Services (AD DS) Administration and OU Hierarchy .............................. 52
-    - 3.2.10 Group Policy Objects (GPOs) Deployment, Password Complexity, and Storage Device Hardening .................. 54
-    - 3.2.11 Enterprise Endpoint Detection and Response (EDR) Monitoring: Sophos Central and CrowdStrike Falcon ........ 56
-    - 3.2.12 IT Asset Management, Barcode Tagging, Physical Inventory Audits, and NIST 800-88 Decommissioning .......... 58
+    - 3.2.3 Enterprise Wireless Access Points (APs), PoE Infrastructure, and Environmental RF Deployment ................... 39
+    - 3.2.4 Enterprise Network Multi-Function Printers (MFP) and Secure User PIN / Password Printing ....................... 41
+    - 3.2.5 Layer-2/Layer-3 Switching, 802.1Q VLAN Trunking, and Multi-SSID Enterprise Wi-Fi Provisioning .................. 43
+    - 3.2.6 Cisco Packet Tracer Enterprise Network Simulation and Routing Topologies .............................................. 45
+    - 3.2.7 Enterprise Data Center Facilities, 42U Server Racks, Dual PDU Feeds, and Environmental CRAC Cooling .......... 47
+    - 3.2.8 Enterprise Server Architecture, Hardware RAID Redundancy, and IPMI/iDRAC Out-of-Band Management ....... 49
+    - 3.2.9 Automated Corporate Fleet Provisioning using Windows Configuration Designer `.ppkg` Packages ................ 51
+    - 3.2.10 Computer Hardware Maintenance, Component Replacement, and Hardware Upgrades ................................. 53
+    - 3.2.11 SAP Enterprise Resource Planning (ERP) System Administration and Client Support .................................. 55
+    - 3.2.12 Microsoft 365 Enterprise Productivity Suite Administration (Teams, Outlook, SharePoint, OneDrive) ............ 57
+    - 3.2.13 Microsoft Active Directory Domain Services (AD DS) Administration and OU Hierarchy .............................. 59
+    - 3.2.14 Group Policy Objects (GPOs) Deployment, Password Complexity, and Storage Device Hardening .................. 61
+    - 3.2.15 Enterprise Endpoint Detection and Response (EDR) Monitoring: Sophos Central and CrowdStrike Falcon ........ 63
+    - 3.2.16 IT Asset Management, Barcode Tagging, Physical Inventory Audits, and NIST 800-88 Decommissioning .......... 65
   - **3.3 SECTION C: SOFTWARE DEVELOPMENT AND ENTERPRISE SOLUTIONS** ................................................... 60
     - 3.3.1 Enterprise Software Development Methodologies: Agile Scrum Framework and CI/CD Pipelines .................... 60
     - 3.3.2 Major Project I: CWG Retail Suite (Full-Stack POS & Inventory Management Platform) ................................. 62
@@ -197,6 +201,10 @@ The report concludes with a technical analysis of challenges encountered alongsi
 - Figure 3.14: 24-Port Patch Panel, Brush Cable Management Panels, and Rack Looming
 - Figure 3.15: Hardware Tools: RJ-45 Crimper, Punch-Down Tool, Patchsee Cable Tracer, and Wire Mapper
 - Figure 3.16: Cisco Managed Layer-2/Layer-3 Switches and SFP+ Fiber Optic Transceiver Modules
+- Figure 3.16A: Enterprise Wireless Access Points (APs), PoE Infrastructure, and RF Survey
+- Figure 3.16B: Network Multi-Function Printer (MFP) Architecture and User PIN Secure Print Workflow
+- Figure 3.24A: SAP GUI Client Architecture, SAP Logon Pad Configuration, and T-Code Operations
+- Figure 3.24B: Microsoft 365 Enterprise Architecture: Teams, Outlook Autodiscover, and SharePoint
 - Figure 3.17: Multi-SSID Enterprise Wi-Fi Network Architecture and 802.1Q VLAN Trunking
 - Figure 3.18: Cisco Packet Tracer Enterprise Network Simulation and Routing Topology
 - Figure 3.19: 42U Data Center Server Rack, Cage Nut Fasteners, and Vertical Cable Ducts
@@ -237,6 +245,7 @@ The report concludes with a technical analysis of challenges encountered alongsi
 - Table 3.3: TIA/EIA-568B Straight-Through Wiring Pinout and Electrical Pair Assignment
 - Table 3.4: Enterprise VLAN Segmentation Scheme and IP Subnet Allocations at CWG Plc
 - Table 3.5: Enterprise Group Policy Objects (GPOs) and Target Enforcement Settings
+- Table 3.5A: Core SAP ERP Administrative Transaction Codes (T-Codes) and Support Functions
 - Table 3.6: CWG Retail Suite Relational Database Schema and 3NF Attributes
 - Table 3.7: LeaveTrack (PRJ-08) 12-Week Phased Delivery Roadmap (P1–P7)
 - Table 3.8: LeaveTrack Dataverse Entity Schema, Data Types, and Relationships
@@ -247,6 +256,20 @@ The report concludes with a technical analysis of challenges encountered alongsi
 ## LIST OF ABBREVIATIONS
 
 - **AD DS:** Active Directory Domain Services
+- **AP:** Access Point
+- **ERP:** Enterprise Resource Planning
+- **MFA:** Multi-Factor Authentication
+- **MFP:** Multi-Function Printer
+- **OST:** Offline Storage Table (Outlook Data File)
+- **PCL:** Printer Command Language
+- **PoE:** Power over Ethernet
+- **PST:** Personal Storage Table
+- **QoS:** Quality of Service
+- **RF:** Radio Frequency
+- **SAP:** Systems, Applications, and Products in Data Processing
+- **SID:** System Identifier
+- **SNMP:** Simple Network Management Protocol
+- **T-Code:** Transaction Code
 - **ALM:** Application Lifecycle Management
 - **ANSI:** American National Standards Institute
 - **API:** Application Programming Interface
@@ -782,7 +805,61 @@ Every terminated link is qualified using a digital wire mapper and time-domain r
 - **Length and Propagation Delay:** Verifying that total link distance does not exceed the statutory 90-meter permanent link (or 100-meter channel) limit.
 - **Cable Tracing via Patchsee Light System:** In high-density server racks containing hundreds of black patch cords, Patchsee optical tracer cables containing internal dual plastic optical fibers are utilized. Connecting an LED light injection tool to one boot illuminates the opposite connector boot, enabling instantaneous trace identification without disrupting active network links.
 
-#### 3.2.3 Layer-2/Layer-3 Switching, 802.1Q VLAN Trunking, and Multi-SSID Enterprise Wi-Fi Provisioning
+
+#### 3.2.3 Enterprise Wireless Access Points (APs), PoE Infrastructure, and Environmental RF Deployment
+High-performance wireless connectivity across CWG Plc's multi-wing corporate complex is delivered via enterprise ceiling-mount Wireless Access Points (APs)—predominantly Aruba AP-515 and Cisco Catalyst 9100 series Wi-Fi 6 access points. Unlike consumer home routers, enterprise APs do not operate autonomously; they are centrally provisioned, monitored, and orchestrated to ensure seamless roaming, dense client handling, and robust RF spectrum optimization.
+
+```
++-----------------------------------------------------------------------+
+|  [SPACE RESERVED FOR FIGURE 3.16A]                                    |
+|                                                                       |
+|  Figure 3.16A: Enterprise Wireless Access Points (APs) and PoE Setup  |
+|  Description: Technical diagram showing ceiling-mounted AP, Cat6a drop|
+|  delivering 802.3at PoE+ power, switchport negotiation, and coverage. |
++-----------------------------------------------------------------------+
+```
+
+During my proximity support training under Mr. Michael, I engaged in the physical installation, power delivery, and environmental radio-frequency (RF) site surveying of corporate APs:
+1. **Power over Ethernet (PoE / PoE+) Delivery:** Enterprise APs are mounted high on ceiling grids to maximize line-of-sight propagation. Running separate 230V AC power adapters to ceiling voids introduces severe fire risks and aesthetic clutter. Instead, power is delivered directly through the existing 8-conductor Cat6a structured cabling link utilizing IEEE 802.3af (PoE, delivering up to 15.4 Watts) or IEEE 802.3at (PoE+, delivering up to 30.0 Watts) standard negotiated with PoE-enabled switchports. Upon cable connection, the Cisco switch performs hardware resistance signature detection on the line; once validated, it energizes the 48V DC phantom power rail safely without risking damage to non-PoE endpoints.
+2. **Environmental Physical Obstacles and RF Attenuation:** Indoor wireless propagation is governed by environmental structural materials. When executing coverage assessments across office wings, technicians account for signal attenuation coefficients:
+   - *Standard Drywall / Gypsum Partitions:* Introduce minor attenuation of 3.0 to 4.0 dB.
+   - *Reinforced Concrete Pillars and Shear Walls:* Cause severe RF absorption and scattering, inducing 12.0 to 18.0 dB signal loss.
+   - *Low-Emissivity (Low-E) Double-Glazed Glass Conference Enclosures:* Introduce metallic oxide reflections causing 6.0 to 9.0 dB attenuation.
+   - To counteract environmental dead zones without excessive co-channel interference, APs were mounted in central open office corridors at heights of 2.8 to 3.2 meters, avoiding proximity to metallic air conditioning ducts and high-voltage electrical conduits.
+3. **Dual-Band Spectrum Management (2.4 GHz vs 5 GHz):**
+   - **2.4 GHz Band:** Provides extensive physical range and superior obstacle penetration, but suffers from severe spectral congestion. Channel assignments were strictly restricted to the three non-overlapping channels—**Channel 1, Channel 6, and Channel 11** (at 20 MHz channel bandwidth)—preventing adjacent-channel bleed.
+   - **5 GHz Band:** Offers 24 non-overlapping channels with 40 MHz and 80 MHz channel bonding, delivering gigabit-grade throughput with minimal latency. High-bandwidth corporate laptops and VoIP devices are steered toward the 5 GHz band using automated *Band Steering* algorithms.
+4. **Signal Strength Calibration:** Workstation areas were calibrated to achieve a Received Signal Strength Indicator (RSSI) of at least -65 dBm, while executive conference rooms hosting Microsoft Teams high-definition video conferences were tuned to -60 dBm with a Signal-to-Noise Ratio (SNR) >= 25 dB, guaranteeing zero packet drops during inter-AP client roaming.
+
+#### 3.2.4 Enterprise Network Multi-Function Printers (MFP) and Secure User PIN / Password Printing
+Corporate document workflows involve heavy printing, copying, and scanning of highly confidential materials—including employee compensation schedules, customer banking contracts, and audited financial statements. Standard unmanaged consumer printing presents severe corporate liabilities: print jobs sit uncollected in open output trays, unauthorized personnel can read confidential documents, and unrestricted paper/toner consumption inflates operational expenses.
+
+```
++-----------------------------------------------------------------------+
+|  [SPACE RESERVED FOR FIGURE 3.16B]                                    |
+|                                                                       |
+|  Figure 3.16B: Network Multi-Function Printer (MFP) Secure PIN Print  |
+|  Description: Technical workflow diagram illustrating PC print spool, |
+|  User Code encapsulation, MFP encrypted memory hold, and PIN release. |
++-----------------------------------------------------------------------+
+```
+
+To eliminate these vulnerabilities, CWG Plc deploys heavy-duty enterprise Multi-Function Network Printers (MFPs)—primarily Ricoh Aficio MP series and HP LaserJet Enterprise printers—governed by **Departmental User Code / Secure PIN Password Authentication**:
+1. **Network Hardware Configuration & IP Reservation:**
+   - Enterprise MFPs are assigned dedicated static IP addresses (e.g., `10.10.20.150` on the Corporate Staff VLAN) with corresponding host `A` records and reverse pointer `PTR` records in corporate DNS (`prt-fl2-ricoh.cwg.local`).
+   - Network communication utilizes standard TCP/IP Raw printing over **Port 9100** (Direct IP / JetDirect) or Line Printer Daemon (LPD) over **Port 515**.
+   - Simple Network Management Protocol (SNMP v2c/v3) is configured on Port 161, allowing centralized print management servers to poll real-time status indicators: remaining toner percentages, paper tray capacities, drum unit lifespan, and mechanical paper jam diagnostics.
+2. **User Code / Secure PIN Authentication Architecture:**
+   - In the printer's Embedded Web Server (Web Image Monitor), administrators establish a secure **User Account & Authorization Table**. Every employee is allocated a unique 4-to-8 digit numeric User Code / PIN password, mapped to their specific department (e.g., `User Code: 4892 -> Accounting`).
+   - *Confidential Hold Mechanism:* When an employee clicks *Print* from Microsoft Word, Outlook, or SAP, the local Windows print driver (PCL6 or PostScript 3) packages the print stream with the employee's pre-configured User Code embedded into the job header.
+   - Instead of outputting immediately, the MFP receives the spool file and stores it in encrypted internal storage in a `Locked / Held` state.
+   - *Physical Release Workflow:* The print job remains dormant until the employee physically walks up to the MFP console, selects their account name, and enters their secret PIN password on the physical/touchscreen keypad. The printer verifies the code, prints the document directly into the employee's hands, and deletes the spool file from memory.
+3. **Business & Security Benefits:**
+   - **Confidentiality Assurance:** Zero risk of sensitive financial audits, payroll records, or legal contracts lying exposed on output trays.
+   - **Paper & Toner Waste Elimination:** Print jobs accidentally sent by staff that are never released are automatically purged after 24 hours, reducing corporate paper and consumables expenditure by over 30%.
+   - **Departmental Cost Allocation & Quotas:** The system logs monthly page counts (monochrome vs color) against each user code, enabling finance to bill printing costs back to specific departmental cost centers and enforce monthly quota limits.
+
+#### 3.2.5 Layer-2/Layer-3 Switching, 802.1Q VLAN Trunking, and Multi-SSID Enterprise Wi-Fi Provisioning
 Enterprise Local Area Networks (LANs) cannot operate as a flat, unsegmented broadcast domain. In a flat network, broadcast storms, ARP flooding, and malware lateral movement degrade performance and compromise corporate data confidentiality. At CWG Plc, network traffic is partitioned into logical broadcast domains using Virtual Local Area Networks (VLANs) implemented across Cisco Catalyst 3850 and 9300 series enterprise managed switches.
 
 ```
@@ -824,7 +901,7 @@ Inter-switch links and uplinks connecting enterprise Cisco Aironet / Catalyst Wi
 - **`CWG-Voice` SSID:** Dedicated to mobile softphones and Wi-Fi handsets; maps to VLAN 30 with WMM (Wi-Fi Multimedia) Voice prioritization.
 - **`CWG-Guest` SSID:** Uses captive portal web authentication; maps to VLAN 40 with strict peer-to-peer client isolation preventing guests from scanning neighboring devices.
 
-#### 3.2.4 Cisco Packet Tracer Enterprise Network Simulation and Routing Topologies
+#### 3.2.6 Cisco Packet Tracer Enterprise Network Simulation and Routing Topologies
 To validate complex routing protocols and failover topologies prior to production implementation, network engineers at CWG Plc design and simulate multi-branch enterprise architectures using Cisco Packet Tracer and GNS3.
 
 ```
@@ -843,7 +920,7 @@ During specialized training sessions led by Mr. Michael, I modeled an enterprise
 - **Dynamic Host Configuration Protocol (DHCP) Relay:** Configuring `ip helper-address 10.10.50.10` on router sub-interfaces to forward client UDP broadcast discover messages across subnet boundaries to the central Windows Server DHCP cluster.
 - **Access Control Lists (ACLs):** Extended named ACLs deployed on distribution switches to enforce security perimeters, blocking Guest VLAN (`172.16.40.0/22`) hosts from establishing TCP connections to Server VLAN (`10.10.50.0/24`) databases while permitting outbound HTTP/HTTPS web traffic.
 
-#### 3.2.5 Enterprise Data Center Facilities, 42U Server Racks, Dual PDU Feeds, and Environmental CRAC Cooling
+#### 3.2.7 Enterprise Data Center Facilities, 42U Server Racks, Dual PDU Feeds, and Environmental CRAC Cooling
 The on-premise enterprise data center at CWG Plc houses the compute, storage, and networking clusters underpinning both internal corporate operations and hosted financial client platforms. The facility is engineered to Tier-3 specifications, guaranteeing 99.982% annual uptime with concurrent maintainability.
 
 ```
@@ -872,7 +949,7 @@ Working under Mr. Matthew (Infrastructure Lead), I gained practical hands-on exp
 +-----------------------------------------------------------------------+
 ```
 
-#### 3.2.6 Enterprise Server Architecture, Hardware RAID Redundancy, and IPMI/iDRAC Out-of-Band Management
+#### 3.2.8 Enterprise Server Architecture, Hardware RAID Redundancy, and IPMI/iDRAC Out-of-Band Management
 Server hardware deployed within CWG data centers consists primarily of 1U and 2U Dell PowerEdge R640 and R740 rackmount servers powered by dual Intel Xeon Scalable processors, high-speed DDR4 registered ECC memory, and enterprise NVMe / SAS storage arrays.
 
 ```
@@ -901,7 +978,7 @@ Server hardware deployed within CWG data centers consists primarily of 1U and 2U
 +-----------------------------------------------------------------------+
 ```
 
-#### 3.2.7 Automated Corporate Fleet Provisioning using Windows Configuration Designer `.ppkg` Packages
+#### 3.2.9 Automated Corporate Fleet Provisioning using Windows Configuration Designer `.ppkg` Packages
 A major responsibility during my proximity support rotation was the high-volume staging, deployment, and re-imaging of corporate laptops—primarily Dell Latitude (5420/5430 series) and HP EliteBook (840 G8/G9 series)—allocated to new employees, software developers, and executive staff.
 
 ```
@@ -928,7 +1005,7 @@ The `.ppkg` staging architecture functions as an automated post-install payload 
    - Removal of consumer pre-installed OEM bloatware, consumer trials, and unapproved Windows Store applications.
 2. **Execution Workflow:** Technicians boot a factory-fresh or freshly re-imaged laptop from its internal NVMe SSD into the initial Windows 11 OOBE language selection screen. Inserting a high-speed USB 3.2 flash drive containing the `.ppkg` file triggers Windows Setup to automatically detect the payload. Pressing the Windows key five times (or allowing auto-execution) prompts: *"Is this device for work or school?"* The technician selects the package, clicks *Yes, add it*, and removes the USB drive. The OS executes all silent installations, reboots twice, completes domain registration, enforces BitLocker, and presents the corporate domain login screen within 18 minutes—reducing technician touch time by over 85%.
 
-#### 3.2.8 Computer Hardware Maintenance, Component Replacement, and Hardware Upgrades
+#### 3.2.10 Computer Hardware Maintenance, Component Replacement, and Hardware Upgrades
 Beyond software configuration, proximity support involves component-level hardware repair, diagnostic troubleshooting, and lifecycle upgrades across the corporate computer fleet.
 
 ```
@@ -947,7 +1024,83 @@ Working at the hardware diagnostic workbench, I executed numerous physical repai
 - **Thermal Overhaul and Repasting:** Laptops exhibiting thermal throttling, persistent high fan noise, or sudden thermal shutdown (temperatures exceeding 95°C under load) underwent complete thermal overhaul. The copper heat pipe and blower fan assembly was unbolted in reverse numerical sequence (4-3-2-1) to avoid micro-cracking the silicon die. Dried, degraded factory thermal interface material (TIM) was cleaned from the CPU/GPU die using 99.9% pure isopropyl alcohol (IPA) and lint-free microfiber swabs. A rice-grain bead of high-conductivity Arctic MX-4 carbon-based thermal paste (thermal conductivity $8.5 \, \text{W}/\text{m}\cdot\text{K}$) was applied to the bare die, and heatsink screws were torqued in ascending order (1-2-3-4) to guarantee uniform pressure distribution. Operating temperatures dropped by an average of 14°C to 18°C.
 - **Lithium-Ion Battery Swelling and Replacement:** Diagnosed swollen laptop batteries causing trackpad distortion or chassis separation. Swollen lithium-ion cells pose severe chemical fire hazards; these units were carefully unfastened using non-magnetic ESD tweezers, isolated in fireproof LiPo safety bags, and replaced with genuine OEM battery packs, followed by BIOS battery health calibration.
 
-#### 3.2.9 Microsoft Active Directory Domain Services (AD DS) Administration and OU Hierarchy
+
+#### 3.2.11 SAP Enterprise Resource Planning (ERP) System Administration and Client Support
+Computer Warehouse Group (CWG) Plc leverages **SAP ERP** (Systems, Applications, and Products in Data Processing) as its mission-critical core Enterprise Resource Planning platform, orchestrating financial accounting (FI), controlling (CO), materials management (MM), sales and distribution (SD), and human capital management (HCM).
+
+```
++-----------------------------------------------------------------------+
+|  [SPACE RESERVED FOR FIGURE 3.24A]                                    |
+|                                                                       |
+|  Figure 3.24A: SAP GUI Client Architecture and SAP Logon Pad Setup    |
+|  Description: Interface diagram showing SAP Logon Pad connection      |
+|  parameters (Server IP, SID, Instance 00) and common SAP T-Codes.     |
++-----------------------------------------------------------------------+
+```
+
+During my rotation, under the guidance of our enterprise systems team, I gained hands-on practical competency in SAP desktop client deployment, connection architecture, user account administration, and frontline troubleshooting:
+1. **SAP GUI Installation & SAP Logon Pad Configuration:**
+   - Corporate workstations require the installation of the **SAP GUI for Windows** (Version 7.70 / 8.00 64-bit client).
+   - Following installation, the client is configured via the **SAP Logon Pad**. Technicians establish authenticated connection entries pointing to corporate SAP NetWeaver application servers:
+     - *Connection Type:* Custom Application Server.
+     - *Description:* `CWG Production ERP [PRD]`.
+     - *Application Server:* Static internal IP address (`10.10.50.25`) or FQDN (`sap-prd.cwg.local`).
+     - *Instance Number:* `00` (which mathematically binds communication to TCP Dispatcher Port $3200 + \text{Instance} = \text{Port } 3200$).
+     - *System ID (SID):* Three-character alphanumeric identifier (`PRD` for Production, `QAS` for Quality Assurance, `DEV` for Development).
+     - *SAProuter String:* For remote branch connectivity across WAN links, a secure SAProuter string is appended (`/H/saprouter.cwg.local/S/3299/W/...`) to encrypt and tunnel traffic through corporate edge firewalls.
+   - To standardize deployment, the centralized configuration file (`SAPUILandscape.xml`) was automated via Group Policy, populating connection profiles on user machines without requiring manual technician entry.
+2. **Core SAP Administrative Transaction Codes (T-Codes):**
+   Navigating SAP administrative operations relies on standardized alphanumeric Transaction Codes (T-Codes) entered into the SAP GUI command field:
+
+| SAP Transaction Code | Functional Title | Engineering Support Activity & Practical Application |
+|---|---|---|
+| **`SU01`** | User Maintenance | Creating new SAP user profiles, assigning authorization roles (PFCG), unlocking accounts locked by excessive failed passwords, and generating initial temporary passwords. |
+| **`SU10`** | Mass User Maintenance | Executing bulk password resets and mass role assignments across multiple user master records simultaneously. |
+| **`SM04`** | User Session List | Viewing all active logged-in users, checking terminal IP addresses, monitoring idle times, and gracefully terminating hung or frozen user sessions. |
+| **`SM21`** | System Log Analysis | Inspecting central SAP kernel and database system logs to diagnose background job failures, database lock conflicts, and communication time-outs. |
+| **`ST22`** | ABAP Dump Analysis | Analyzing runtime error short dumps (`DBSQL_DUPLICATE_KEY_ERROR`, `TIME_OUT`) generated by custom ABAP programs, reviewing stack traces for software bug resolution. |
+| **`SP01`** | Spool Output Controller | Managing enterprise print queues originating from SAP; tracking spool request numbers, checking print errors, and rerouting failed invoices to functional network MFPs. |
+| **`SM50` / `SM66`** | Work Process Overview | Monitoring active dialog (DIA), background (BGD), update (UPD), and spool (SPO) work processes across the application server instance. |
+
+3. **Client-Side SAP Troubleshooting:**
+   - *Locked User Accounts:* Employees entering incorrect passwords three times trigger automatic account locks; resolved via `SU01 -> Unlock -> Set New Temporary Password`.
+   - *Network Disconnect Errors (`WSAECONNRESET` / `WSAETIMEDOUT`):* Diagnosed intermittent network drops between client PCs and SAP application servers using persistent ping tests and MTU path verification; resolved by adjusting keep-alive parameters in `services` file (`sapdp00 3200/tcp`).
+
+#### 3.2.12 Microsoft 365 Enterprise Productivity Suite Administration (Teams, Outlook, SharePoint, OneDrive)
+CWG Plc operates a modern hybrid enterprise workplace powered by the **Microsoft 365 (M365) Enterprise Suite**. Providing frontline proximity support required mastering the deployment, configuration, identity integration, and troubleshooting of Microsoft's core cloud productivity tools:
+
+```
++-----------------------------------------------------------------------+
+|  [SPACE RESERVED FOR FIGURE 3.24B]                                    |
+|                                                                       |
+|  Figure 3.24B: Microsoft 365 Enterprise Architecture & Workflows      |
+|  Description: Technical diagram illustrating Exchange Autodiscover,   |
+|  Outlook OST caching, Teams presence, and SharePoint Online sync.     |
++-----------------------------------------------------------------------+
+```
+
+1. **Microsoft Outlook & Exchange Online Configuration:**
+   - *Automated Account Setup via Autodiscover:* Modern Outlook desktop clients utilize the DNS **Autodiscover** service. When a user inputs their corporate email address (`user@cwg-plc.com`), Outlook issues an HTTPS request targeting `https://autodiscover.cwg-plc.com/autodiscover/autodiscover.xml` (or CNAME record pointing to `autodiscover.outlook.com`). The service returns an encrypted XML payload provisioning the user's Exchange Online mailbox, mailbox server endpoints, and Offline Address Book (OAB) URLs automatically.
+   - *Cached Exchange Mode vs. OST Repair:* To optimize responsiveness and permit offline email drafting, Outlook utilizes Cached Exchange Mode, storing a local synchronized replica of the cloud mailbox in an Offline Storage Table (`.ost`) file located at:
+     `%localappdata%\Microsoft\Outlook\user@cwg-plc.com.ost`
+     When users reported search index failures, email freezing, or sync discrepancies, technicians executed OST file remediation: terminating `OUTLOOK.EXE`, renaming the corrupted file to `.ost.bak`, and relaunching Outlook. The application contacts Exchange Online and streams a clean, uncorrupted rebuild of the mailbox cache without data loss.
+   - *Shared Mailboxes & Delegation:* Provisioning departmental shared mailboxes (e.g., `itsupport@cwg-plc.com`, `finance@cwg-plc.com`) in the Exchange Admin Center (EAC) and assigning *Read and Manage* (Full Access) and *Send As* permissions to designated staff.
+2. **Microsoft Teams Enterprise Deployment & Room Systems:**
+   - *Desktop Client Deployment:* Deploying the modern 64-bit Microsoft Teams client (WebView2 architecture) via silent MSI scripts.
+   - *Peripherals and Audio/Video Troubleshooting:* Configuring corporate executive boardrooms equipped with Teams Room Systems (poly studio soundbars, PTZ optical cameras, and tabletop touch consoles). Diagnosing audio feedback loops, setting USB audio sample rates, and clearing corrupted client local cache (`%appdata%\Microsoft\Teams` or `%localappdata%\Packages\MSTeams_8wekyb3d8bbwe\LocalCache`).
+   - *Channel Governance & Guest Access:* Configuring departmental Teams channels, standardizing guest access policies, and integrating Power Automate workflow bots for automated system alerts.
+3. **SharePoint Online & OneDrive for Business Synchronization:**
+   - *Corporate Intranet (The Gong & CWG NEXUS):* CWG maintains internal SharePoint communication and knowledge portals—most notably **The Gong** (the corporate intranet providing company news, policy manuals, and executive announcements) and **CWG NEXUS** (the internal technical knowledge base housing standard operating procedures and IT guides).
+   - *Document Libraries & Granular Access Control:* Creating departmental document libraries with customized metadata columns (e.g., *Document Classification: Internal / Confidential / Public*). Permissions are structured into hierarchical groups: *Site Owners* (Full Control), *Site Members* (Edit/Contribute), and *Site Visitors* (Read-Only).
+   - *Cloud-to-Desktop Sync via OneDrive Client:* Training corporate staff to synchronize cloud SharePoint document libraries directly to their Windows File Explorer using the OneDrive sync client (`odopen://sync?siteId=...`). Explaining Files On-Demand status icons:
+     - *Blue Cloud Icon:* File resides only in the cloud; consumes 0 bytes of local SSD storage.
+     - *Green Checkmark with White Background:* Locally available file downloaded upon opening.
+     - *Solid Green Checkmark with White Check:* Permanently pinned file marked *"Always keep on this device"*, guaranteed available during offline travel.
+4. **Multi-Factor Authentication (MFA) & Self-Service Password Reset (SSPR):**
+   - Enrolling onboarding employees into Microsoft Entra ID Multi-Factor Authentication using the **Microsoft Authenticator** mobile application.
+   - Enforcing *Number Matching* prompts (requiring the employee to type the two-digit number displayed on their login screen into their phone app) to completely eliminate MFA fatigue / push exhaustion attacks.
+
+#### 3.2.13 Microsoft Active Directory Domain Services (AD DS) Administration and OU Hierarchy
 Microsoft Active Directory Domain Services (AD DS) serves as the centralized identity, authentication, and directory management platform for CWG Plc's enterprise ecosystem. Operating across redundant domain controllers (`DC1.cwg.local`, `DC2.cwg.local`), AD DS authenticates all user logons via the Kerberos v5 protocol and manages resource authorization.
 
 ```
@@ -991,7 +1144,7 @@ Daily administrative tasks performed included:
 - **Security Group Membership:** Assigning users to global and domain-local security groups to grant least-privilege Access Control Lists (ACLs) to departmental Network Attached Storage (NAS) file shares, printer pools, and application permissions.
 - **Account Lifecycle and Credential Management:** Executing password resets for locked-out accounts, enforcing the *"User must change password at next logon"* flag, unlocking accounts locked by excessive failed Kerberos logon attempts, and disabling departing staff accounts while preserving mailbox archives for compliance.
 
-#### 3.2.10 Group Policy Objects (GPOs) Deployment, Password Complexity, and Storage Device Hardening
+#### 3.2.14 Group Policy Objects (GPOs) Deployment, Password Complexity, and Storage Device Hardening
 Group Policy Objects (GPOs) provide the centralized policy engine through which system administrators enforce configuration standards, operating system settings, and security baselines across thousands of domain-joined Windows machines.
 
 ```
@@ -1016,7 +1169,7 @@ Using the Group Policy Management Console (GPMC), our IT team maintained and dep
 
 GPO replication across domain controllers was audited via Distributed File System Replication (DFSR) health checks, and policy application on client machines was verified using `gpupdate /force` and `gpresult /r /v` diagnostics.
 
-#### 3.2.11 Enterprise Endpoint Detection and Response (EDR) Monitoring: Sophos Central and CrowdStrike Falcon
+#### 3.2.15 Enterprise Endpoint Detection and Response (EDR) Monitoring: Sophos Central and CrowdStrike Falcon
 In response to modern advanced persistent threats (APTs), ransomware epidemics, and zero-day exploits, CWG Plc operates a defense-in-depth endpoint security architecture leveraging two leading Endpoint Detection and Response (EDR) platforms: **CrowdStrike Falcon** and **Sophos Central Intercept X**.
 
 ```
@@ -1034,7 +1187,7 @@ Traditional signature-based antivirus engines fail against fileless malware, liv
 - **Sophos Central Intercept X:** Provides CryptoGuard anti-ransomware technology. When untrusted processes attempt rapid, unauthorized file encryption across user directories, Sophos intercepts the disk I/O, isolates the process, reverts encrypted files back to their uncorrupted pre-attack state using rollback cache snapshots, and alerts IT administrators.
 - **Agent Health Auditing:** As part of daily proximity operations, technicians review the centralized EDR cloud dashboard to verify that all domain-joined endpoints maintain active, communicating agents with the latest sensor versions. Any machine exhibiting disconnected telemetry for more than 48 hours is quarantined from the corporate network until health is restored.
 
-#### 3.2.12 IT Asset Management, Barcode Tagging, Physical Inventory Audits, and NIST 800-88 Decommissioning
+#### 3.2.16 IT Asset Management, Barcode Tagging, Physical Inventory Audits, and NIST 800-88 Decommissioning
 Effective IT service delivery demands meticulous tracking of the physical location, operational health, assigned custodianship, and financial depreciation of all technological assets. CWG Plc enforces strict IT Asset Management (ITAM) and inventory control procedures.
 
 ```
