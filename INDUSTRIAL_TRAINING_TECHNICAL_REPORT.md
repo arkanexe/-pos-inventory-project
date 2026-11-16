@@ -221,9 +221,13 @@ The report concludes with a technical analysis of challenges encountered alongsi
 - Figure 3.30: CWG Retail Suite Decoupled Architecture (Laravel 12 API + React 19 Frontend)
 - Figure 3.31: CWG Retail Suite 3NF Relational Database Entity-Relationship Diagram (ERD)
 - Figure 3.32: POS Checkout Interface: Live Barcode Scanning, Product Filtering, and Cart State Machine
+- Figure 3.32B: Product Catalogue Management, Dynamic Margin Calculations, and Image Uploads
 - Figure 3.33: ESC/POS 80mm Thermal Receipt Layout and Print Formatting Engine
 - Figure 3.34: Inventory Adjustment, Low-Stock Notification, and Audit Trail Management
+- Figure 3.34B: Sales History Table, Multi-Date Filter Presets, and Thermal Reprinting
 - Figure 3.35: Multi-Tab Financial Analytics Dashboard: Sales Performance, Margins, and Audit Logs
+- Figure 3.35B: Staff Access Control, Self-Registration, and Owner Approval Management
+- Figure 3.35C: Staff Activity Audit Trail & Enterprise Toast Notification System
 - Figure 3.36: LeaveTrack (PRJ-08) Enterprise System Architecture on Microsoft Power Platform
 - Figure 3.37: LeaveTrack Relational Data Model (Dataverse Schema: Employees, LeaveTypes, LeaveRequests, Balances, Approvals, Holidays)
 - Figure 3.38: LeaveTrack Canvas Application: Employee Leave Request and Real-Time Balance Interface
@@ -1420,6 +1424,27 @@ Security and role segregation are paramount in retail operations:
 - **Cost Price Masking:** In cashier-facing API responses, sensitive fields (`cost_price`, `profit_margin`) are stripped by Laravel API Resources (`CashierProductResource`), preventing competitive intelligence theft or price disputes.
 - **Account Self-Registration with Admin Approval:** New staff can register credentials via the portal, but accounts are created in a dormant `pending` status. Only a verified system administrator can approve the account, assign the operational role, and grant system access.
 
+```
++-----------------------------------------------------------------------+
+|  [SPACE RESERVED FOR FIGURE 3.35B]                                    |
+|                                                                       |
+|  Figure 3.35B: Staff User Management and Account Approval Console     |
+|  Description: Administrative console showing pending user approvals,  |
+|  role assignments (Cashier vs Admin), and active account activation.  |
++-----------------------------------------------------------------------+
+```
+
+```
++-----------------------------------------------------------------------+
+|  [SPACE RESERVED FOR FIGURE 3.35C]                                    |
+|                                                                       |
+|  Figure 3.35C: Staff Activity Audit Logs and Security Event Monitoring|
+|  Description: Chronological security audit stream capturing logins,   |
+|  price alterations, stock adjustments, and client IP addresses.       |
++-----------------------------------------------------------------------+
+```
+
+
 ---
 
 #### 3.3.3 Major Project II: LeaveTrack — Enterprise Operations Suite: Leave & Attendance Management System (PRJ-08)
@@ -1760,71 +1785,109 @@ To optimize the nationwide impact and sustainability of the SIWES scheme, it is 
 
 ## APPENDICES
 
-### Appendix A: Metering Diagnostic Keypad Short Codes & Token Decryption Structure
-```
-+-----------------------------------------------------------------------------------------+
-| SMART METER KEYPAD DIAGNOSTIC COMMAND MATRIX                                            |
-+---------+------------------------------------+------------------------------------------+
-| Code    | Description                        | Engineering Verification Expected        |
-+---------+------------------------------------+------------------------------------------+
-| #001#   | Cumulative Total Active Energy     | Displays kWh total since manufacture     |
-| #002#   | Instantaneous Voltage, Current, Hz | V=230V +/-10%, I=load current, f=50.0Hz  |
-| #003#   | Active Power and Power Factor      | kW load and cos phi phase relationship   |
-| #004#   | Total Reverse Active Energy        | Identifies reverse energy flow tamper    |
-| #005#   | Tamper Status Bitmask Register     | Hex status: Terminal/Top cover/Magnetic  |
-| #008#   | Firmware Version and CRC Checksum  | Certified firmware build verification    |
-+---------+------------------------------------+------------------------------------------+
-```
+### Appendix A: Smart Electricity Meter Keypad Diagnostic Short Codes & STS Token Specifications
 
-### Appendix B: Structured Cabling TIA/EIA-568B Pinout Specification
-```
-+-----------------------------------------------------------------------------------------+
-| ANSI/TIA/EIA-568B MODULAR RJ-45 CONNECTOR PINOUT ASSIGNMENTS                             |
-+-----+-----------------------+-------------------------+---------------------------------+
-| Pin | Wire Color Pattern    | 1000BASE-T Function     | Signal Name                     |
-+-----+-----------------------+-------------------------+---------------------------------+
-| 1   | White with Orange     | Transmit / Receive A+   | BI_DA+                          |
-| 2   | Solid Orange          | Transmit / Receive A-   | BI_DA-                          |
-| 3   | White with Green      | Transmit / Receive B+   | BI_DB+                          |
-| 4   | Solid Blue            | Transmit / Receive C+   | BI_DC+                          |
-| 5   | White with Blue       | Transmit / Receive C-   | BI_DC-                          |
-| 6   | Solid Green           | Transmit / Receive B-   | BI_DB-                          |
-| 7   | White with Brown      | Transmit / Receive D+   | BI_DD+                          |
-| 8   | Solid Brown           | Transmit / Receive D-   | BI_DD-                          |
-+-----+-----------------------+-------------------------+---------------------------------+
-```
+The Standard Transfer Specification (STS IEC 62055-41) prepayment smart meter firmware integrates standardized diagnostic interrogation short codes. When entered sequentially into the meter's 12-key elastomer keypad, these short codes read internal measurement registers, power quality metrics, and tamper flag bitmasks without requiring an optical communication probe.
 
-### Appendix C: LeaveTrack (PRJ-08) Dataverse Entity Schema & Attribute Definitions
-```
-+-----------------------------------------------------------------------------------------+
-| LEAVETRACK ENTERPRISE DATAVERSE RELATIONAL ENTITY SCHEMA                                 |
-+---------------------+-------------------+---------------------+-------------------------+
-| Entity Logical Name | Primary Column    | Key Foreign Lookups | Core Attributes         |
-+---------------------+-------------------+---------------------+-------------------------+
-| cwg_employee        | cwg_fullname      | cwg_manager_id      | Email, Dept, Title      |
-| cwg_leavetype       | cwg_typename      | None                | Allowance, Carryover    |
-| cwg_balance         | cwg_name          | Employee, LeaveType | Accrued, Used, Remaining|
-| cwg_leaverequest    | cwg_requestnumber | Employee, LeaveType | StartDate, EndDate, Days|
-| cwg_approval        | cwg_name          | Request, Approver   | Tier, Decision, Comments|
-| cwg_publicholiday   | cwg_holidayname   | None                | HolidayDate, Year       |
-+---------------------+-------------------+---------------------+-------------------------+
-```
+| Keypad Diagnostic Code | Target Measurement Register | Displayed Format & Units | Permissible Operational Tolerance | Engineering & Diagnostic Significance |
+|---|---|---|---|---|
+| **`#001#`** | Cumulative Total Active Forward Energy | `XXXXXX.XX kWh` | Class 1.0 ($\le \pm 1.0\%$) | Confirms total billable active energy consumed since factory zeroing. Verified against bench reference standard. |
+| **`#002#`** | Instantaneous RMS Line Voltage | `XXX.X V` | $230\,\text{V} \pm 10\%$ ($207\,\text{V} - 253\,\text{V}$) | Evaluates grid supply voltage stability; flags severe under-voltage or over-voltage conditions damaging to home appliances. |
+| **`#003#`** | Instantaneous RMS Line Current | `XX.XX A` | Rated: $5(60)\,\text{A}$ or $5(100)\,\text{A}$ | Measures instantaneous load draw through Manganin shunt; used to detect micro-leakage and overload threshold tripping. |
+| **`#004#`** | Grid Frequency | `XX.X Hz` | $50.0 \pm 0.2\,\text{Hz}$ | Verifies frequency synchronization with the Nigerian national electricity grid; flags frequency drift events. |
+| **`#005#`** | Instantaneous Active Power & Power Factor | `XX.XXX kW`, $\cos \varphi$ | Power factor: $0.00 - 1.00$ | Displays real-time power dissipation and phase angle; flags inductive reactive loads and poor industrial power factors. |
+| **`#006#`** | Cumulative Total Reverse Active Energy | `XXXXXX.XX kWh` | Zero under normal forward flow | Detects physical meter inversion or unauthorized local microgeneration back-feeding into the low-voltage distribution feeder. |
+| **`#007#`** | Tamper Status Bitmask Register | `Hexadecimal Bitmask` | `0x0000` (Normal / Secure) | Bit 0: Terminal cover breach; Bit 1: Top casing breach; Bit 2: Magnetic interference ($>0.3\,\text{T}$); Bit 3: Neutral bypass. |
+| **`#008#`** | Meter Firmware Version & CRC-32 Checksum | `vX.XX.XX`, `0xXXXXXXXX` | Exact match to certified release | Validates that the active firmware running in microcontroller flash memory complies with the statutory NEMSA-approved build. |
+| **`#009#`** | Real-Time Clock (RTC) Date and Time | `YYYY-MM-DD HH:MM:SS` | Clock drift $< 0.5\,\text{s/day}$ | Verifies internal timekeeping driven by the 32.768 kHz crystal oscillator and backed by the lithium coin-cell battery. |
+| **`#010#`** | Meter Serial Number & DISCO Utility Identifier | `11-Digit Decimal String` | Exact match to laser nameplate | Reconciles electronic identity with physical barcode and utility vending database records in the Meter Management System. |
 
-### Appendix D: CWG Retail Suite Relational Schema DDL & API Endpoints
-```
-+-----------------------------------------------------------------------------------------+
-| CWG RETAIL SUITE CORE RESTFUL API ROUTE ARCHITECTURE                                     |
-+--------+---------------------------------------+----------------------------------------+
-| Method | Endpoint URI                          | Controller Action & Access Policy      |
-+--------+---------------------------------------+----------------------------------------+
-| POST   | /api/auth/login                       | AuthController@login (Sanctum Token)   |
-| GET    | /api/products                         | ProductController@index (RBAC masked)  |
-| POST   | /api/products                         | ProductController@store (Admin Only)   |
-| POST   | /api/checkout                         | CheckoutController@process (Atomic Tx) |
-| GET    | /api/transactions                     | TransactionController@index (Filterable|
-| POST   | /api/stock-adjustments                | StockAdjustmentController@store (Audit)|
-| GET    | /api/reports/financial-summary        | ReportController@summary (5-Tab BI)    |
-| GET    | /api/activity-logs                    | ActivityLogController@index (Audit)    |
-+--------+---------------------------------------+----------------------------------------+
-```
+#### Standard Transfer Specification (STS) 20-Digit Token Structure
+Standard Transfer Specification (STS) credit tokens are encrypted 66-bit binary payloads converted into 20-digit decimal numbers using a compression algorithm. The payload structure comprises:
+- **Class Identifier (2 bits):** Defines token application type (00: Credit Transfer, 01: Key Change, 10: Clear Tamper, 11: Proprietary Test).
+- **Token Identifier (TID, 24 bits):** Quantifies minutes elapsed since the STS base epoch (1993, transitioning to 2014), providing absolute anti-replay protection.
+- **Credit Transfer Amount (16 bits):** Encodes the monetary or kilowatt-hour recharge amount using non-linear floating-point mantissa and exponent formatting.
+- **Message Authentication Code (MAC / CRC, 16 bits):** Cryptographic hash generated using the Data Encryption Standard (DES) or Triple-DES algorithm keyed with the utility's private Vending Key (VK), ensuring token tamper-proofing.
 
+---
+
+### Appendix B: ANSI/TIA/EIA-568B Commercial Structured Cabling Pinout & Electrical Parameters
+
+All modular RJ-45 terminations and 110-type IDC patch panel punch-downs deployed across CWG Plc's enterprise local area network strictly adhere to the ANSI/TIA/EIA-568B commercial building telecommunications wiring standard.
+
+| Modular RJ-45 Pin | Wire Color Pattern | Gigabit Ethernet (1000BASE-T) Function | Cable Wire Pair | Signal Designation & Polarity | DC Loop Resistance Limit |
+|---|---|---|---|---|---|
+| **Pin 1** | White with Orange Stripe | Transmit / Receive Pair 2 (+) | Pair 2 (Orange) | `BI_DA+` (Bidirectional Data A+) | $\le 0.188\,\Omega/\text{m}$ |
+| **Pin 2** | Solid Orange | Transmit / Receive Pair 2 (-) | Pair 2 (Orange) | `BI_DA-` (Bidirectional Data A-) | $\le 0.188\,\Omega/\text{m}$ |
+| **Pin 3** | White with Green Stripe | Transmit / Receive Pair 3 (+) | Pair 3 (Green) | `BI_DB+` (Bidirectional Data B+) | $\le 0.188\,\Omega/\text{m}$ |
+| **Pin 4** | Solid Blue | Transmit / Receive Pair 1 (+) | Pair 1 (Blue) | `BI_DC+` (Bidirectional Data C+) | $\le 0.188\,\Omega/\text{m}$ |
+| **Pin 5** | White with Blue Stripe | Transmit / Receive Pair 1 (-) | Pair 1 (Blue) | `BI_DC-` (Bidirectional Data C-) | $\le 0.188\,\Omega/\text{m}$ |
+| **Pin 6** | Solid Green | Transmit / Receive Pair 3 (-) | Pair 3 (Green) | `BI_DB-` (Bidirectional Data B-) | $\le 0.188\,\Omega/\text{m}$ |
+| **Pin 7** | White with Brown Stripe | Transmit / Receive Pair 4 (+) | Pair 4 (Brown) | `BI_DD+` (Bidirectional Data D+) | $\le 0.188\,\Omega/\text{m}$ |
+| **Pin 8** | Solid Brown | Transmit / Receive Pair 4 (-) | Pair 4 (Brown) | `BI_DD-` (Bidirectional Data D-) | $\le 0.188\,\Omega/\text{m}$ |
+
+#### Category 6A (Cat6a) High-Frequency Physical Transmission Performance Limits
+
+| Electrical Transmission Parameter | Frequency Benchmark (100 MHz) | Frequency Benchmark (250 MHz) | Frequency Benchmark (500 MHz) | Engineering Impact & Compliance Significance |
+|---|---|---|---|---|
+| **Insertion Loss (Attenuation)** | $\le 19.8\,\text{dB}/100\text{m}$ | $\le 32.8\,\text{dB}/100\text{m}$ | $\le 49.3\,\text{dB}/100\text{m}$ | Signal power reduction over distance; limits permanent link length strictly to 90 meters. |
+| **Near-End Crosstalk (NEXT)** | $\ge 44.3\,\text{dB}$ | $\ge 38.3\,\text{dB}$ | $\ge 33.8\,\text{dB}$ | Measures electromagnetic signal bleed between adjacent pairs at transmitter end; maintained by tight pair twists. |
+| **Power Sum NEXT (PS-NEXT)** | $\ge 42.3\,\text{dB}$ | $\ge 36.3\,\text{dB}$ | $\ge 31.8\,\text{dB}$ | Evaluates cumulative crosstalk interference when all three neighboring pairs transmit simultaneously. |
+| **Return Loss (RL)** | $\ge 20.1\,\text{dB}$ | $\ge 17.3\,\text{dB}$ | $\ge 15.2\,\text{dB}$ | Quantifies reflected signal power caused by cable impedance variations, crimp crushing, and sharp bends. |
+| **Propagation Delay Skew** | $\le 45\,\text{ns}/100\text{m}$ | $\le 45\,\text{ns}/100\text{m}$ | $\le 45\,\text{ns}/100\text{m}$ | Maximum arrival time difference between the fastest and slowest wire pair; prevents bit jitter in 10GBASE-T. |
+
+---
+
+### Appendix C: LeaveTrack (PRJ-08) Enterprise Dataverse Entity Dictionary & Security RBAC Matrix
+
+The Leave & Attendance Management System (LeaveTrack, PRJ-08) data layer is implemented on Microsoft Dataverse. The normalized schema establishes relational integrity across 6 core custom entities.
+
+| Entity Logical Name | Display Name | Primary Key / Name Attribute | Key Foreign Lookups & Relationships | Ownership Type | Core Business Attributes & Choice Definitions |
+|---|---|---|---|---|---|
+| **`cwg_employee`** | Employee Master | `cwg_fullname` (Single Line Text) | `cwg_manager_id` -> Self-Lookup (1:N) | User / Team | `cwg_email` (Unique), `cwg_jobtitle`, `cwg_department` (Choice), `cwg_employmentdate`, `cwg_systemuser_id`. |
+| **`cwg_leavetype`** | Leave Category | `cwg_typename` (Single Line Text) | None (Master Lookup Table) | Organization | `cwg_defaultallowance` (Days), `cwg_requiresdocumentation` (Bool), `cwg_allowshalfday`, `cwg_allowscarryover`. |
+| **`cwg_balance`** | Leave Balance Ledger | `cwg_name` (Autoname) | `cwg_employee_id` (N:1), `cwg_leavetype_id` (N:1) | User / Team | `cwg_leaveyear` (Int), `cwg_accrueddays` (Decimal), `cwg_useddays` (Decimal), `cwg_pendingdays`, `cwg_remainingdays`. |
+| **`cwg_leaverequest`** | Leave Request | `cwg_requestnumber` (`LR-{YYYY}-{0000}`) | `cwg_employee_id` (N:1), `cwg_leavetype_id` (N:1) | User / Team | `cwg_startdate`, `cwg_enddate`, `cwg_ishalfday`, `cwg_totalworkingdays`, `cwg_reason`, `cwg_status` (Choice), `cwg_attachment`. |
+| **`cwg_approval`** | Approval History Log | `cwg_name` (Autoname) | `cwg_leaverequest_id` (N:1), `cwg_approver_id` (N:1) | User / Team | `cwg_tier` (Choice: Manager, Dept Head, HR), `cwg_decision` (Approved, Rejected), `cwg_comments`, `cwg_decisiondate`. |
+| **`cwg_publicholiday`** | Statutory Public Holiday | `cwg_holidayname` (Single Line Text) | None (Global Calendar Lookup) | Organization | `cwg_holidaydate` (Date Only), `cwg_holidayyear` (Integer). Excluded dynamically from leave duration calculations. |
+
+#### Role-Based Access Control (RBAC) Security Matrix
+
+| Security Role | Target Dataverse Entity | Create (C) | Read (R) | Write (W) | Delete (D) | Append (A) | Append To (AT) | Practical Scope & Data Governance Enforcement |
+|---|---|---|---|---|---|---|---|---|
+| **Employee Role** | `cwg_leaverequest` | User | User | User (Draft) | User (Draft) | User | User | Employees can only submit, view, and modify their own leave requests while in Draft state. |
+| **Employee Role** | `cwg_balance` | None | User | None | None | None | User | Read-only access restricted strictly to the employee's personal leave balance record. |
+| **Manager Role** | `cwg_leaverequest` | None | Business Unit | Business Unit | None | Business Unit | Business Unit | Line managers can view requests originating from direct reportees within their department. |
+| **Manager Role** | `cwg_approval` | Business Unit | Business Unit | Business Unit | None | Business Unit | Business Unit | Managers can append decisions and comments to approval records for their subordinates. |
+| **HR Administrator** | All Custom Entities | Organization | Organization | Organization | Organization | Organization | Organization | Full global administrative privileges across all organizational entities, ledgers, and policies. |
+
+---
+
+### Appendix D: CWG Retail Suite Core RESTful API Routes & Relational Schema DDL
+
+The CWG Retail Suite backend operates as a decoupled micro-monolith exposing high-performance RESTful JSON endpoints implemented in PHP 8.3 / Laravel 12.
+
+| HTTP Method | API Endpoint URI | Controller & Action Method | Authentication & Middleware | Request Payload / Query Parameters | Response HTTP Status & Data Structure |
+|---|---|---|---|---|---|
+| **POST** | `/api/auth/login` | `AuthController@login` | Public (Rate-Limited: 5 req/min) | `email`, `password`, `device_name` | `200 OK`: Bearer token, user role profile, permissions. |
+| **POST** | `/api/auth/logout` | `AuthController@logout` | `auth:sanctum` | None | `200 OK`: Token revoked from `personal_access_tokens`. |
+| **GET** | `/api/products` | `ProductController@index` | `auth:sanctum`, `role:admin,cashier` | `search`, `category_id`, `barcode`, `page` | `200 OK`: Paginated product catalogue (cost price masked for cashiers). |
+| **POST** | `/api/products` | `ProductController@store` | `auth:sanctum`, `role:admin` | `name`, `barcode`, `cost_price`, `selling_price`, `category_id`, `image` | `201 Created`: Master product record with generated thumbnail path. |
+| **PUT** | `/api/products/{id}` | `ProductController@update` | `auth:sanctum`, `role:admin` | `name`, `selling_price`, `low_stock_threshold` | `200 OK`: Updated product record. |
+| **POST** | `/api/checkout` | `CheckoutController@process` | `auth:sanctum`, `role:admin,cashier` | `items: [{product_id, quantity}]`, `payment_method`, `amount_paid` | `200 OK`: Atomic transaction record, decrementing stock, invoice number. |
+| **GET** | `/api/transactions` | `TransactionController@index` | `auth:sanctum`, `role:admin,cashier` | `date_from`, `date_to`, `payment_method`, `page` | `200 OK`: Paginated transaction history with itemized line subtotals. |
+| **POST** | `/api/stock-adjustments` | `StockAdjustmentController@store` | `auth:sanctum`, `role:admin` | `product_id`, `type`, `quantity`, `reason` | `201 Created`: Adjustment audit log and updated inventory count. |
+| **GET** | `/api/reports/financial-summary`| `ReportController@summary` | `auth:sanctum`, `role:admin` | `period: today, 7d, 30d, custom` | `200 OK`: Revenue totals, inventory valuation, P&L, margin trends. |
+| **GET** | `/api/activity-logs` | `ActivityLogController@index` | `auth:sanctum`, `role:admin` | `user_id`, `module`, `date_range` | `200 OK`: Chronological system security and transaction audit trail. |
+
+#### Core Relational Database Data Definition Language (DDL) Schema Summary
+
+| Table Name | Primary Key | Foreign Key Constraints | Key Indexed Columns | Engine & Charset |
+|---|---|---|---|---|
+| **`users`** | `id` (BIGINT UNSIGNED) | None | `email` (UNIQUE) | InnoDB, utf8mb4_unicode_ci |
+| **`categories`** | `id` (BIGINT UNSIGNED) | None | `slug` (UNIQUE) | InnoDB, utf8mb4_unicode_ci |
+| **`products`** | `id` (BIGINT UNSIGNED) | `category_id` -> `categories(id)` [RESTRICT] | `barcode` (INDEX), `category_id` (INDEX) | InnoDB, utf8mb4_unicode_ci |
+| **`transactions`** | `id` (BIGINT UNSIGNED) | `user_id` -> `users(id)` [RESTRICT] | `invoice_number` (UNIQUE), `created_at` (INDEX) | InnoDB, utf8mb4_unicode_ci |
+| **`transaction_items`** | `id` (BIGINT UNSIGNED) | `transaction_id` -> `transactions(id)` [CASCADE], `product_id` -> `products(id)` [RESTRICT] | `transaction_id` (INDEX), `product_id` (INDEX) | InnoDB, utf8mb4_unicode_ci |
+| **`stock_adjustments`** | `id` (BIGINT UNSIGNED) | `product_id` -> `products(id)`, `user_id` -> `users(id)` | `product_id` (INDEX), `created_at` (INDEX) | InnoDB, utf8mb4_unicode_ci |
+| **`activity_logs`** | `id` (BIGINT UNSIGNED) | `user_id` -> `users(id)` | `user_id` (INDEX), `action` (INDEX), `created_at` (INDEX) | InnoDB, utf8mb4_unicode_ci |

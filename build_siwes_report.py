@@ -17,6 +17,27 @@ ROOT = Path(__file__).resolve().parent
 SOURCE = ROOT / "INDUSTRIAL_TRAINING_TECHNICAL_REPORT.md"
 DOCX = ROOT / "INDUSTRIAL_TRAINING_TECHNICAL_REPORT.docx"
 PDF = ROOT / "INDUSTRIAL_TRAINING_TECHNICAL_REPORT.pdf"
+IMG_DIR = ROOT / "report_images"
+
+FIGURE_IMAGE_MAP = {
+    "Figure 3.30": IMG_DIR / "fig_3_30_pos_architecture.png",
+    "Figure 3.31": IMG_DIR / "fig_3_31_pos_erd.png",
+    "Figure 3.32:": IMG_DIR / "fig_3_32_pos_checkout.png",
+    "Figure 3.32B": IMG_DIR / "fig_3_32b_pos_product_catalog.png",
+    "Figure 3.33": IMG_DIR / "fig_3_33_pos_receipt.png",
+    "Figure 3.34:": IMG_DIR / "fig_3_34_pos_inventory_adjustment.png",
+    "Figure 3.34B": IMG_DIR / "fig_3_34b_pos_sales_history.png",
+    "Figure 3.35:": IMG_DIR / "fig_3_35_pos_reports_dashboard.png",
+    "Figure 3.35B": IMG_DIR / "fig_3_35b_pos_staff_approval.png",
+    "Figure 3.35C": IMG_DIR / "fig_3_35c_pos_activity_logs.png",
+}
+
+
+def get_figure_image(caption: str) -> Path | None:
+    for key, path in FIGURE_IMAGE_MAP.items():
+        if key in caption and path.exists():
+            return path
+    return None
 
 
 def plain(value: str) -> str:
@@ -26,7 +47,6 @@ def plain(value: str) -> str:
     value = value.replace("\\approx", "≈").replace("\\pm", "±").replace("\\times", "×")
     value = value.replace("\\cdot", "·").replace("\\mu", "μ").replace("\\Omega", "Ω")
     value = re.sub(r"\*\*|`|\$", "", value)
-    # clean any non-printable ASCII
     cleaned = []
     for c in value:
         if ord(c) < 32 and c not in "\t\n\r":
@@ -236,26 +256,44 @@ def build_docx(blocks):
             for title in (chapters if kind == "contents" else figures):
                 document.add_paragraph(title)
         elif kind == "figure":
-            table = document.add_table(rows=1, cols=1)
-            table.style = "Table Grid"
-            table.rows[0].height = Inches(1.8)
-            table.rows[0].height_rule = WD_ROW_HEIGHT_RULE.AT_LEAST
-            cell = table.cell(0, 0)
-            shading = parse_xml(r'<w:shd {} w:fill="F1F5F9"/>'.format(nsdecls('w')))
-            cell._tc.get_or_add_tcPr().append(shading)
-            p = cell.paragraphs[0]
-            run1 = p.add_run(f"FIGURE PLACEHOLDER — {entry[1]}\n")
-            run1.bold = True
-            run1.font.size = Pt(9.5)
-            run2 = p.add_run(f"Technical Diagram / Photographic Evidence: {entry[2]}")
-            run2.italic = True
-            run2.font.size = Pt(9)
-            document.add_paragraph("")
+            img_path = get_figure_image(entry[1])
+            if img_path:
+                p = document.add_paragraph()
+                p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                p.paragraph_format.space_before = Pt(8)
+                p.paragraph_format.space_after = Pt(4)
+                run = p.add_run()
+                run.add_picture(str(img_path), width=Inches(5.8))
+
+                caption_p = document.add_paragraph()
+                caption_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                caption_p.paragraph_format.space_after = Pt(12)
+                run1 = caption_p.add_run(f"{entry[1]}\n")
+                run1.bold = True
+                run1.font.size = Pt(9.5)
+                run2 = caption_p.add_run(f"Technical Screenshot / Architecture: {entry[2]}")
+                run2.italic = True
+                run2.font.size = Pt(8.5)
+            else:
+                table = document.add_table(rows=1, cols=1)
+                table.style = "Table Grid"
+                table.rows[0].height = Inches(1.8)
+                table.rows[0].height_rule = WD_ROW_HEIGHT_RULE.AT_LEAST
+                cell = table.cell(0, 0)
+                shading = parse_xml(r'<w:shd {} w:fill="F1F5F9"/>'.format(nsdecls('w')))
+                cell._tc.get_or_add_tcPr().append(shading)
+                p = cell.paragraphs[0]
+                run1 = p.add_run(f"FIGURE PLACEHOLDER — {entry[1]}\n")
+                run1.bold = True
+                run1.font.size = Pt(9.5)
+                run2 = p.add_run(f"Technical Diagram / Photographic Evidence: {entry[2]}")
+                run2.italic = True
+                run2.font.size = Pt(9)
+                document.add_paragraph("")
         elif kind == "table":
             headers, rows = entry[1], entry[2]
             table = document.add_table(rows=len(rows) + 1, cols=len(headers))
             table.style = "Table Grid"
-            # format headers
             for col_idx, h_text in enumerate(headers):
                 cell = table.cell(0, col_idx)
                 shading = parse_xml(r'<w:shd {} w:fill="1E3A8A"/>'.format(nsdecls('w')))
@@ -265,7 +303,6 @@ def build_docx(blocks):
                 run.bold = True
                 run.font.size = Pt(9)
                 run.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
-            # format rows
             for row_idx, row_cells in enumerate(rows):
                 for col_idx, c_text in enumerate(row_cells):
                     if col_idx < len(headers):
@@ -289,7 +326,7 @@ def build_pdf(blocks):
     from reportlab.lib.styles import ParagraphStyle
     from reportlab.pdfbase import pdfmetrics
     from reportlab.pdfbase.ttfonts import TTFont
-    from reportlab.platypus import PageBreak, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
+    from reportlab.platypus import PageBreak, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle, Image as RLImage
 
     font_path = Path("C:/Windows/Fonts/arial.ttf")
     bold_path = Path("C:/Windows/Fonts/arialbd.ttf")
@@ -310,6 +347,7 @@ def build_pdf(blocks):
     heading3 = ParagraphStyle("H3", parent=normal, fontName="Report-Bold", fontSize=9.5, leading=13, spaceBefore=8, spaceAfter=4, textColor=colors.HexColor("#334155"))
     small = ParagraphStyle("Small", parent=normal, fontSize=8, leading=11)
     center = ParagraphStyle("Center", parent=heading1, alignment=TA_CENTER, spaceAfter=20)
+    center_caption = ParagraphStyle("CenterCaption", parent=normal, fontSize=8.5, leading=12, alignment=TA_CENTER, spaceAfter=10)
     story = []
 
     # Title Page
@@ -350,20 +388,27 @@ def build_pdf(blocks):
             for title in (chapters if kind == "contents" else figures):
                 story.append(Paragraph(html.escape(title), small))
         elif kind == "figure":
-            content = Paragraph(
-                f"<b>FIGURE PLACEHOLDER — {html.escape(entry[1])}</b><br/><br/><i>Technical Diagram / Photographic Evidence:</i> {html.escape(entry[2])}",
-                small,
-            )
-            table = Table([[content]], colWidths=[465], rowHeights=[125])
-            table.setStyle(TableStyle([
-                ("BOX", (0, 0), (-1, -1), 0.8, colors.HexColor("#475569")),
-                ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#f1f5f9")),
-                ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                ("LEFTPADDING", (0, 0), (-1, -1), 12),
-                ("TOPPADDING", (0, 0), (-1, -1), 12),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 12),
-            ]))
-            story.extend([table, Spacer(1, 10)])
+            img_path = get_figure_image(entry[1])
+            if img_path:
+                rl_img = RLImage(str(img_path), width=465, height=240)
+                caption_text = f"<b>{html.escape(entry[1])}</b><br/><i>Technical Screenshot / Architecture:</i> {html.escape(entry[2])}"
+                caption_p = Paragraph(caption_text, center_caption)
+                story.extend([Spacer(1, 4), rl_img, Spacer(1, 4), caption_p, Spacer(1, 8)])
+            else:
+                content = Paragraph(
+                    f"<b>FIGURE PLACEHOLDER — {html.escape(entry[1])}</b><br/><br/><i>Technical Diagram / Photographic Evidence:</i> {html.escape(entry[2])}",
+                    small,
+                )
+                table = Table([[content]], colWidths=[465], rowHeights=[125])
+                table.setStyle(TableStyle([
+                    ("BOX", (0, 0), (-1, -1), 0.8, colors.HexColor("#475569")),
+                    ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#f1f5f9")),
+                    ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                    ("LEFTPADDING", (0, 0), (-1, -1), 12),
+                    ("TOPPADDING", (0, 0), (-1, -1), 12),
+                    ("RIGHTPADDING", (0, 0), (-1, -1), 12),
+                ]))
+                story.extend([table, Spacer(1, 10)])
         elif kind == "table":
             headers, rows = entry[1], entry[2]
             total_width = 465
@@ -377,7 +422,6 @@ def build_pdf(blocks):
                 for cell_idx, cell_text in enumerate(row):
                     if cell_idx < num_cols:
                         t_row.append(Paragraph(html.escape(cell_text), small))
-                # Pad row if incomplete
                 while len(t_row) < num_cols:
                     t_row.append(Paragraph("", small))
                 t_data.append(t_row)
@@ -400,13 +444,11 @@ def build_pdf(blocks):
         canvas.saveState()
         canvas.setFont("Report", 7.5)
         canvas.setFillColor(colors.HexColor("#64748b"))
-        # Running header (on pages > 1)
         if document.page > 1:
             canvas.drawString(65, 800, "SIWES Technical Report | Ayanbisi AbdulRahman (CPE/22/9996) | CWG Plc")
             canvas.setStrokeColor(colors.HexColor("#cbd5e1"))
             canvas.setLineWidth(0.5)
             canvas.line(65, 794, 530, 794)
-        # Running footer
         canvas.drawCentredString(A4[0] / 2, 30, str(document.page))
         canvas.restoreState()
 

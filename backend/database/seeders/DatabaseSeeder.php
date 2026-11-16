@@ -103,13 +103,21 @@ class DatabaseSeeder extends Seeder
         );
 
         // 2. Remove all existing products, inventories, sale items, and adjustments cleanly
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        if (DB::getDriverName() === 'sqlite') {
+            DB::statement('PRAGMA foreign_keys = OFF;');
+        } else {
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        }
         SaleItem::truncate();
         Sale::truncate();
         StockAdjustment::truncate();
         Inventory::truncate();
         Product::truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        if (DB::getDriverName() === 'sqlite') {
+            DB::statement('PRAGMA foreign_keys = ON;');
+        } else {
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        }
 
         // 3. Exactly 14 Realistic Retail Products with Correct Units, Images & Stock
         $products = [
