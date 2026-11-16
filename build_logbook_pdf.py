@@ -333,6 +333,64 @@ AFTER B-TREE INDEXING:
                                     |
 [Final Quality Check & Physical Handover to Onboarding Corporate Staff]""",
         "student_comment": "Acquired comprehensive practical mastery in end-to-end enterprise laptop staging, automated provisioning with .ppkg packages, essential enterprise security deployment, and Active Directory domain enrollment."
+    },
+    {
+        "week_number": "Week 23 (IT Week 10)",
+        "period": "9th November 2026 – 13th November 2026",
+        "unit": "Enterprise Solutions & Power Platform",
+        "section": "IT & Business Innovation",
+        "badge_class": "badge-software",
+        "badge_text": "Enterprise Apps & Cloud",
+        "job_done": "LeaveTrack (PRJ-08) Kickoff, Dataverse Relational Data Modeling, Canvas App UI & Public Holiday Logic",
+        "work_done_summary": "During this week in the Enterprise Applications Cell under Bayo and Mrs. Abimbola, I initiated development on LeaveTrack (PRJ-08 • Track A — Enterprise Operations Suite). Work done included reviewing CWG's HR leave entitlement policies across 6 leave categories (Annual, Sick, Maternity, Paternity, Study, Compassionate), designing the normalized Microsoft Dataverse relational schema across 6 core tables (`cwg_employee`, `cwg_leavetype`, `cwg_balance`, `cwg_leaverequest`, `cwg_approval`, `cwg_publicholiday`), configuring RBAC security roles (Employee, Manager, HR Admin), populating statutory Nigerian public holidays, building the responsive Power Apps Canvas portal with real-time balance lookup formulas, and implementing date calculations that dynamically exclude weekends and public holidays.",
+        "days": [
+            ("Monday", "09/11/2026", "LeaveTrack (PRJ-08) Architecture & HR Policy Review", "Reviewed project specification PRJ-08 for Leave & Attendance Management System. Mapped corporate HR leave rules, annual accrual formulas, and multi-tier approval policies."),
+            ("Tuesday", "10/11/2026", "Microsoft Dataverse Table Architecture & Schemas", "Created Dataverse tables: `Employees`, `LeaveTypes`, `LeaveRequests`, `Balances`, `Approvals`, and `PublicHolidays`; defined autonumbering (`LR-{YYYY}-{0000}`) and choice columns."),
+            ("Wednesday", "11/11/2026", "Security Roles & Public Holiday Calendar Seeding", "Configured Dataverse RBAC security roles (User-level access for Employees, BU-level for Managers, Global for HR); seeded statutory 2026 Nigerian public holidays into `PublicHolidays`."),
+            ("Thursday", "12/11/2026", "Power Apps Canvas Interface & Dynamic Balance Lookups", "Engineered responsive Power Apps Canvas request screen; implemented Power Fx formulas querying `Balances` to display real-time remaining leave days dynamically upon type selection."),
+            ("Friday", "13/11/2026", "Working Days Logic & Pre-Submission Validation Barrier", "Authored Power Fx iterative sequence formula calculating working days strictly excluding weekends and public holidays; added pre-submission validation preventing requests exceeding available balance.")
+        ],
+        "sketch_title": "LeaveTrack Dataverse Relational Schema (PRJ-08 Data Layer)",
+        "sketch": """[cwg_employee] 1 ----- M [cwg_balance] M ----- 1 [cwg_leavetype]
+       |                      |
+       | 1                    | (tracks: accrued, used, remaining)
+       v M                    v
+[cwg_leaverequest] 1 --- M [cwg_approval]
+       |                   (Tier: Manager -> Dept Head -> HR)
+       v
+[cwg_publicholiday] -> Excluded from duration calculation""",
+        "student_comment": "Learned low-code enterprise data modeling on Microsoft Dataverse. Mastered complex Power Fx iterative date arithmetic to exclude statutory public holidays from employee leave balances."
+    },
+    {
+        "week_number": "Week 24 (IT Week 11)",
+        "period": "16th November 2026 – 20th November 2026",
+        "unit": "Cloud Automation, Identity & Analytics",
+        "section": "IT & Business Innovation",
+        "badge_class": "badge-software",
+        "badge_text": "Cloud Automation & BI",
+        "job_done": "Power Automate Hierarchical Approvals, Entra ID Manager Routing, Graph API Calendar Sync & Power BI Analytics",
+        "work_done_summary": "During this week culminating on 19th–20th November 2026, I completed the backend workflow automation, identity integration, calendar synchronization, and executive business intelligence dashboards for LeaveTrack (PRJ-08). Work done included building a Power Automate cloud flow triggered by Dataverse row additions, integrating Microsoft Entra ID via the Office 365 Users connector (`Get manager (V2)`) to dynamically discover applicant line managers, designing interactive Teams Adaptive Cards for one-click manager approvals, invoking Microsoft Graph API (`POST /v1.0/users/{id}/events`) to automatically write approved leaves into Outlook calendars with out-of-office status, constructing an executive Power BI analytics dashboard computing departmental absence trends and total organization-wide accrued leave liability, and executing formal User Acceptance Testing (UAT).",
+        "days": [
+            ("Monday", "16/11/2026", "Power Automate Cloud Flow & Entra ID Manager Lookup", "Created automated cloud flow triggered on `LeaveRequests` creation; used Office 365 Users connector to resolve applicant's direct manager dynamically from Microsoft Entra ID directory attributes."),
+            ("Tuesday", "17/11/2026", "Multi-Tier Approval State Machine & Teams Adaptive Cards", "Engineered interactive Microsoft Teams Adaptive Card approval prompts with comments; built conditional escalation branching for leaves > 5 days routing to Department Head and HR."),
+            ("Wednesday", "18/11/2026", "Microsoft Graph API Automated Outlook Calendar Sync", "Configured HTTP action targeting Graph API (`/v1.0/users/{id}/events`) to inject approved leave blocks into employee Outlook calendar (`showAs: 'oof'`); built monthly balance accrual cloud flow."),
+            ("Thursday", "19/11/2026", "Power BI Executive Dashboard & Organization Liability", "Engineered Power BI dashboard connecting to Dataverse via DirectQuery; built DAX measures computing total accrued leave financial liability and 30-day forward team absence heatmap."),
+            ("Friday", "20/11/2026", "User Acceptance Testing (UAT), ALM Packaging & Documentation", "Executed 5 UAT test scenarios (half-days, holiday boundaries, manager-on-leave delegates); packaged system as Managed Solution (`CWG_LeaveTrack_v1.0.0.zip`); finalized technical documentation.")
+        ],
+        "sketch_title": "LeaveTrack Multi-Tier Approval & Graph API Integration Architecture",
+        "sketch": """[Leave Request Submitted] ---> [Dataverse Trigger]
+                                      |
+[Entra ID Manager Lookup] ---> [Teams Adaptive Card Prompt]
+                                      |
+                      +---------------+---------------+
+                      | (Approved)                    | (Rejected)
+                      v                               v
+[Balance Ledger Deduction]            [Notify Employee via Email]
+                      |
+[Microsoft Graph API Call] ---> Creates Outlook Event (showAs: 'oof')
+                      |
+[Power BI Dashboard] ---------> Live Org Liability & Absence Heatmap""",
+        "student_comment": "Successfully delivered PRJ-08 LeaveTrack enterprise platform. Mastered enterprise cloud orchestration with Power Automate, Microsoft Graph API calendar integration, and Power BI DAX financial modeling."
     }
 ]
 
@@ -431,7 +489,7 @@ def generate_html(weeks):
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>CWG Plc - SIWES Technical Logbook (Weeks 11 to 22)</title>
+<title>CWG Plc - SIWES Technical Logbook (Weeks 11 to 24 (Up to Nov 19/20))</title>
 <style>
   @page {{
     size: A4 portrait;

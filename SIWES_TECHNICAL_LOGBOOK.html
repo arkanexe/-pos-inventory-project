@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>CWG Plc - SIWES Technical Logbook (Weeks 11 to 22)</title>
+<title>CWG Plc - SIWES Technical Logbook (Weeks 11 to 24 (Up to Nov 19/20))</title>
 <style>
   @page {
     size: A4 portrait;
@@ -1561,6 +1561,226 @@ AFTER B-TREE INDEXING:
               <div class="feedback-box">
                 <div class="panel-header">STUDENT'S WEEKLY REFLECTION & TECHNICAL COMPETENCY:</div>
                 <div class="student-comment-text">"Acquired comprehensive practical mastery in end-to-end enterprise laptop staging, automated provisioning with .ppkg packages, essential enterprise security deployment, and Active Directory domain enrollment."</div>
+              </div>
+              <div class="feedback-box">
+                <div class="panel-header">INDUSTRY-BASED SUPERVISOR'S APPRAISAL & SIGNATURE:</div>
+                <div class="signature-line"></div>
+                <div class="signature-caption">Supervisor Signature, Stamp & Date</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+
+        <div class="logbook-page">
+          <div class="doc-header">
+            <div>
+              <div class="doc-title-main">COMPUTER WAREHOUSE GROUP (CWG) PLC</div>
+              <div class="doc-title-sub">STUDENT INDUSTRIAL WORK EXPERIENCE SCHEME (SIWES) — TECHNICAL LOGBOOK</div>
+            </div>
+            <div class="doc-header-meta">
+              <strong>TRAINING RECORD</strong><br>
+              CWG Infrastructure & Engineering
+            </div>
+          </div>
+
+          <div class="info-bar">
+            <div class="info-item">
+              <span>Section / Department</span>
+              <strong>IT & Business Innovation</strong>
+            </div>
+            <div class="info-item">
+              <span>Operational Unit</span>
+              <strong><span class="section-badge badge-software">Enterprise Apps & Cloud</span></strong>
+            </div>
+            <div class="info-item">
+              <span>Training Period</span>
+              <strong>9th November 2026 – 13th November 2026</strong>
+            </div>
+            <div class="info-item" style="text-align: right;">
+              <span>Logbook Week</span>
+              <strong style="color: #1e3a8a; font-size: 13px;">Week 23 (IT Week 10)</strong>
+            </div>
+          </div>
+
+          <div class="weekly-project-box">
+            <div class="box-tag">WORK DONE DURING THE WEEK:</div>
+            <div class="box-title">LeaveTrack (PRJ-08) Kickoff, Dataverse Relational Data Modeling, Canvas App UI & Public Holiday Logic</div>
+            <div class="box-desc">During this week in the Enterprise Applications Cell under Bayo and Mrs. Abimbola, I initiated development on LeaveTrack (PRJ-08 • Track A — Enterprise Operations Suite). Work done included reviewing CWG's HR leave entitlement policies across 6 leave categories (Annual, Sick, Maternity, Paternity, Study, Compassionate), designing the normalized Microsoft Dataverse relational schema across 6 core tables (`cwg_employee`, `cwg_leavetype`, `cwg_balance`, `cwg_leaverequest`, `cwg_approval`, `cwg_publicholiday`), configuring RBAC security roles (Employee, Manager, HR Admin), populating statutory Nigerian public holidays, building the responsive Power Apps Canvas portal with real-time balance lookup formulas, and implementing date calculations that dynamically exclude weekends and public holidays.</div>
+          </div>
+
+          <table class="daily-table">
+            <thead>
+              <tr>
+                <th style="width: 13%;">Day / Date</th>
+                <th style="width: 25%;">Nature of Work Done</th>
+                <th style="width: 62%;">Detailed Technical Activities & Engineering Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+            <tr>
+              <td class="col-day">Monday<small>09/11/2026</small></td>
+              <td class="col-nature">LeaveTrack (PRJ-08) Architecture & HR Policy Review</td>
+              <td class="col-details">Reviewed project specification PRJ-08 for Leave & Attendance Management System. Mapped corporate HR leave rules, annual accrual formulas, and multi-tier approval policies.</td>
+            </tr>
+            
+            <tr>
+              <td class="col-day">Tuesday<small>10/11/2026</small></td>
+              <td class="col-nature">Microsoft Dataverse Table Architecture & Schemas</td>
+              <td class="col-details">Created Dataverse tables: `Employees`, `LeaveTypes`, `LeaveRequests`, `Balances`, `Approvals`, and `PublicHolidays`; defined autonumbering (`LR-{YYYY}-{0000}`) and choice columns.</td>
+            </tr>
+            
+            <tr>
+              <td class="col-day">Wednesday<small>11/11/2026</small></td>
+              <td class="col-nature">Security Roles & Public Holiday Calendar Seeding</td>
+              <td class="col-details">Configured Dataverse RBAC security roles (User-level access for Employees, BU-level for Managers, Global for HR); seeded statutory 2026 Nigerian public holidays into `PublicHolidays`.</td>
+            </tr>
+            
+            <tr>
+              <td class="col-day">Thursday<small>12/11/2026</small></td>
+              <td class="col-nature">Power Apps Canvas Interface & Dynamic Balance Lookups</td>
+              <td class="col-details">Engineered responsive Power Apps Canvas request screen; implemented Power Fx formulas querying `Balances` to display real-time remaining leave days dynamically upon type selection.</td>
+            </tr>
+            
+            <tr>
+              <td class="col-day">Friday<small>13/11/2026</small></td>
+              <td class="col-nature">Working Days Logic & Pre-Submission Validation Barrier</td>
+              <td class="col-details">Authored Power Fx iterative sequence formula calculating working days strictly excluding weekends and public holidays; added pre-submission validation preventing requests exceeding available balance.</td>
+            </tr>
+            
+            </tbody>
+          </table>
+
+          <div class="bottom-section">
+            <div class="sketch-panel">
+              <div class="panel-header">WEEKLY TECHNICAL ILLUSTRATION / CIRCUIT / LOGIC DIAGRAM: LeaveTrack Dataverse Relational Schema (PRJ-08 Data Layer)</div>
+              <pre class="ascii-sketch">[cwg_employee] 1 ----- M [cwg_balance] M ----- 1 [cwg_leavetype]
+       |                      |
+       | 1                    | (tracks: accrued, used, remaining)
+       v M                    v
+[cwg_leaverequest] 1 --- M [cwg_approval]
+       |                   (Tier: Manager -> Dept Head -> HR)
+       v
+[cwg_publicholiday] -> Excluded from duration calculation</pre>
+            </div>
+            
+            <div class="feedback-panel">
+              <div class="feedback-box">
+                <div class="panel-header">STUDENT'S WEEKLY REFLECTION & TECHNICAL COMPETENCY:</div>
+                <div class="student-comment-text">"Learned low-code enterprise data modeling on Microsoft Dataverse. Mastered complex Power Fx iterative date arithmetic to exclude statutory public holidays from employee leave balances."</div>
+              </div>
+              <div class="feedback-box">
+                <div class="panel-header">INDUSTRY-BASED SUPERVISOR'S APPRAISAL & SIGNATURE:</div>
+                <div class="signature-line"></div>
+                <div class="signature-caption">Supervisor Signature, Stamp & Date</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+
+        <div class="logbook-page">
+          <div class="doc-header">
+            <div>
+              <div class="doc-title-main">COMPUTER WAREHOUSE GROUP (CWG) PLC</div>
+              <div class="doc-title-sub">STUDENT INDUSTRIAL WORK EXPERIENCE SCHEME (SIWES) — TECHNICAL LOGBOOK</div>
+            </div>
+            <div class="doc-header-meta">
+              <strong>TRAINING RECORD</strong><br>
+              CWG Infrastructure & Engineering
+            </div>
+          </div>
+
+          <div class="info-bar">
+            <div class="info-item">
+              <span>Section / Department</span>
+              <strong>IT & Business Innovation</strong>
+            </div>
+            <div class="info-item">
+              <span>Operational Unit</span>
+              <strong><span class="section-badge badge-software">Cloud Automation & BI</span></strong>
+            </div>
+            <div class="info-item">
+              <span>Training Period</span>
+              <strong>16th November 2026 – 20th November 2026</strong>
+            </div>
+            <div class="info-item" style="text-align: right;">
+              <span>Logbook Week</span>
+              <strong style="color: #1e3a8a; font-size: 13px;">Week 24 (IT Week 11)</strong>
+            </div>
+          </div>
+
+          <div class="weekly-project-box">
+            <div class="box-tag">WORK DONE DURING THE WEEK:</div>
+            <div class="box-title">Power Automate Hierarchical Approvals, Entra ID Manager Routing, Graph API Calendar Sync & Power BI Analytics</div>
+            <div class="box-desc">During this week culminating on 19th–20th November 2026, I completed the backend workflow automation, identity integration, calendar synchronization, and executive business intelligence dashboards for LeaveTrack (PRJ-08). Work done included building a Power Automate cloud flow triggered by Dataverse row additions, integrating Microsoft Entra ID via the Office 365 Users connector (`Get manager (V2)`) to dynamically discover applicant line managers, designing interactive Teams Adaptive Cards for one-click manager approvals, invoking Microsoft Graph API (`POST /v1.0/users/{id}/events`) to automatically write approved leaves into Outlook calendars with out-of-office status, constructing an executive Power BI analytics dashboard computing departmental absence trends and total organization-wide accrued leave liability, and executing formal User Acceptance Testing (UAT).</div>
+          </div>
+
+          <table class="daily-table">
+            <thead>
+              <tr>
+                <th style="width: 13%;">Day / Date</th>
+                <th style="width: 25%;">Nature of Work Done</th>
+                <th style="width: 62%;">Detailed Technical Activities & Engineering Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+            <tr>
+              <td class="col-day">Monday<small>16/11/2026</small></td>
+              <td class="col-nature">Power Automate Cloud Flow & Entra ID Manager Lookup</td>
+              <td class="col-details">Created automated cloud flow triggered on `LeaveRequests` creation; used Office 365 Users connector to resolve applicant's direct manager dynamically from Microsoft Entra ID directory attributes.</td>
+            </tr>
+            
+            <tr>
+              <td class="col-day">Tuesday<small>17/11/2026</small></td>
+              <td class="col-nature">Multi-Tier Approval State Machine & Teams Adaptive Cards</td>
+              <td class="col-details">Engineered interactive Microsoft Teams Adaptive Card approval prompts with comments; built conditional escalation branching for leaves > 5 days routing to Department Head and HR.</td>
+            </tr>
+            
+            <tr>
+              <td class="col-day">Wednesday<small>18/11/2026</small></td>
+              <td class="col-nature">Microsoft Graph API Automated Outlook Calendar Sync</td>
+              <td class="col-details">Configured HTTP action targeting Graph API (`/v1.0/users/{id}/events`) to inject approved leave blocks into employee Outlook calendar (`showAs: 'oof'`); built monthly balance accrual cloud flow.</td>
+            </tr>
+            
+            <tr>
+              <td class="col-day">Thursday<small>19/11/2026</small></td>
+              <td class="col-nature">Power BI Executive Dashboard & Organization Liability</td>
+              <td class="col-details">Engineered Power BI dashboard connecting to Dataverse via DirectQuery; built DAX measures computing total accrued leave financial liability and 30-day forward team absence heatmap.</td>
+            </tr>
+            
+            <tr>
+              <td class="col-day">Friday<small>20/11/2026</small></td>
+              <td class="col-nature">User Acceptance Testing (UAT), ALM Packaging & Documentation</td>
+              <td class="col-details">Executed 5 UAT test scenarios (half-days, holiday boundaries, manager-on-leave delegates); packaged system as Managed Solution (`CWG_LeaveTrack_v1.0.0.zip`); finalized technical documentation.</td>
+            </tr>
+            
+            </tbody>
+          </table>
+
+          <div class="bottom-section">
+            <div class="sketch-panel">
+              <div class="panel-header">WEEKLY TECHNICAL ILLUSTRATION / CIRCUIT / LOGIC DIAGRAM: LeaveTrack Multi-Tier Approval & Graph API Integration Architecture</div>
+              <pre class="ascii-sketch">[Leave Request Submitted] ---> [Dataverse Trigger]
+                                      |
+[Entra ID Manager Lookup] ---> [Teams Adaptive Card Prompt]
+                                      |
+                      +---------------+---------------+
+                      | (Approved)                    | (Rejected)
+                      v                               v
+[Balance Ledger Deduction]            [Notify Employee via Email]
+                      |
+[Microsoft Graph API Call] ---> Creates Outlook Event (showAs: 'oof')
+                      |
+[Power BI Dashboard] ---------> Live Org Liability & Absence Heatmap</pre>
+            </div>
+            
+            <div class="feedback-panel">
+              <div class="feedback-box">
+                <div class="panel-header">STUDENT'S WEEKLY REFLECTION & TECHNICAL COMPETENCY:</div>
+                <div class="student-comment-text">"Successfully delivered PRJ-08 LeaveTrack enterprise platform. Mastered enterprise cloud orchestration with Power Automate, Microsoft Graph API calendar integration, and Power BI DAX financial modeling."</div>
               </div>
               <div class="feedback-box">
                 <div class="panel-header">INDUSTRY-BASED SUPERVISOR'S APPRAISAL & SIGNATURE:</div>
