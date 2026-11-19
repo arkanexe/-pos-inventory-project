@@ -8,12 +8,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class StockAdjustment extends Model
 {
     protected $fillable = [
+        'branch_id',
         'product_id',
         'user_id',
         'type',
         'quantity_change',
         'reason',
     ];
+
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class);
+    }
 
     public function product(): BelongsTo
     {

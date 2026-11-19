@@ -349,5 +349,7 @@ class DatabaseSeeder extends Seeder
 
             $sale->items()->createMany($itemsToCreate);
         }
+
+        $this->call(BranchDataSeeder::class);
     }
 }

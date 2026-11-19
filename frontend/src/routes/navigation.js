@@ -48,6 +48,12 @@ export const PAGES = [
     roles: ['owner', 'manager'],
   },
   {
+    name: 'Branches',
+    path: '/branches',
+    icon: 'branches',
+    roles: ['owner', 'manager'],
+  },
+  {
     name: 'Settings',
     path: '/settings',
     icon: 'settings',

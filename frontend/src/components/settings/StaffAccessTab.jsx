@@ -141,6 +141,7 @@ export default function StaffAccessTab({
             <tr>
               <th>STAFF MEMBER</th>
               <th>ROLE</th>
+              <th>BRANCH</th>
               <th>STATUS</th>
               <th>LAST ACTIVE</th>
               <th className="text-right">ACTIONS</th>
@@ -177,6 +178,11 @@ export default function StaffAccessTab({
                     <span className={`staff-role-badge staff-role-badge--${member.role}`}>
                       <Icon name={member.role === 'owner' ? 'shield' : 'user'} size={13} />
                       {member.role === 'owner' ? 'Owner / Admin' : member.role === 'manager' ? 'Manager' : 'Cashier'}
+                    </span>
+                  </td>
+                  <td>
+                    <span className="staff-last-active-text">
+                      {member.branch?.name ? `${member.branch.name} (${member.branch.code})` : 'Unassigned'}
                     </span>
                   </td>
                   <td>

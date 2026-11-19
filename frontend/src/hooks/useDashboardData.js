@@ -17,7 +17,7 @@ const EMPTY_STATE = {
   productsError: '',
 };
 
-export default function useDashboardData({ period, onSessionExpired }) {
+export default function useDashboardData({ period, branchId = 'all', onSessionExpired }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(EMPTY_STATE);
 
@@ -28,7 +28,7 @@ export default function useDashboardData({ period, onSessionExpired }) {
       if (!silent) setLoading(true);
 
       try {
-        const response = await getDashboard(period);
+        const response = await getDashboard(period, branchId);
         if (cancelled) return;
 
         const lowStock = response.low_stock.map(product => ({
@@ -98,7 +98,7 @@ export default function useDashboardData({ period, onSessionExpired }) {
       clearInterval(intervalId);
       window.removeEventListener('focus', handleFocus);
     };
-  }, [onSessionExpired, period]);
+  }, [onSessionExpired, period, branchId]);
 
   return { loading, ...data };
 }

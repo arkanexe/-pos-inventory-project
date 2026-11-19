@@ -8,6 +8,7 @@ use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StoreSettingController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\BranchController;
 
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -24,8 +25,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/products', [ProductController::class, 'index']);
     Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/branches', [BranchController::class, 'index']);
 
     Route::middleware('role:owner,manager')->group(function () {
+        Route::post('/branches', [BranchController::class, 'store']);
+        Route::patch('/branches/{branch}', [BranchController::class, 'update']);
+        Route::delete('/branches/{branch}', [BranchController::class, 'destroy']);
         Route::get('/staff', [AuthController::class, 'listStaff']);
         Route::patch('/staff/{user}/approve', [AuthController::class, 'approveStaff']);
         Route::delete('/staff/{user}', [AuthController::class, 'deleteStaff']);

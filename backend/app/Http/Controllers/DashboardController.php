@@ -12,8 +12,10 @@ class DashboardController extends Controller
     {
         $validated = $request->validate([
             'period' => 'sometimes|in:7d,30d',
+            'branch_id' => 'sometimes|nullable|integer|exists:branches,id',
         ]);
 
+        $branchId = $validated['branch_id'] ?? null;
         $days = ($validated['period'] ?? '7d') === '30d' ? 30 : 7;
         $today = now()->startOfDay();
         $from = $today->copy()->subDays($days - 1);
@@ -22,6 +24,10 @@ class DashboardController extends Controller
 
         if ($request->user()->role === 'cashier') {
             $sales->where('user_id', $request->user()->id);
+        }
+
+        if ($branchId) {
+            $sales->where('branch_id', $branchId);
         }
 
         $sales->where('created_at', '>=', $from)
@@ -41,6 +47,7 @@ class DashboardController extends Controller
             ->join('sales', 'sales.id', '=', 'sale_items.sale_id')
             ->leftJoin('products', 'products.id', '=', 'sale_items.product_id')
             ->when($request->user()->role === 'cashier', fn ($query) => $query->where('sales.user_id', $request->user()->id))
+            ->when($branchId, fn ($query) => $query->where('sales.branch_id', $branchId))
             ->where('sales.created_at', '>=', $from)
             ->where('sales.created_at', '<', $tomorrow)
             ->select('sale_items.product_id', 'products.name', 'products.sku')
@@ -58,6 +65,7 @@ class DashboardController extends Controller
         $lowStock = DB::table('products')
             ->join('inventories', 'inventories.product_id', '=', 'products.id')
             ->where('products.is_active', true)
+            ->when($branchId, fn ($query) => $query->where('products.branch_id', $branchId))
             ->whereColumn('inventories.quantity', '<=', 'inventories.reorder_threshold')
             ->orderBy('inventories.quantity')
             ->get([

@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use App\Models\Branch;
 use App\Models\Inventory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Http\Request;
 
 class Product extends Model
 {
     protected $fillable = [
+        'branch_id',
         'name',
         'sku',
         'category',
@@ -32,6 +35,11 @@ class Product extends Model
 
 
 
+
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class);
+    }
 
     public function inventory(): HasOne
     {

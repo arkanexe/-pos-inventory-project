@@ -6,6 +6,7 @@ import StockAdjustModal from '../components/inventory/StockAdjustModal';
 import ProductSalesModal from '../components/inventory/ProductSalesModal';
 import InventoryKpis from '../components/inventory/InventoryKpis';
 import InventoryTable from '../components/inventory/InventoryTable';
+import useBranches from '../hooks/useBranches';
 import { getProducts, adjustStockBulk } from '../services/api';
 import { formatCategory } from '../utils/categories';
 import '../styles/inventory.css';
@@ -19,6 +20,8 @@ export default function Inventory({ user, onSessionExpired }) {
   const [search, setSearch] = useState('');
   const [stockFilter, setStockFilter] = useState('all');
   const [categoryFilter, setCategoryFilter] = useState('all');
+  const [branchFilter, setBranchFilter] = useState('all');
+  const { branches } = useBranches();
   const [sortBy, setSortBy] = useState('low-to-high');
   const [selectedIds, setSelectedIds] = useState(new Set());
   const [restockTargets, setRestockTargets] = useState([]);
@@ -30,7 +33,7 @@ export default function Inventory({ user, onSessionExpired }) {
   const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
-      const data = await getProducts();
+      const data = await getProducts(branchFilter);
       setProducts(data);
       setError('');
     } catch (err) {
@@ -39,7 +42,7 @@ export default function Inventory({ user, onSessionExpired }) {
     } finally {
       setLoading(false);
     }
-  }, [onSessionExpired]);
+  }, [branchFilter, onSessionExpired]);
 
   useEffect(() => {
     fetchProducts();
@@ -158,6 +161,12 @@ export default function Inventory({ user, onSessionExpired }) {
         </div>
 
         <div className="inventory-header-actions">
+          {branches.length > 0 && (
+            <select value={branchFilter} onChange={e => setBranchFilter(e.target.value)} className="reports-select-filter" aria-label="Filter inventory by branch">
+              <option value="all">All Branches</option>
+              {branches.map(b => (<option key={b.id} value={String(b.id)}>{b.name} ({b.code})</option>))}
+            </select>
+          )}
           <Link to="/restock" className="inv-btn-secondary">
             <Icon name="clock" size={14} />
             <span>Adjustment history</span>

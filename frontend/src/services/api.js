@@ -95,12 +95,15 @@ export async function getCurrentUser() {
   return apiRequest('/user');
 }
 
-export async function getDashboard(period = '7d') {
-  return apiRequest(`/dashboard?period=${encodeURIComponent(period)}`);
+export async function getDashboard(period = '7d', branchId) {
+  const params = new URLSearchParams({ period });
+  if (branchId && branchId !== 'all') params.set('branch_id', String(branchId));
+  return apiRequest(`/dashboard?${params.toString()}`);
 }
 
-export async function getProducts() {
-  const data = await apiRequest('/products');
+export async function getProducts(branchId) {
+  const q = branchId && branchId !== 'all' ? `?branch_id=${encodeURIComponent(branchId)}` : '';
+  const data = await apiRequest(`/products${q}`);
   return Array.isArray(data) ? data : data.products || [];
 }
 
@@ -132,8 +135,9 @@ export async function deactivateProduct(id) {
   return apiRequest(`/products/${id}`, { method: 'DELETE' });
 }
 
-export async function getStockAdjustments() {
-  return apiRequest('/stock-adjustments');
+export async function getStockAdjustments(branchId) {
+  const q = branchId && branchId !== 'all' ? `?branch_id=${encodeURIComponent(branchId)}` : '';
+  return apiRequest(`/stock-adjustments${q}`);
 }
 
 export async function adjustStock(productId, { type, quantity, reason }) {
@@ -166,8 +170,9 @@ export async function adjustStockBulk(items) {
   }
 }
 
-export async function getSales({ from, to, payment_method, product_id, page = 1, per_page, all } = {}) {
+export async function getSales({ branch_id, from, to, payment_method, product_id, page = 1, per_page, all } = {}) {
   const params = new URLSearchParams();
+  if (branch_id && branch_id !== 'all') params.set('branch_id', String(branch_id));
   if (from) params.set('from', from);
   if (to) params.set('to', to);
   if (payment_method && payment_method !== 'all') params.set('payment_method', payment_method);
@@ -181,8 +186,8 @@ export async function getSales({ from, to, payment_method, product_id, page = 1,
   return apiRequest(`/sales?${params.toString()}`);
 }
 
-export async function getSalesInRange({ from, to } = {}) {
-  const res = await getSales({ from, to, all: true });
+export async function getSalesInRange({ branch_id, from, to } = {}) {
+  const res = await getSales({ branch_id, from, to, all: true });
   const sales = Array.isArray(res.data) ? res.data : [];
   return {
     sales,
@@ -191,19 +196,22 @@ export async function getSalesInRange({ from, to } = {}) {
   };
 }
 
-export async function getSalesReport({ from, to } = {}) {
+export async function getSalesReport({ branch_id, from, to } = {}) {
   const params = new URLSearchParams();
+  if (branch_id && branch_id !== 'all') params.set('branch_id', String(branch_id));
   if (from) params.set('from', from);
   if (to) params.set('to', to);
   const query = params.toString();
   return apiRequest(query ? `/reports/sales?${query}` : '/reports/sales');
 }
 
-export async function createSale({ paymentMethod, items }) {
+export async function createSale({ branch_id, paymentMethod, items }) {
   try {
+    const body = { payment_method: paymentMethod, items };
+    if (branch_id && branch_id !== 'all') body.branch_id = Number(branch_id);
     const data = await apiRequest('/sales', {
       method: 'POST',
-      body: JSON.stringify({ payment_method: paymentMethod, items }),
+      body: JSON.stringify(body),
     });
     return data.sale;
   } catch (error) {
@@ -228,10 +236,10 @@ export async function getStaff() {
   return apiRequest('/staff');
 }
 
-export async function updateStaffStatus(userId, { role, status }) {
+export async function updateStaffStatus(userId, payload) {
   return apiRequest(`/staff/${userId}/approve`, {
     method: 'PATCH',
-    body: JSON.stringify({ role, status }),
+    body: JSON.stringify(payload),
   });
 }
 

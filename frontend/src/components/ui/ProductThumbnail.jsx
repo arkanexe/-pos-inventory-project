@@ -7,6 +7,7 @@ export default function ProductThumbnail({
   className = 'product-thumbnail',
   size,
 }) {
+  const [imgSrc, setImgSrc] = useState(() => resolveProductImage(src));
   const [failed, setFailed] = useState(false);
   const initials = name
     .split(/\s+/)
@@ -16,6 +17,14 @@ export default function ProductThumbnail({
     .toUpperCase() || name.slice(0, 2).toUpperCase() || 'CW';
 
   const style = size ? { width: size, height: size, minWidth: size } : undefined;
+
+  function handleError() {
+    if (imgSrc && imgSrc.includes('/storage/products/')) {
+      setImgSrc(imgSrc.replace('/storage/products/', '/products/'));
+    } else {
+      setFailed(true);
+    }
+  }
 
   if (!src || failed) {
     return (
@@ -28,10 +37,10 @@ export default function ProductThumbnail({
   return (
     <div className={className} style={style}>
       <img
-        src={resolveProductImage(src)}
+        src={imgSrc}
         alt={name}
         loading="lazy"
-        onError={() => setFailed(true)}
+        onError={handleError}
       />
     </div>
   );

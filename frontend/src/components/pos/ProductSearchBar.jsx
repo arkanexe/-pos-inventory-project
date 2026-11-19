@@ -11,6 +11,7 @@ function ProductSearchBar({
   query,
   onQuery,
   onSubmitSku,
+  onOpenScanner,
   categories,
   category,
   onCategory,
@@ -24,7 +25,9 @@ function ProductSearchBar({
   }
 
   function handleScanClick() {
-    if (inputRef?.current) {
+    if (onOpenScanner) {
+      onOpenScanner();
+    } else if (inputRef?.current) {
       inputRef.current.focus();
       inputRef.current.select();
     }

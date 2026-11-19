@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import Icon from '../components/ui/Icon';
 import ProductFormModal from '../components/products/ProductFormModal';
 import ProductsTable from '../components/products/ProductsTable';
+import useBranches from '../hooks/useBranches';
 import {
   getProducts,
   createProduct,
@@ -20,7 +21,9 @@ export default function Products({ user, onSessionExpired }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [selectedBranch, setSelectedBranch] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const { branches } = useBranches();
   const [currentPage, setCurrentPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
@@ -30,7 +33,7 @@ export default function Products({ user, onSessionExpired }) {
   const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
-      const data = await getProducts();
+      const data = await getProducts(selectedBranch);
       setProducts(data);
     } catch (err) {
       if (err.status === 401) onSessionExpired?.();
@@ -38,7 +41,7 @@ export default function Products({ user, onSessionExpired }) {
     } finally {
       setLoading(false);
     }
-  }, [onSessionExpired]);
+  }, [selectedBranch, onSessionExpired]);
 
   useEffect(() => {
     fetchProducts();
@@ -46,7 +49,7 @@ export default function Products({ user, onSessionExpired }) {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [search, selectedCategory]);
+  }, [search, selectedCategory, selectedBranch]);
 
   const filteredProducts = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -162,15 +165,30 @@ export default function Products({ user, onSessionExpired }) {
           })}
         </div>
 
-        <div className="products-search-box-readdy">
-          <Icon name="search" size={14} />
-          <input
-            type="search"
-            placeholder="Search products..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            aria-label="Search products"
-          />
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+          {branches.length > 0 && (
+            <select
+              value={selectedBranch}
+              onChange={e => setSelectedBranch(e.target.value)}
+              className="reports-select-filter"
+              aria-label="Filter products by branch"
+            >
+              <option value="all">All Branches</option>
+              {branches.map(b => (
+                <option key={b.id} value={String(b.id)}>{b.name} ({b.code})</option>
+              ))}
+            </select>
+          )}
+          <div className="products-search-box-readdy">
+            <Icon name="search" size={14} />
+            <input
+              type="search"
+              placeholder="Search products..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              aria-label="Search products"
+            />
+          </div>
         </div>
       </div>
 
@@ -218,6 +236,7 @@ export default function Products({ user, onSessionExpired }) {
       <ProductFormModal
         isOpen={modalOpen}
         product={editingProduct}
+        branches={branches}
         onClose={() => setModalOpen(false)}
         onSave={handleSaveProduct}
       />

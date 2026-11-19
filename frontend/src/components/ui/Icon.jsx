@@ -49,6 +49,12 @@ const paths = {
       <path d="M12 12v.01M8 12v.01M16 12v.01" />
     </>
   ),
+  branches: (
+    <>
+      <path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4" />
+      <path d="M9 9v.01M9 12v.01M9 15v.01M9 18v.01" />
+    </>
+  ),
   money: (
     <>
       <circle cx="12" cy="12" r="9" />

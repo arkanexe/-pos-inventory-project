@@ -9,11 +9,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Sale extends Model
 {
     protected $fillable = [
+        'branch_id',
         'user_id',
         'payment_method',
         'subtotal',
         'total',
     ];
+
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class);
+    }
 
     public function user(): BelongsTo
     {

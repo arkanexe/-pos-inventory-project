@@ -72,17 +72,19 @@ class AuthController extends Controller
 
     public function listStaff(Request $request)
     {
-        $users = User::select([
-            'id',
-            'name',
-            'email',
-            'role',
-            'status',
-            'created_at',
-            'updated_at',
-            'approved_at',
-            'approved_by',
-        ])
+        $users = User::with('branch:id,name,code')
+            ->select([
+                'id',
+                'branch_id',
+                'name',
+                'email',
+                'role',
+                'status',
+                'created_at',
+                'updated_at',
+                'approved_at',
+                'approved_by',
+            ])
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -106,6 +108,7 @@ class AuthController extends Controller
         $request->validate([
             'role' => ['sometimes', 'string', 'in:owner,manager,cashier'],
             'status' => ['required', 'string', 'in:active,inactive,pending'],
+            'branch_id' => ['sometimes', 'nullable', 'integer', 'exists:branches,id'],
         ]);
 
         if ($request->user()?->role !== 'owner') {
@@ -129,6 +132,10 @@ class AuthController extends Controller
             $data['role'] = $request->input('role');
         }
 
+        if ($request->exists('branch_id')) {
+            $data['branch_id'] = $request->input('branch_id') ?: null;
+        }
+
         if ($request->input('status') === 'active') {
             $data['approved_by'] = $request->user()->id;
             $data['approved_at'] = now();
@@ -138,7 +145,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Staff account updated successfully.',
-            'user' => $user->fresh(),
+            'user' => $user->fresh()->load('branch:id,name,code'),
         ]);
     }
 

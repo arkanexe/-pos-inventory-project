@@ -6,6 +6,7 @@ import LiveActivityPanel from '../components/dashboard/LiveActivityPanel';
 import TopProductsPanel from '../components/dashboard/TopProductsPanel';
 import LowStockPanel from '../components/dashboard/LowStockPanel';
 import useDashboardData from '../hooks/useDashboardData';
+import useBranches from '../hooks/useBranches';
 import '../styles/dashboard-home.css';
 import '../styles/dashboard-panels.css';
 
@@ -14,10 +15,27 @@ function DashboardHome({ user, onNavigate, onSessionExpired }) {
   const isManager = user?.role === 'manager';
   const canManageInventory = isOwner || isManager;
   const [period, setPeriod] = useState('7d');
-  const d = useDashboardData({ period, onSessionExpired });
+  const [branchId, setBranchId] = useState('all');
+  const { branches } = useBranches();
+  const d = useDashboardData({ period, branchId, onSessionExpired });
 
   return (
     <div className="dash-home">
+      {branches.length > 0 && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '-8px' }}>
+          <select
+            value={branchId}
+            onChange={e => setBranchId(e.target.value)}
+            className="reports-select-filter"
+            aria-label="Filter dashboard by branch"
+          >
+            <option value="all">All Branches</option>
+            {branches.map(b => (
+              <option key={b.id} value={String(b.id)}>{b.name} ({b.code})</option>
+            ))}
+          </select>
+        </div>
+      )}
       <WelcomeSection
         user={user}
         isOwner={isOwner || isManager}

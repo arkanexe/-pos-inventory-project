@@ -4,6 +4,7 @@ import Icon from '../components/ui/Icon';
 import ReceiptViewModal from '../components/sales/ReceiptViewModal';
 import SalesKpis from '../components/sales/SalesKpis';
 import SalesTable from '../components/sales/SalesTable';
+import useBranches from '../hooks/useBranches';
 import { getSales } from '../services/api';
 import '../styles/sales.css';
 
@@ -20,7 +21,9 @@ export default function Sales({ user }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [paymentFilter, setPaymentFilter] = useState('all');
+  const [branchFilter, setBranchFilter] = useState('all');
   const [cashierFilter, setCashierFilter] = useState('all');
+  const { branches } = useBranches();
   const [sortBy, setSortBy] = useState('newest');
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
@@ -35,6 +38,7 @@ export default function Sales({ user }) {
     try {
       setLoading(true);
       const params = { per_page: 50 };
+      if (branchFilter !== 'all') params.branch_id = branchFilter;
       if (paymentFilter !== 'all') params.payment_method = paymentFilter;
       if (fromDate) params.from = fromDate;
       if (toDate) params.to = toDate;
@@ -47,7 +51,7 @@ export default function Sales({ user }) {
     } finally {
       setLoading(false);
     }
-  }, [paymentFilter, fromDate, toDate]);
+  }, [branchFilter, paymentFilter, fromDate, toDate]);
 
   useEffect(() => {
     fetchSales();
@@ -179,6 +183,20 @@ export default function Sales({ user }) {
               onChange={e => setSearch(e.target.value)}
             />
           </div>
+
+          {isManagement && branches.length > 0 && (
+            <select
+              value={branchFilter}
+              onChange={e => setBranchFilter(e.target.value)}
+              className="sales-select-filter"
+              aria-label="Filter sales by branch"
+            >
+              <option value="all">All branches</option>
+              {branches.map(b => (
+                <option key={b.id} value={String(b.id)}>{b.name} ({b.code})</option>
+              ))}
+            </select>
+          )}
 
           {isManagement && (
             <select

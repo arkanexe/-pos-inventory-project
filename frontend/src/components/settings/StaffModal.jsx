@@ -1,17 +1,20 @@
 import { useState, useEffect } from 'react';
 import Icon from '../ui/Icon';
+import useBranches from '../../hooks/useBranches';
 import '../../styles/settings-modal.css';
 
 export default function StaffModal({ member, isOpen, onClose, onSave, currentUser }) {
   const isEditing = Boolean(member);
   const isOwnerMember = member?.role === 'owner';
   const isCurrentUserOwner = currentUser?.role === 'owner';
+  const { branches } = useBranches();
 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     role: 'cashier',
     status: 'active',
+    branch_id: '',
   });
 
   useEffect(() => {
@@ -22,6 +25,7 @@ export default function StaffModal({ member, isOpen, onClose, onSave, currentUse
         email: member?.email || '',
         role: member?.role || 'cashier',
         status: member?.status || 'active',
+        branch_id: member?.branch_id ? String(member.branch_id) : '',
       });
     }
   }, [member, isOpen]);
@@ -30,8 +34,11 @@ export default function StaffModal({ member, isOpen, onClose, onSave, currentUse
 
   function handleSubmit(e) {
     e.preventDefault();
+    const chosenBranch = branches.find(b => String(b.id) === String(formData.branch_id)) || null;
     onSave({
       ...formData,
+      branch_id: formData.branch_id ? Number(formData.branch_id) : null,
+      branch: chosenBranch ? { id: chosenBranch.id, name: chosenBranch.name, code: chosenBranch.code } : null,
       id: member?.id || formData.id || Date.now(),
     });
     onClose();
@@ -93,6 +100,23 @@ export default function StaffModal({ member, isOpen, onClose, onSave, currentUse
                 The store owner role is permanent and cannot be modified.
               </small>
             )}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="staff-branch">Assigned Branch</label>
+            <select
+              id="staff-branch"
+              value={formData.branch_id}
+              disabled={!isCurrentUserOwner}
+              onChange={e => setFormData({ ...formData, branch_id: e.target.value })}
+            >
+              <option value="">All Branches / Unassigned</option>
+              {branches.map(b => (
+                <option key={b.id} value={String(b.id)}>
+                  {b.name} ({b.code})
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="form-group">

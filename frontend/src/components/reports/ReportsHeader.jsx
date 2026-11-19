@@ -8,6 +8,9 @@ export default function ReportsHeader({
   onTabChange,
   activeRange,
   onRangeChange,
+  branches = [],
+  selectedBranch = 'all',
+  onBranchChange,
   categories = [],
   selectedCategory,
   onCategoryChange,
@@ -72,6 +75,22 @@ export default function ReportsHeader({
         </div>
 
         <div className="reports-filter-right">
+          {branches.length > 0 && onBranchChange && (
+            <select
+              value={selectedBranch}
+              onChange={e => onBranchChange(e.target.value)}
+              className="reports-select-filter"
+              aria-label="Filter by branch"
+            >
+              <option value="all">All Branches</option>
+              {branches.map(b => (
+                <option key={b.id} value={String(b.id)}>
+                  {b.name} ({b.code})
+                </option>
+              ))}
+            </select>
+          )}
+
           {activeTab !== 'users' && categories.length > 0 && (
             <select
               value={selectedCategory}

@@ -18,10 +18,19 @@ function initials(name = '') {
 
 /** ProductTile — one product card. Uses image_path when present with fallback to monogram. */
 function ProductTile({ product, inCart, onAdd }) {
+  const [imgSrc, setImgSrc] = useState(() => resolveProductImage(product.image_path));
   const [imgError, setImgError] = useState(false);
   const status = stockStatus(product);
   const qty = stockOf(product);
   const disabled = status === 'out' || inCart >= qty;
+
+  function handleImgError() {
+    if (imgSrc && imgSrc.includes('/storage/products/')) {
+      setImgSrc(imgSrc.replace('/storage/products/', '/products/'));
+    } else {
+      setImgError(true);
+    }
+  }
 
   return (
     <button
@@ -34,10 +43,10 @@ function ProductTile({ product, inCart, onAdd }) {
       <div className={`pos-tile-media tone-${toneFor(product.category)}`}>
         {product.image_path && !imgError ? (
           <img
-            src={resolveProductImage(product.image_path)}
+            src={imgSrc}
             alt=""
             loading="lazy"
-            onError={() => setImgError(true)}
+            onError={handleImgError}
           />
         ) : (
           <span className="pos-tile-mono">{initials(product.name)}</span>

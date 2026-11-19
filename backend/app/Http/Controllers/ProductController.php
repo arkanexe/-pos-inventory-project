@@ -19,14 +19,19 @@ class ProductController extends Controller
     {
         $isManagement = in_array($request->user()?->role, ['owner', 'manager'], true);
 
-        $query = Product::with('inventory')
+        $query = Product::with(['inventory', 'branch:id,name,code'])
             ->where('is_active', true);
+
+        if ($request->filled('branch_id') && $request->input('branch_id') !== 'all') {
+            $query->where('branch_id', (int) $request->input('branch_id'));
+        }
 
         // Performance optimization: project columns at the database level so cost_price
         // is never selected from MySQL for cashiers, completely eliminating PHP collection loops.
         if (! $isManagement) {
             $query->select([
                 'id',
+                'branch_id',
                 'name',
                 'sku',
                 'category',
@@ -47,6 +52,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'branch_id' => 'nullable|integer|exists:branches,id',
             'name' => 'required|string|max:255',
             'sku' => 'required|string|max:255|unique:products,sku',
             'category' => 'required|string|max:255',
@@ -58,8 +64,9 @@ class ProductController extends Controller
             'reorder_threshold' => 'required|integer|min:0',
         ]);
 
-        $product = DB::transaction(function () use ($validated) {
+        $product = DB::transaction(function () use ($validated, $request) {
             $product = Product::create([
+                'branch_id' => $validated['branch_id'] ?? $request->user()?->branch_id,
                 'name' => $validated['name'],
                 'sku' => $validated['sku'],
                 'category' => $validated['category'],
@@ -74,7 +81,7 @@ class ProductController extends Controller
                 'reorder_threshold' => $validated['reorder_threshold'],
             ]);
 
-            return $product->load('inventory');
+            return $product->load(['inventory', 'branch:id,name,code']);
         });
 
         return response()->json($product, 201);
@@ -83,6 +90,7 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
+            'branch_id' => 'nullable|integer|exists:branches,id',
             'name' => 'sometimes|required|string|max:255',
             'sku' => [
                 'sometimes',
@@ -118,7 +126,7 @@ class ProductController extends Controller
         }
 
         return response()->json(
-            $product->fresh()->load('inventory'),
+            $product->fresh()->load(['inventory', 'branch:id,name,code']),
             200
         );
     }

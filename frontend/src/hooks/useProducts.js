@@ -13,8 +13,8 @@ export function stockStatus(product) {
   return 'in';
 }
 
-/** useProducts — active products with search + category filtering. */
-export default function useProducts({ onSessionExpired } = {}) {
+/** useProducts — active products with search + category + branch filtering. */
+export default function useProducts({ branchId = 'all', onSessionExpired } = {}) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -23,7 +23,7 @@ export default function useProducts({ onSessionExpired } = {}) {
 
   const reload = useCallback(async () => {
     try {
-      const list = await getProducts();
+      const list = await getProducts(branchId);
       setProducts(list.filter(p => p.is_active !== false && p.is_active !== 0));
       setError('');
     } catch (err) {
@@ -32,7 +32,7 @@ export default function useProducts({ onSessionExpired } = {}) {
     } finally {
       setLoading(false);
     }
-  }, [onSessionExpired]);
+  }, [branchId, onSessionExpired]);
 
   useEffect(() => {
     reload();
@@ -59,7 +59,7 @@ export default function useProducts({ onSessionExpired } = {}) {
   );
 
   return {
-    products: visible, total: products.length, categories, loading, error,
+    products: visible, allProducts: products, total: products.length, categories, loading, error,
     query, setQuery, category, setCategory, findBySku, reload,
   };
 }

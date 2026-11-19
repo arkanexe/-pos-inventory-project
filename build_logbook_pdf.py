@@ -193,27 +193,30 @@ Pin 5: White/Blue   | Pin 6: Green       | Pin 7: White/Brown | Pin 8: Brown
     {
         "week_number": "Week 18 (IT Week 5)",
         "period": "5th October 2026 – 9th October 2026",
-        "unit": "Enterprise IT Systems Administration",
-        "section": "Identity & Access Management",
+        "unit": "IT Hardware Support & Maintenance",
+        "section": "PC Diagnostics, Component Upgrades & Thermal Servicing",
         "badge_class": "badge-itsupport",
-        "badge_text": "Active Directory Administration",
-        "job_done": "Active Directory Domain Services, User Provisioning, OUs & Group Policy Object (GPO) Deployment",
-        "work_done_summary": "During this week in Systems Administration, I performed user identity management and policy enforcement on Windows Server 2022 Active Directory Domain Services (AD DS). Work done included provisioning new employee accounts in Active Directory Users and Computers (ADUC), categorizing user objects into departmental Organizational Units (OUs), creating and linking Group Policy Objects (GPOs) for screen timeouts, minimum password complexity (12 characters), and USB mass storage write protection, joining 6 corporate Dell laptops to the `cwg.local` domain, verifying DNS and Kerberos authentication tickets, and executing PowerShell scripts to audit inactive user accounts.",
+        "badge_text": "Hardware Support & Maintenance",
+        "job_done": "Laptop Hardware Diagnostics, RAM & NVMe SSD Upgrades, Heatsink Thermal Servicing & Preventive Maintenance",
+        "work_done_summary": "During this week in Hardware Support, I carried out comprehensive physical maintenance, diagnostic testing, and performance upgrades across 8 corporate Dell Latitude laptops. Work done included running Dell ePSA pre-boot hardware diagnostics to evaluate memory and disk health, unseating sluggish mechanical HDDs and installing high-speed 512GB PCIe NVMe M.2 2280 SSDs under UEFI/GPT partitioning to eliminate 100% disk usage bottlenecks, upgrading SO-DIMM RAM from 8GB single-channel to 16GB dual-channel (3200 MHz) on multitasking workstations, disassembling cooling heatsinks to clean dust clogs from copper radiator fins using compressed air, removing degraded thermal compound with 99% isopropyl alcohol, applying fresh non-conductive thermal paste to CPU/GPU dies to lower operating temperatures by 16°C, executing 30-minute system burn-in stress tests, and updating the IT Hardware Asset Maintenance Register.",
         "days": [
-            ("Monday", "05/10/2026", "Active Directory User Provisioning", "Created new corporate user accounts in Windows Server 2022 Active Directory Users and Computers (ADUC); assigned complex password policies and primary email aliases."),
-            ("Tuesday", "06/10/2026", "Organizational Units (OUs) & Departmental Groups", "Structured directory tree hierarchy: segregated user objects into nested OUs (`CWG-Staff`, `Metering-Dept`, `IT-Operations`, `Finance`); assigned security group memberships."),
-            ("Wednesday", "07/10/2026", "Group Policy Objects (GPOs) Configuration", "Configured and linked Domain GPOs: enforced 15-minute screen lock with password, restricted USB mass storage write access, and mapped departmental network drives (`Z:\\Enterprise_Data`)."),
-            ("Thursday", "08/10/2026", "Domain Joining & Kerberos Trust Diagnostics", "Joined 6 new corporate Dell Latitude laptops to domain `cwg.local`; verified DNS server lookups, computer account registration, and Kerberos ticket generation."),
-            ("Friday", "09/10/2026", "Audit of Inactive AD Accounts & Password Resets", "Executed PowerShell AD audit scripts to identify user accounts inactive for > 60 days; processed 14 self-service password reset requests from enterprise staff.")
+            ("Monday", "05/10/2026", "Hardware Diagnostics & Bottleneck Assessment", "Received 5 sluggish staff laptops; executed Dell ePSA Pre-boot System Assessment (F12) to test memory cells, battery health, and SMART drive status; confirmed 100% disk queue bottlenecks caused by 5400 RPM mechanical HDDs."),
+            ("Tuesday", "06/10/2026", "High-Speed PCIe NVMe M.2 SSD Installation", "Under ESD wrist-strap grounding, disassembled laptop lower chassis and unseated mechanical SATA HDDs; installed 512GB PCIe Gen3 x4 NVMe M.2 2280 SSDs secured with M2x3mm screws; initialized GPT partitions under UEFI; reduced system boot time from 185s to 14s."),
+            ("Wednesday", "07/10/2026", "SO-DIMM RAM Upgrades & Dual-Channel Memory Verification", "Upgraded memory on 4 workstations from 8GB to 16GB; aligned DDR4 SO-DIMM notches with 260-pin socket keys at 45° and pressed down until retaining spring clips locked; verified 3200 MHz bus frequency and 128-bit dual-channel symmetric memory interleaving in BIOS."),
+            ("Thursday", "08/10/2026", "Thermal Heatsink Servicing, Dust Clearing & Repasting", "Serviced 3 thermally throttled executive laptops; unfastened copper heat pipe assemblies in cross-pattern order; cleaned dried thermal paste residue with 99% isopropyl alcohol and lint-free wipes; blew out dust from cooling fans; applied fresh thermal compound, lowering CPU temperatures by 16°C."),
+            ("Friday", "09/10/2026", "System Stress Testing, Benchmarking & Staff Handover", "Executed 30-minute burn-in stress tests using Windows Memory Diagnostic and Prime95 to verify system stability under heavy computing load; confirmed zero BSOD or thermal trip events; logged hardware serials and upgraded specs in IT Asset Register; handed over machines to staff.")
         ],
-        "sketch_title": "Active Directory Hierarchy & GPO Inheritance Flow",
-        "sketch": """Domain: cwg.local
-  |--> OU: Corporate Head Office
-         |--> OU: IT-Operations -------> [GPO: Admin Access & Remote Management]
-         |--> OU: Metering-Division ---> [GPO: Optical Testing Hardware Drivers]
-         |--> OU: Commercial Staff ----> [GPO: USB Write Block & Inactivity Lock]
-                 |--> Users: [staff1, staff2] (Members of 'Domain Users' + 'POS-Operators')""",
-        "student_comment": "Gained in-depth hands-on experience managing Windows Server Active Directory. Understood how GPOs standardize security policies across hundreds of networked endpoints simultaneously."
+        "sketch_title": "Laptop Hardware Upgrade & Thermal Dissipation Architecture",
+        "sketch": """[Disassembled Laptop Lower Chassis (ESD Grounded)]
+       |
+       +--> [SO-DIMM Slot 1: 8GB DDR4] + [SO-DIMM Slot 2: 8GB DDR4] ===> Dual-Channel 16GB (3200 MHz)
+       |
+       +--> [M.2 2280 PCIe Gen3 x4 Slot] ===> 512GB NVMe SSD Installed (Sequential Read: ~3,500 MB/s)
+       |
+       +--> [Copper Heatpipe & Fan Blower] ===> Dust Cleaned + Fresh Thermal Paste (-16°C Thermal Relief)
+       |
+       +--> [Dell ePSA Pre-Boot Diagnostics] ===> Memory, Storage, Thermal & Fan: ALL PASS [100% Healthy]""",
+        "student_comment": "Gained practical, hands-on competence in laptop hardware maintenance, component upgrades, and thermal dissipation principles. Learned how simple hardware bottlenecks like mechanical HDDs and single-channel RAM severely degrade workplace productivity, and mastered safe handling of sensitive surface-mount electronics under strict electrostatic discharge (ESD) precautions."
     },
     {
         "week_number": "Week 19 (IT Week 6)",

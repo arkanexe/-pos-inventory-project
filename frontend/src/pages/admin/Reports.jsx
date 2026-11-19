@@ -10,6 +10,7 @@ import ProductReportTab from '../../components/reports/ProductReportTab';
 import UserReportTab from '../../components/reports/UserReportTab';
 import { exportReportToPdf, handleTabExport } from '../../components/reports/reportsExport';
 import { buildReportChartData, toLocalYmd } from '../../components/reports/reportsChartData';
+import useBranches from '../../hooks/useBranches';
 import { getSalesReport, getSalesInRange, getProducts, getStaff, getStockAdjustments } from '../../services/api';
 import { getCategoryColor } from '../../components/reports/reportsData';
 import '../../styles/reports.css';
@@ -19,8 +20,10 @@ export default function Reports({ user, onSessionExpired }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get('tab') || 'sales';
   const [activeRange, setActiveRange] = useState('7d');
+  const [selectedBranch, setSelectedBranch] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const { branches } = useBranches();
 
   const [rawSales, setRawSales] = useState([]);
   const [products, setProducts] = useState([]);
@@ -47,12 +50,13 @@ export default function Reports({ user, onSessionExpired }) {
       const fromStr = toLocalYmd(fromDate);
       const toStr = toLocalYmd(toDate);
 
+      const branchArg = selectedBranch !== 'all' ? selectedBranch : undefined;
       const [summaryRes, salesRes, prodsRes, staffRes, adjRes] = await Promise.allSettled([
-        getSalesReport({ from: fromStr, to: toStr }),
-        getSalesInRange({ from: fromStr, to: toStr }),
-        getProducts(),
+        getSalesReport({ branch_id: branchArg, from: fromStr, to: toStr }),
+        getSalesInRange({ branch_id: branchArg, from: fromStr, to: toStr }),
+        getProducts(branchArg),
         getStaff(),
-        getStockAdjustments(),
+        getStockAdjustments(branchArg),
       ]);
 
       if (summaryRes.status === 'fulfilled' && summaryRes.value?.summary) {
@@ -79,7 +83,7 @@ export default function Reports({ user, onSessionExpired }) {
     } finally {
       setLoading(false);
     }
-  }, [isManagement, selectedRangeObj, onSessionExpired]);
+  }, [isManagement, selectedRangeObj, selectedBranch, onSessionExpired]);
 
   useEffect(() => {
     fetchReportsData();
@@ -199,6 +203,9 @@ export default function Reports({ user, onSessionExpired }) {
         onTabChange={handleTabChange}
         activeRange={activeRange}
         onRangeChange={setActiveRange}
+        branches={branches}
+        selectedBranch={selectedBranch}
+        onBranchChange={setSelectedBranch}
         categories={categories}
         selectedCategory={selectedCategory}
         onCategoryChange={setSelectedCategory}

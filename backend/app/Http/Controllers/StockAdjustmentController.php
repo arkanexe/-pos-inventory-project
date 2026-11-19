@@ -11,14 +11,16 @@ use Illuminate\Validation\ValidationException;
 
 class StockAdjustmentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $adjustments = StockAdjustment::with(['product:id,name,sku,unit', 'user:id,name'])
-            ->latest()
-            ->take(100)
-            ->get();
+        $query = StockAdjustment::with(['product:id,name,sku,unit,branch_id', 'user:id,name', 'branch:id,name,code'])
+            ->latest();
 
-        return response()->json($adjustments);
+        if ($request->filled('branch_id') && $request->input('branch_id') !== 'all') {
+            $query->where('branch_id', (int) $request->input('branch_id'));
+        }
+
+        return response()->json($query->take(100)->get());
     }
 
     public function store(Request $request, Product $product)
@@ -61,6 +63,7 @@ class StockAdjustmentController extends Controller
 
             /** @var \App\Models\StockAdjustment $adjustment */
             $adjustment = StockAdjustment::create([
+                'branch_id' => $product->branch_id ?? $request->user()?->branch_id,
                 'product_id' => $product->id,
                 'user_id' => $request->user()->id,
                 'type' => $validated['type'],
@@ -92,9 +95,11 @@ class StockAdjustmentController extends Controller
         ]);
 
         $userId = $request->user()->id;
+        $fallbackBranchId = $request->user()?->branch_id;
 
-        $count = DB::transaction(function () use ($validated, $userId) {
+        $count = DB::transaction(function () use ($validated, $userId, $fallbackBranchId) {
             $productIds = collect($validated['items'])->pluck('product_id')->all();
+            $productBranches = Product::whereIn('id', $productIds)->pluck('branch_id', 'id');
             $inventories = Inventory::whereIn('product_id', $productIds)
                 ->lockForUpdate()
                 ->get()
@@ -120,6 +125,7 @@ class StockAdjustmentController extends Controller
                 $inventory->save();
 
                 $adjustments[] = [
+                    'branch_id' => $productBranches->get($item['product_id']) ?? $fallbackBranchId,
                     'product_id' => $item['product_id'],
                     'user_id' => $userId,
                     'type' => $item['type'],

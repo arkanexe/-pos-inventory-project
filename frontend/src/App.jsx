@@ -8,7 +8,7 @@ import PointOfSale from './pages/PointOfSale';
 import Products from './pages/Products';
 import Inventory from './pages/Inventory';
 import Sales from './pages/Sales';
-import { Settings, Restock, Reports } from './pages/admin';
+import { Settings, Restock, Reports, Branches } from './pages/admin';
 import ProtectedRoute from './routes/ProtectedRoute';
 import RoleRoute from './routes/RoleRoute';
 import usePageNavigate from './hooks/usePageNavigate';
@@ -121,6 +121,14 @@ function App() {
           element={
             <RoleRoute user={user} name="Reports">
               <Reports user={user} onSessionExpired={handleLogout} />
+            </RoleRoute>
+          }
+        />
+        <Route
+          path="/branches"
+          element={
+            <RoleRoute user={user} name="Branches">
+              <Branches user={user} onSessionExpired={handleLogout} />
             </RoleRoute>
           }
         />

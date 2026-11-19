@@ -178,19 +178,25 @@ export function useSettingsData(user) {
   }
 
   async function handleSaveStaffMember(member) {
+    let savedUser = member;
     if (member.id) {
       try {
-        await updateStaffStatus(member.id, { role: member.role, status: member.status || 'active' });
+        const res = await updateStaffStatus(member.id, {
+          role: member.role,
+          status: member.status || 'active',
+          branch_id: member.branch_id ?? null,
+        });
+        if (res?.user) savedUser = { ...member, ...res.user };
       } catch (err) {
-        console.error('Failed to sync staff role to backend', err);
+        console.error('Failed to sync staff role/branch to backend', err);
       }
     }
 
     setStaff(prev => {
       const exists = prev.some(s => s.id === member.id);
       const updated = exists
-        ? prev.map(s => (s.id === member.id ? { ...s, ...member } : s))
-        : [...prev, { ...member, id: Date.now(), lastActive: 'Added just now' }];
+        ? prev.map(s => (s.id === member.id ? { ...s, ...savedUser } : s))
+        : [...prev, { ...savedUser, id: Date.now(), lastActive: 'Added just now' }];
       localStorage.setItem('cwg_staff_roster', JSON.stringify(updated));
       return updated;
     });

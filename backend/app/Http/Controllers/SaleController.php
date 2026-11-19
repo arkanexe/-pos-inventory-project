@@ -13,6 +13,7 @@ class SaleController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'branch_id' => 'nullable|integer|exists:branches,id',
             'payment_method' => 'required|in:cash,card,bank_transfer',
             'items' => 'required|array|min:1',
             'items.*.product_id' => 'required|integer|distinct|exists:products,id',
@@ -79,7 +80,12 @@ class SaleController extends Controller
                 $inventory->decrement('quantity', $quantity);
             }
 
+            $branchId = $validated['branch_id']
+                ?? $request->user()?->branch_id
+                ?? $products->first()?->branch_id;
+
             $sale = Sale::create([
+                'branch_id' => $branchId,
                 'user_id' => $request->user()->id,
                 'payment_method' => $validated['payment_method'],
                 'subtotal' => $subtotal,
@@ -88,7 +94,7 @@ class SaleController extends Controller
 
             $sale->items()->createMany($saleItems);
 
-            return $sale->load('items.product');
+            return $sale->load(['items.product', 'branch:id,name,code']);
         });
 
         return response()->json([
@@ -108,7 +114,7 @@ class SaleController extends Controller
             ], 403);
         }
 
-        $sale->load(['items.product', 'user']);
+        $sale->load(['items.product', 'user', 'branch:id,name,code']);
 
         return response()->json([
             'sale' => $sale,
@@ -118,6 +124,7 @@ class SaleController extends Controller
     public function index(Request $request)
     {
         $validated = $request->validate([
+            'branch_id' => 'sometimes|nullable|integer|exists:branches,id',
             'payment_method' => 'sometimes|in:cash,card,bank_transfer',
             'from' => 'sometimes|date_format:Y-m-d',
             'to' => 'sometimes|date_format:Y-m-d|after_or_equal:from',
@@ -126,11 +133,15 @@ class SaleController extends Controller
             'all' => 'sometimes|boolean',
         ]);
 
-        $query = Sale::with(['user:id,name,email', 'items.product:id,name,sku,sell_price,unit']);
+        $query = Sale::with(['user:id,name,email', 'branch:id,name,code', 'items.product:id,name,sku,sell_price,unit']);
 
         // Owners and managers can view all sales; cashiers only see their own.
         if ($request->user()->role === 'cashier') {
             $query->where('user_id', $request->user()->id);
+        }
+
+        if (! empty($validated['branch_id'])) {
+            $query->where('branch_id', $validated['branch_id']);
         }
 
         if (isset($validated['payment_method'])) {
@@ -172,11 +183,16 @@ class SaleController extends Controller
     public function report(Request $request)
     {
         $validated = $request->validate([
+            'branch_id' => 'sometimes|nullable|integer|exists:branches,id',
             'from' => 'sometimes|required|date_format:Y-m-d',
             'to' => 'sometimes|required|date_format:Y-m-d|after_or_equal:from',
         ]);
 
         $query = Sale::query();
+
+        if (! empty($validated['branch_id'])) {
+            $query->where('branch_id', $validated['branch_id']);
+        }
 
         if (isset($validated['from'])) {
             $query->where('created_at', '>=', $validated['from'] . ' 00:00:00');
@@ -209,8 +225,28 @@ class SaleController extends Controller
                 return $entry;
             });
 
+        $branchBreakdown = (clone $query)
+            ->leftJoin('branches', 'branches.id', '=', 'sales.branch_id')
+            ->selectRaw(
+                "sales.branch_id,
+                COALESCE(branches.name, 'Unassigned') as branch_name,
+                COALESCE(branches.code, '') as branch_code,
+                COUNT(*) as transactions,
+                COALESCE(SUM(sales.total), 0) as revenue"
+            )
+            ->groupBy('sales.branch_id', 'branches.name', 'branches.code')
+            ->orderByDesc('revenue')
+            ->get()
+            ->map(function ($entry) {
+                $entry->transactions = (int) $entry->transactions;
+                $entry->revenue = (float) $entry->revenue;
+
+                return $entry;
+            });
+
         return response()->json([
             'filters' => [
+                'branch_id' => $validated['branch_id'] ?? null,
                 'from' => $validated['from'] ?? null,
                 'to' => $validated['to'] ?? null,
             ],
@@ -223,6 +259,7 @@ class SaleController extends Controller
                 ),
             ],
             'payment_breakdown' => $paymentBreakdown,
+            'branch_breakdown' => $branchBreakdown,
         ]);
     }
 

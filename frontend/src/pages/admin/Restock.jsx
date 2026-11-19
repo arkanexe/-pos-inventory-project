@@ -7,6 +7,7 @@ import MultiProductRestock from '../../components/restock/MultiProductRestock';
 import RestockInvoiceModal from '../../components/restock/RestockInvoiceModal';
 import RestockKpis from '../../components/restock/RestockKpis';
 import AdjustmentHistoryTable from '../../components/restock/AdjustmentHistoryTable';
+import useBranches from '../../hooks/useBranches';
 import { getProducts, adjustStock, adjustStockBulk, getStockAdjustments } from '../../services/api';
 import { INITIAL_ADJUSTMENTS } from '../../components/restock/restockData';
 import '../../styles/restock.css';
@@ -25,6 +26,8 @@ export default function Restock({ user, onSessionExpired }) {
   });
 
   const [activeTab, setActiveTab] = useState('batch'); // 'batch' | 'single'
+  const [branchFilter, setBranchFilter] = useState('all');
+  const { branches } = useBranches();
   const [batchItems, setBatchItems] = useState([]);
   const [isInvoiceOpen, setIsInvoiceOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -36,8 +39,8 @@ export default function Restock({ user, onSessionExpired }) {
     try {
       setLoading(true);
       const [prodsData, adjData] = await Promise.allSettled([
-        getProducts(),
-        getStockAdjustments(),
+        getProducts(branchFilter),
+        getStockAdjustments(branchFilter),
       ]);
 
       if (prodsData.status === 'fulfilled' && Array.isArray(prodsData.value)) {
@@ -52,7 +55,7 @@ export default function Restock({ user, onSessionExpired }) {
     } finally {
       setLoading(false);
     }
-  }, [onSessionExpired]);
+  }, [branchFilter, onSessionExpired]);
 
   useEffect(() => {
     loadData();
@@ -179,6 +182,19 @@ export default function Restock({ user, onSessionExpired }) {
         </div>
 
         <div className="restock-header-actions">
+          {branches.length > 0 && (
+            <select
+              value={branchFilter}
+              onChange={e => setBranchFilter(e.target.value)}
+              className="reports-select-filter"
+              aria-label="Filter restock by branch"
+            >
+              <option value="all">All Branches</option>
+              {branches.map(b => (
+                <option key={b.id} value={String(b.id)}>{b.name} ({b.code})</option>
+              ))}
+            </select>
+          )}
           <button
             type="button"
             className="restock-nav-btn"
